@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datic Currency — Data Is the New Currency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #060608;
+  --bg2: #0a0a10;
+  --card: rgba(255,255,255,0.03);
+  --card2: rgba(255,255,255,0.05);
+  --purple: #7c3aed;
+  --purple2: #a855f7;
+  --purple3: #c084fc;
+  --teal: #0d9488;
+  --teal2: #2dd4bf;
+  --green: #059669;
+  --green2: #34d399;
+  --orange: #ea580c;
+  --orange2: #fb923c;
+  --blue: #1d4ed8;
+  --blue2: #60a5fa;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --text3: #475569;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --font-head: 'Clash Display', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); overflow-x: hidden; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 4px; }
+
+/* ══════════════════════════════════════
+   NAV  — ref Image 6
+══════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; height: 68px;
+  background: rgba(6,6,8,0.7);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-head); font-size: 1.35rem; font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, var(--purple3) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+/* pill nav group — ref Image 6 center nav */
+.nav-pill {
+  display: flex; align-items: center; gap: 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border2);
+  border-radius: 50px; padding: 5px;
+}
+.nav-pill a {
+  color: var(--text2); text-decoration: none; font-size: .85rem;
+  padding: .4rem 1.1rem; border-radius: 50px;
+  transition: all .25s; font-weight: 500;
+}
+.nav-pill a.active, .nav-pill a:hover {
+  background: rgba(255,255,255,0.1); color: var(--text);
+}
+.nav-pill a.active { background: rgba(124,58,237,0.3); color: #c084fc; }
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+.nav-btn-ghost { color: var(--text2); background: none; border: none; font-size: .88rem; cursor: pointer; font-family: var(--font-body); padding: .45rem .9rem; border-radius: 50px; transition: color .2s; }
+.nav-btn-ghost:hover { color: var(--text); }
+.nav-btn-solid {
+  background: linear-gradient(135deg, var(--purple), #5b21b6);
+  color: #fff; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: .88rem; font-weight: 600;
+  padding: .5rem 1.3rem; border-radius: 50px;
+  transition: all .3s; box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+}
+.nav-btn-solid:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(124,58,237,0.5); }
+
+/* ══════════════════════════════════════
+   HERO — ref Image 5 + Image 6
+══════════════════════════════════════ */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 8rem 2rem 4rem; text-align: center; overflow: hidden;
+}
+/* orb glows — ref Image 5 */
+.orb {
+  position: absolute; border-radius: 50%;
+  pointer-events: none; filter: blur(80px); opacity: .55;
+}
+.orb-purple { width: 700px; height: 700px; background: radial-gradient(circle, rgba(124,58,237,0.5) 0%, transparent 70%); top: -20%; left: -15%; animation: orbFloat 10s ease-in-out infinite; }
+.orb-teal   { width: 500px; height: 500px; background: radial-gradient(circle, rgba(13,148,136,0.4) 0%, transparent 70%); bottom: -10%; right: -10%; animation: orbFloat 14s ease-in-out infinite reverse; }
+.orb-orange { width: 350px; height: 350px; background: radial-gradient(circle, rgba(234,88,12,0.3) 0%, transparent 70%); top: 30%; right: 5%; animation: orbFloat 8s ease-in-out infinite; }
+@keyframes orbFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-30px) scale(1.08); } }
+
+/* grid background — ref Image 3 */
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none; opacity: .12;
+  background-image:
+    linear-gradient(rgba(124,58,237,0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,58,237,0.4) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4);
+  padding: .4rem 1.1rem; border-radius: 50px;
+  font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--purple3); margin-bottom: 1.8rem;
+  animation: fadeUp .7s ease both;
+}
+.hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--purple2); box-shadow: 0 0 8px var(--purple2); }
+.hero-h1 {
+  font-family: var(--font-head); font-size: clamp(3rem, 7vw, 6.2rem);
+  font-weight: 700; line-height: 1.06; letter-spacing: -0.03em;
+  max-width: 820px; margin: 0 auto .3em;
+  animation: fadeUp .8s .1s ease both;
+}
+.hero-h1 .grad {
+  background: linear-gradient(135deg, #fff 0%, var(--purple3) 40%, var(--teal2) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 1.12rem; line-height: 1.75; color: var(--text2); font-weight: 400;
+  max-width: 560px; margin: 0 auto 2.2rem;
+  animation: fadeUp .9s .2s ease both;
+}
+.hero-ctas {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 1s .35s ease both;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple), #4f46e5);
+  color: #fff; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: .95rem; font-weight: 600;
+  padding: .82rem 2.1rem; border-radius: 50px; text-decoration: none;
+  box-shadow: 0 0 30px rgba(124,58,237,0.45);
+  transition: all .3s; display: inline-flex; align-items: center; gap: .5rem;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 40px rgba(124,58,237,0.6); }
+.btn-secondary {
+  background: rgba(255,255,255,0.06); border: 1px solid var(--border2);
+  color: var(--text); font-family: var(--font-body); font-size: .95rem; font-weight: 500;
+  padding: .82rem 2.1rem; border-radius: 50px; text-decoration: none; cursor: pointer;
+  transition: all .3s; display: inline-flex; align-items: center; gap: .5rem;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+
+/* logo bar — ref Image 5 */
+.logo-bar {
+  display: flex; align-items: center; justify-content: center; gap: 3rem;
+  margin-top: 4.5rem; opacity: .35; flex-wrap: wrap;
+  animation: fadeUp 1s .6s ease both;
+}
+.logo-bar span { font-family: var(--font-head); font-size: 1rem; font-weight: 600; letter-spacing: .04em; color: var(--text2); }
+
+/* hero UI cards — ref Image 5 bottom */
+.hero-cards {
+  display: flex; gap: 1.5rem; margin-top: 3.5rem; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 1s .5s ease both;
+}
+.hero-card {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border2);
+  border-radius: 20px; padding: 1.5rem 2rem; min-width: 240px;
+  backdrop-filter: blur(20px); position: relative; overflow: hidden;
+  text-align: left;
+}
+.hero-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+}
+.hc-label { font-size: .7rem; color: var(--text3); font-family: var(--font-mono); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .4rem; }
+.hc-value { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; color: var(--text); }
+.hc-sub { font-size: .78rem; color: var(--teal2); margin-top: .2rem; }
+.hc-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--green2); margin-right: .3rem; box-shadow: 0 0 6px var(--green2); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.2} }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ══════════════════════════════════════
+   SHARED LAYOUT
+══════════════════════════════════════ */
+section { padding: 6rem 2rem; position: relative; }
+.container { max-width: 1200px; margin: 0 auto; }
+.section-eyebrow {
+  display: inline-block; font-size: .72rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--purple3);
+  margin-bottom: .9rem; font-family: var(--font-mono);
+}
+.section-h2 {
+  font-family: var(--font-head); font-size: clamp(2rem,4vw,3rem);
+  font-weight: 700; line-height: 1.15; letter-spacing: -0.025em;
+}
+.section-sub {
+  color: var(--text2); font-size: 1rem; line-height: 1.8; font-weight: 400;
+  max-width: 540px; margin-top: .9rem;
+}
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+
+hr.divider { border: none; border-top: 1px solid var(--border); margin: 0 3rem; }
+
+/* ══════════════════════════════════════
+   SECTION 1: WHAT IS DATIC  — left text, right card
+══════════════════════════════════════ */
+#what {
+  background: radial-gradient(ellipse 80% 60% at 80% 50%, rgba(124,58,237,0.06) 0%, transparent 70%);
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem; }
+.feat-list { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2rem; }
+.feat-item { display: flex; gap: 1rem; align-items: flex-start; }
+.feat-icon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  border: 1px solid var(--border2);
+}
+.fi-purple { background: rgba(124,58,237,0.15); }
+.fi-teal   { background: rgba(13,148,136,0.15); }
+.fi-orange { background: rgba(234,88,12,0.15); }
+.fi-blue   { background: rgba(29,78,216,0.15); }
+.feat-item h4 { font-size: .95rem; font-weight: 600; margin-bottom: .25rem; }
+.feat-item p  { font-size: .88rem; color: var(--text2); line-height: 1.6; }
+
+/* big glass card right side */
+.glass-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border2);
+  border-radius: 24px; padding: 2rem;
+  backdrop-filter: blur(20px); position: relative; overflow: hidden;
+}
+.glass-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: 24px;
+  background: radial-gradient(ellipse at top right, rgba(124,58,237,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.gc-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.gc-icon-wrap { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, var(--purple), #4f46e5); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+.gc-title { font-family: var(--font-head); font-size: 1.1rem; font-weight: 600; }
+.gc-sub   { font-size: .8rem; color: var(--text2); margin-top: .1rem; }
+.stat-row { display: flex; gap: 1rem; margin-bottom: 1.2rem; }
+.stat-box {
+  flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 14px;
+  padding: 1rem; text-align: center;
+}
+.sb-num { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; }
+.sb-label { font-size: .72rem; color: var(--text3); margin-top: .2rem; letter-spacing: .04em; }
+.share-bars { display: flex; flex-direction: column; gap: .8rem; margin-top: 1rem; }
+.share-bar-row { display: flex; align-items: center; gap .7rem; }
+.sb-row-label { font-size: .8rem; color: var(--text2); min-width: 140px; }
+.sb-track { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.sb-fill { height: 100%; border-radius: 3px; }
+.sb-pct { font-family: var(--font-mono); font-size: .78rem; min-width: 36px; text-align: right; }
+
+/* ══════════════════════════════════════
+   SECTION 2: HOW IT WORKS — ref Image 4 cards with bottom glow
+══════════════════════════════════════ */
+#how { background: var(--bg2); }
+.cards-center-heading { text-align: center; margin-bottom: 3rem; }
+.cards-center-heading .section-sub { margin: .9rem auto 0; }
+/* three-card row with bottom glow */
+.glow-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.glow-card {
+  position: relative; border-radius: 24px; padding: 2rem;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  overflow: hidden; transition: transform .35s, border-color .35s;
+}
+.glow-card:hover { transform: translateY(-6px); border-color: var(--border2); }
+/* bottom color glow — EXACTLY ref Image 4 */
+.glow-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 220px; border-radius: 0 0 24px 24px; pointer-events: none;
+  opacity: .7; transition: opacity .35s;
+}
+.glow-card:hover::after { opacity: 1; }
+.gc-orange::after { background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(234,88,12,0.45) 0%, transparent 70%); }
+.gc-blue::after   { background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(29,78,216,0.45) 0%, transparent 70%); }
+.gc-green::after  { background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(5,150,105,0.45) 0%, transparent 70%); }
+.glow-card-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: rgba(255,255,255,0.06); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin-bottom: 1.3rem; position: relative; z-index: 1;
+}
+.glow-card h3 { font-family: var(--font-head); font-size: 1.25rem; font-weight: 600; margin-bottom: .7rem; position: relative; z-index: 1; }
+.glow-card p  { color: var(--text2); font-size: .9rem; line-height: 1.7; position: relative; z-index: 1; }
+.glow-card-link { display: inline-flex; align-items: center; gap: .4rem; font-size: .85rem; font-weight: 600; margin-top: 1.2rem; position: relative; z-index: 1; text-decoration: none; transition: gap .2s; }
+.glow-card-link:hover { gap: .7rem; }
+.gc-orange .glow-card-link { color: var(--orange2); }
+.gc-blue   .glow-card-link { color: var(--blue2); }
+.gc-green  .glow-card-link { color: var(--green2); }
+/* bottom bar icons ref Image 4 */
+.bottom-badges { display: flex; gap: 2.5rem; margin-top: 2.5rem; justify-content: center; }
+.bb-item { display: flex; align-items: center; gap: .5rem; color: var(--text3); font-size: .82rem; font-weight: 500; }
+.bb-icon { font-size: .9rem; }
+
+/* ══════════════════════════════════════
+   SECTION 3: TRANSFORM — ref Image 2 feature cards
+══════════════════════════════════════ */
+#transform {
+  background: radial-gradient(ellipse 90% 60% at 50% 100%, rgba(124,58,237,0.08) 0%, transparent 70%);
+  text-align: center;
+}
+/* three cards carousel style — ref Image 2 center card raised */
+.feature-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; align-items: start; margin-top: 3rem;
+}
+.feature-card {
+  border-radius: 24px; padding: 2.2rem 1.8rem; position: relative; overflow: hidden;
+  border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+  transition: transform .4s, box-shadow .4s;
+  text-align: left;
+}
+/* center card raised and highlighted — ref Image 2 center */
+.feature-card.featured {
+  background: linear-gradient(145deg, rgba(124,58,237,0.2) 0%, rgba(79,70,229,0.15) 50%, rgba(13,148,136,0.1) 100%);
+  border-color: rgba(124,58,237,0.4);
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 30px 80px rgba(124,58,237,0.2), 0 0 0 1px rgba(124,58,237,0.2);
+}
+.feature-card.featured:hover { transform: translateY(-18px) scale(1.04); }
+.feature-card:not(.featured):hover { transform: translateY(-6px); }
+/* 3D icon area — ref Image 2 shield/phone icons */
+.fc-icon-area {
+  width: 100%; height: 160px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem; margin-bottom: 1.5rem;
+  position: relative; overflow: hidden;
+}
+.fci-purple { background: radial-gradient(ellipse at 40% 30%, rgba(124,58,237,0.4) 0%, rgba(6,6,8,0.9) 100%); }
+.fci-teal   { background: radial-gradient(ellipse at 60% 30%, rgba(13,148,136,0.4) 0%, rgba(6,6,8,0.9) 100%); }
+.fci-blue   { background: radial-gradient(ellipse at 50% 30%, rgba(29,78,216,0.4) 0%, rgba(6,6,8,0.9) 100%); }
+.fc-icon-area::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 100%, rgba(255,255,255,0.05) 0%, transparent 60%);
+}
+.fc-icon-ring {
+  position: absolute; width: 120px; height: 120px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+  animation: spin 20s linear infinite;
+}
+.fc-icon-ring-2 {
+  width: 80px; height: 80px;
+  animation: spin 12s linear infinite reverse;
+}
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+.fc-emoji { position: relative; z-index: 1; filter: drop-shadow(0 0 20px rgba(255,255,255,0.3)); }
+.feature-card h3 { font-family: var(--font-head); font-size: 1.2rem; font-weight: 600; margin-bottom: .7rem; }
+.feature-card p  { color: var(--text2); font-size: .88rem; line-height: 1.7; }
+
+/* ══════════════════════════════════════
+   SECTION 4: DATA TYPES — ref Image 3 grid layout
+══════════════════════════════════════ */
+#data-types {
+  background: var(--bg2);
+  position: relative; overflow: hidden;
+}
+/* grid bg — ref Image 3 */
+#data-types::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .07;
+  background-image:
+    linear-gradient(rgba(124,58,237,0.6) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,58,237,0.6) 1px, transparent 1px);
+  background-size: 55px 55px;
+}
+/* purple spotlight — ref Image 3 center glow */
+#data-types::after {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(124,58,237,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.dt-header { text-align: center; position: relative; z-index: 1; }
+/* center + surrounding layout — ref Image 3 */
+.dt-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.2rem; margin-top: 3rem; position: relative; z-index: 1;
+  align-items: stretch;
+}
+.dt-card {
+  border-radius: 20px; padding: 1.7rem 1.3rem; text-align: center;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  position: relative; overflow: hidden; transition: all .4s; cursor: default;
+}
+.dt-card:hover { transform: translateY(-5px); border-color: rgba(124,58,237,0.4); }
+/* arrow icon — ref Image 3 */
+.dt-arrow {
+  position: absolute; top: 1.2rem; right: 1.2rem; color: var(--text3);
+  font-size: 1.2rem; transition: all .3s;
+}
+.dt-card:hover .dt-arrow { color: var(--purple3); transform: translate(2px,-2px); }
+.dt-card-label { font-size: .65rem; font-family: var(--font-mono); color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .8rem; }
+.dt-card-name { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; margin-bottom: .5rem; }
+.dt-card-desc { font-size: .78rem; color: var(--text2); line-height: 1.55; }
+/* center card spotlight — ref Image 3 center "Hierarchy" style */
+.dt-card.spotlight {
+  background: linear-gradient(145deg, rgba(124,58,237,0.25) 0%, rgba(79,70,229,0.2) 100%);
+  border-color: rgba(124,58,237,0.5);
+  box-shadow: 0 0 60px rgba(124,58,237,0.2), 0 0 0 1px rgba(124,58,237,0.3);
+}
+.dt-card.spotlight .dt-card-name { font-size: 1.4rem; color: #fff; }
+.dt-card.spotlight .dt-arrow { color: rgba(124,58,237,0.8); }
+/* speckle texture on spotlight — ref Image 3 */
+.dt-card.spotlight::before {
+  content: ''; position: absolute; inset: 0; border-radius: 20px;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 12px 12px; pointer-events: none;
+}
+/* emoji icon on dt cards */
+.dt-emoji { font-size: 1.8rem; margin-bottom: .8rem; display: block; }
+
+/* ══════════════════════════════════════
+   SECTION 5: SECURITY — ref Image 1 dashboard layout
+══════════════════════════════════════ */
+#security {
+  background: radial-gradient(ellipse 70% 60% at 0% 50%, rgba(13,148,136,0.07) 0%, transparent 60%);
+}
+.security-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+/* encrypt panel — like a terminal/dashboard card */
+.encrypt-panel {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border2);
+  border-radius: 24px; overflow: hidden;
+}
+.ep-header {
+  background: rgba(255,255,255,0.04); padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .8rem;
+}
+.ep-dots { display: flex; gap: .4rem; }
+.ep-dot { width: 10px; height: 10px; border-radius: 50%; }
+.ep-body { padding: 1.5rem; font-family: var(--font-mono); font-size: .78rem; line-height: 2; }
+.ep-line { color: rgba(13,148,136,0.6); }
+.ep-active { color: var(--teal2); font-weight: 500; }
+.ep-comment { color: var(--text3); }
+.ep-lock { color: var(--purple3); }
+.sec-features { display: flex; flex-direction: column; gap: 1.2rem; }
+.sec-feat {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.2rem 1.5rem;
+  transition: border-color .3s;
+}
+.sec-feat:hover { border-color: rgba(13,148,136,0.3); }
+.sf-icon {
+  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  background: rgba(13,148,136,0.12); border: 1px solid rgba(13,148,136,0.2);
+}
+.sf-title { font-weight: 600; font-size: .95rem; margin-bottom: .25rem; }
+.sf-desc  { color: var(--text2); font-size: .85rem; line-height: 1.55; }
+
+/* ══════════════════════════════════════
+   SECTION 6: SHARE DISTRIBUTION — tokenomics
+══════════════════════════════════════ */
+#shares { background: var(--bg2); }
+.shares-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+.donut-container { position: relative; display: flex; align-items: center; justify-content: center; }
+.donut-container svg { width: 300px; height: 300px; }
+.donut-center-label { position: absolute; text-align: center; pointer-events: none; }
+.dcl-num { font-family: var(--font-head); font-size: 2.2rem; font-weight: 700; color: #fff; }
+.dcl-text { font-size: .75rem; color: var(--text3); margin-top: .2rem; }
+.share-legend { display: flex; flex-direction: column; gap: 1.1rem; }
+.sl-item {
+  display: flex; align-items: center; gap: 1.2rem;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 16px; padding: 1.1rem 1.4rem; transition: all .3s;
+}
+.sl-item:hover { border-color: var(--border2); }
+.sl-color { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.sl-info { flex: 1; }
+.sl-title { font-weight: 600; font-size: .92rem; margin-bottom: .15rem; }
+.sl-desc  { color: var(--text2); font-size: .8rem; }
+.sl-pct { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; color: var(--text); }
+
+/* ══════════════════════════════════════
+   SECTION 7: AUCTION — timeline
+══════════════════════════════════════ */
+#auction {
+  background: radial-gradient(ellipse 60% 70% at 100% 50%, rgba(234,88,12,0.05) 0%, transparent 60%);
+}
+.auction-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+.auction-steps { display: flex; flex-direction: column; gap: 0; }
+.as-item {
+  display: flex; gap: 1.2rem; padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border); position: relative;
+}
+.as-item:last-child { border-bottom: none; }
+.as-num {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: .75rem; color: var(--purple3); font-weight: 500;
+}
+.as-content h4 { font-weight: 600; font-size: .95rem; margin-bottom: .3rem; }
+.as-content p  { color: var(--text2); font-size: .87rem; line-height: 1.6; }
+/* live bid panel */
+.bid-panel {
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border2);
+  border-radius: 24px; padding: 1.8rem; position: relative; overflow: hidden;
+}
+.bid-panel::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 0%, rgba(234,88,12,0.06) 0%, transparent 60%);
+}
+.live-pill {
+  display: inline-flex; align-items: center; gap: .45rem;
+  background: rgba(5,150,105,0.12); border: 1px solid rgba(5,150,105,0.3);
+  padding: .3rem .85rem; border-radius: 50px;
+  font-size: .7rem; font-family: var(--font-mono); color: var(--green2);
+  margin-bottom: 1.3rem;
+}
+.live-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green2); box-shadow: 0 0 6px var(--green2); animation: blink 1.5s infinite; }
+.bid-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .85rem 0; border-bottom: 1px solid var(--border);
+}
+.bid-row:last-child { border-bottom: none; }
+.br-left { }
+.br-co { font-weight: 500; font-size: .9rem; margin-bottom: .2rem; }
+.br-bar { height: 2px; border-radius: 1px; background: rgba(124,58,237,0.5); margin-top: .3rem; }
+.br-tag { font-family: var(--font-mono); font-size: .65rem; padding: .15rem .5rem; border-radius: 4px; margin-left: .5rem; }
+.br-tag-lead { background: rgba(234,88,12,0.2); color: var(--orange2); }
+.br-amount { font-family: var(--font-mono); font-size: .95rem; font-weight: 500; }
+.br-time { font-size: .7rem; color: var(--text3); text-align: right; margin-top: .2rem; }
+.bid-timer { margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px solid var(--border); text-align: center; }
+.bt-label { font-size: .68rem; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; font-family: var(--font-mono); margin-bottom: .7rem; }
+.bt-blocks { display: flex; gap: .6rem; justify-content: center; }
+.bt-block {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border2);
+  border-radius: 10px; padding: .6rem .9rem; min-width: 56px;
+}
+.bt-block span { display: block; font-family: var(--font-head); font-size: 1.4rem; color: var(--text); font-weight: 700; }
+.bt-block small { font-size: .58rem; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+
+/* ══════════════════════════════════════
+   CTA SECTION
+══════════════════════════════════════ */
+#cta {
+  text-align: center; padding: 9rem 2rem; position: relative; overflow: hidden;
+}
+#cta::before {
+  content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, rgba(124,58,237,0.12) 0%, rgba(13,148,136,0.06) 50%, transparent 70%);
+  pointer-events: none;
+}
+/* concentric rings — ref Image 5 Book a Demo button area */
+.cta-rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+.cr { position: absolute; border-radius: 50%; border: 1px solid rgba(124,58,237,0.08); transform: translate(-50%,-50%); animation: ringPulse 5s ease-in-out infinite; }
+.cr1 { width: 300px; height: 300px; animation-delay: 0s; }
+.cr2 { width: 500px; height: 500px; animation-delay: -1.5s; border-color: rgba(124,58,237,0.05); }
+.cr3 { width: 700px; height: 700px; animation-delay: -3s; border-color: rgba(124,58,237,0.03); }
+@keyframes ringPulse { 0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)} }
+.cta-h2 { font-family: var(--font-head); font-size: clamp(2.5rem,5.5vw,4.8rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; position: relative; z-index: 1; margin-bottom: 1.3rem; }
+.cta-h2 .grad { background: linear-gradient(135deg, #fff 0%, var(--purple3) 50%, var(--teal2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.cta-sub { color: var(--text2); font-size: 1.05rem; max-width: 460px; margin: 0 auto 2.5rem; line-height: 1.75; position: relative; z-index: 1; }
+.cta-btns { display: flex; gap: 1rem; justify-content: center; position: relative; z-index: 1; flex-wrap: wrap; }
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer {
+  padding: 2.5rem 3rem; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; position: relative; z-index: 2;
+}
+.footer-logo { font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg,#fff,var(--purple3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.footer-copy { font-size: .8rem; color: var(--text3); font-family: var(--font-mono); }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { color: var(--text3); font-size: .85rem; text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--text); }
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 960px) {
+  .nav-pill { display: none; }
+  .two-col, .security-layout, .shares-layout, .auction-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+  .feature-cards, .glow-cards { grid-template-columns: 1fr; }
+  .feature-card.featured { transform: none; }
+  .dt-grid { grid-template-columns: repeat(2,1fr); }
+  .hero-cards { flex-direction: column; align-items: center; }
+  section { padding: 4rem 1.5rem; }
+  nav { padding: 0 1.5rem; }
+  footer { flex-direction: column; text-align: center; }
+  .footer-links { justify-content: center; }
+  .logo-bar { gap: 1.5rem; }
+}
+@media (max-width: 540px) {
+  .dt-grid { grid-template-columns: 1fr; }
+  .hero-h1 { font-size: 2.6rem; }
+  .glow-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Datic Currency</div>
+  <div class="nav-pill">
+    <a href="#what" class="active">About</a>
+    <a href="#how">How it Works</a>
+    <a href="#data-types">Data Types</a>
+    <a href="#auction">Auction</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn-ghost">Log In</button>
+    <button class="nav-btn-solid">Get Early Access →</button>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="orb orb-purple"></div>
+  <div class="orb orb-teal"></div>
+  <div class="orb orb-orange"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge">✦ The Future of Data Ownership</div>
+
+  <h1 class="hero-h1">
+    <span class="grad">Your Data Is<br>Worth Real Money</span>
+  </h1>
+
+  <p class="hero-sub">
+    Datic Currency transforms proprietary datasets into tradeable financial assets. List, auction, and earn — while your data stays protected until the deal is done.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#how" class="btn-primary">▶ See How It Works</a>
+    <a href="#what" class="btn-secondary">Explore the Platform →</a>
+  </div>
+
+  <div class="logo-bar">
+    <span>Trusted by data owners across</span>
+    <span>Finance</span>
+    <span>Healthcare</span>
+    <span>Retail</span>
+    <span>Technology</span>
+    <span>Strategy</span>
+  </div>
+
+  <div class="hero-cards">
+    <div class="hero-card">
+      <div class="hc-label">Platform Status</div>
+      <div class="hc-value"><span class="hc-dot"></span>Live on Testnet</div>
+      <div class="hc-sub">Formula Engine v2.1 active</div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-label">Active Auctions</div>
+      <div class="hc-value">14 Datasets</div>
+      <div class="hc-sub">Bidding open now</div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-label">Share Unlock Rule</div>
+      <div class="hc-value">51% Majority</div>
+      <div class="hc-sub">Data protected until threshold</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════ WHAT IS DATIC ═══════════════ -->
+<section id="what">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <div class="section-eyebrow reveal">What is Datic Currency</div>
+        <h2 class="section-h2 reveal">Data Tokenized as<br>Tradeable Shares</h2>
+        <p class="section-sub reveal">Datic Currency (DC) is a financial framework that converts raw datasets into publicly tradeable shares — fairly priced, safely encrypted, and open to anyone to invest in.</p>
+        <ul class="feat-list">
+          <li class="feat-item reveal reveal-delay-1">
+            <div class="feat-icon fi-purple">📊</div>
+            <div>
+              <h4>Data Becomes an Asset</h4>
+              <p>Any dataset — regional sales, usage metrics, strategic intelligence — can be listed, priced, and traded like equity shares on a public market.</p>
+            </div>
+          </li>
+          <li class="feat-item reveal reveal-delay-2">
+            <div class="feat-icon fi-teal">⚡</div>
+            <div>
+              <h4>Fair Market Pricing</h4>
+              <p>Prices are set by a transparent model that factors in data quality, recency, risk, and market demand — no guesswork, no negotiation.</p>
+            </div>
+          </li>
+          <li class="feat-item reveal reveal-delay-3">
+            <div class="feat-icon fi-orange">🔐</div>
+            <div>
+              <h4>Encryption Until Majority</h4>
+              <p>Your data stays fully encrypted and private until a buyer acquires 51% stake — protecting sellers while incentivising genuine competitive interest.</p>
+            </div>
+          </li>
+          <li class="feat-item reveal reveal-delay-4">
+            <div class="feat-icon fi-blue">💹</div>
+            <div>
+              <h4>Real-Time Price Movement</h4>
+              <p>Share prices adjust dynamically as demand rises. More bidders and higher trading volume push the price up — benefiting all shareholders.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="glass-card">
+          <div class="gc-header">
+            <div class="gc-icon-wrap">💎</div>
+            <div>
+              <div class="gc-title">Datic Currency Overview</div>
+              <div class="gc-sub">Allocation at listing</div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-box">
+              <div class="sb-num" style="background:linear-gradient(135deg,var(--purple2),var(--teal2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">50%</div>
+              <div class="sb-label">Public Investors</div>
+            </div>
+            <div class="stat-box">
+              <div class="sb-num" style="background:linear-gradient(135deg,var(--teal2),var(--green2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">40%</div>
+              <div class="sb-label">Corporate Pool</div>
+            </div>
+            <div class="stat-box">
+              <div class="sb-num" style="background:linear-gradient(135deg,var(--orange2),var(--purple3));-webkit-background-clip:text;-webkit-text-fill-color:transparent">10%</div>
+              <div class="sb-label">Datic Reserve</div>
+            </div>
+          </div>
+          <div class="share-bars">
+            <div class="share-bar-row" style="display:flex;align-items:center;gap:.8rem">
+              <div class="sb-row-label">Public Investors</div>
+              <div class="sb-track" style="flex:1"><div class="sb-fill" style="width:50%;background:linear-gradient(90deg,var(--purple2),var(--teal2))"></div></div>
+              <div class="sb-pct" style="color:var(--purple3)">50%</div>
+            </div>
+            <div class="share-bar-row" style="display:flex;align-items:center;gap:.8rem">
+              <div class="sb-row-label">Corporate Bidding Pool</div>
+              <div class="sb-track" style="flex:1"><div class="sb-fill" style="width:40%;background:linear-gradient(90deg,var(--teal),var(--green2))"></div></div>
+              <div class="sb-pct" style="color:var(--teal2)">40%</div>
+            </div>
+            <div class="share-bar-row" style="display:flex;align-items:center;gap:.8rem">
+              <div class="sb-row-label">Datic Reserve</div>
+              <div class="sb-track" style="flex:1"><div class="sb-fill" style="width:10%;background:linear-gradient(90deg,var(--orange),var(--orange2))"></div></div>
+              <div class="sb-pct" style="color:var(--orange2)">10%</div>
+            </div>
+          </div>
+          <div style="margin-top:1.5rem;padding:1rem;background:rgba(13,148,136,0.08);border:1px solid rgba(13,148,136,0.2);border-radius:12px;font-size:.82rem;color:var(--text2);line-height:1.6">
+            <span style="color:var(--teal2);font-weight:600">Unlock Rule:</span> A winner must acquire ≥51% of shares to decrypt and access the full dataset. All shareholders earn proportional returns on price appreciation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════ HOW IT WORKS (Image 4 style) ═══════════════ -->
+<section id="how">
+  <div class="container">
+    <div class="cards-center-heading">
+      <div class="section-eyebrow reveal">How It Works</div>
+      <h2 class="section-h2 reveal">From Raw Data to<br>Traded Asset</h2>
+      <p class="section-sub reveal">Three simple stages take your dataset from private file to publicly traded instrument — with full protection at every step.</p>
+    </div>
+    <div class="glow-cards">
+      <div class="glow-card gc-orange reveal">
+        <div class="glow-card-icon">📋</div>
+        <h3>List & Price</h3>
+        <p>Submit your dataset and set a base price. Our transparent pricing model calculates a fair Initial Share Price based on the type of data, its age, quality, and regulatory compliance. Shares are minted instantly.</p>
+        <a href="#" class="glow-card-link">Learn about pricing →</a>
+      </div>
+      <div class="glow-card gc-blue reveal reveal-delay-1">
+        <div class="glow-card-icon">🏛️</div>
+        <h3>Open Auction</h3>
+        <p>Corporate buyers bid over a 7-day window. Each bid must exceed the last by a minimum increment. As more companies compete, demand rises and the live share price moves upward — benefiting all public investors.</p>
+        <a href="#auction" class="glow-card-link">See live auction →</a>
+      </div>
+      <div class="glow-card gc-green reveal reveal-delay-2">
+        <div class="glow-card-icon">🔓</div>
+        <h3>Unlock & Earn</h3>
+        <p>The winner acquires majority stake (≥51%), triggering full dataset decryption. All shareholders — public and corporate — receive returns proportional to the price appreciation from listing to final sale.</p>
+        <a href="#" class="glow-card-link">View return model →</a>
+      </div>
+    </div>
+    <div class="bottom-badges">
+      <div class="bb-item"><span class="bb-icon">⚡</span> Always Current</div>
+      <div class="bb-item"><span class="bb-icon">🎯</span> Focused for Buyers</div>
+      <div class="bb-item"><span class="bb-icon">✦</span> Actionable Returns</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════ TRANSFORM (Image 2 style) ═══════════════ -->
+<section id="transform">
+  <div class="container">
+    <div class="section-eyebrow reveal">Platform Features</div>
+    <h2 class="section-h2 reveal">Transform Your<br>Data Journey</h2>
+    <p class="section-sub reveal" style="margin:0 auto">Experience enhanced security, transparent pricing, and real-time market dynamics — purpose-built for the data economy.</p>
+    <div class="feature-cards">
+      <div class="feature-card reveal">
+        <div class="fc-icon-area fci-teal">
+          <div class="fc-icon-ring"></div>
+          <div class="fc-icon-ring fc-icon-ring-2"></div>
+          <span class="fc-emoji">⚡</span>
+        </div>
+        <h3>Instant Transactions</h3>
+        <p>Share trades settle in real time. Corporate bids, public purchases, and final auction settlements are processed the moment they happen — no delays, no intermediaries.</p>
+      </div>
+      <div class="feature-card featured reveal reveal-delay-1">
+        <div class="fc-icon-area fci-purple">
+          <div class="fc-icon-ring"></div>
+          <div class="fc-icon-ring fc-icon-ring-2"></div>
+          <span class="fc-emoji">🛡️</span>
+        </div>
+        <h3>High-Level Security</h3>
+        <p>Your assets are protected with multi-layer security and two-factor authentication. Datasets are encrypted end-to-end and never exposed until the 51% unlock threshold is met by a verified corporate buyer.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="fc-icon-area fci-blue">
+          <div class="fc-icon-ring"></div>
+          <div class="fc-icon-ring fc-icon-ring-2"></div>
+          <span class="fc-emoji">📱</span>
+        </div>
+        <h3>Buy and Sell</h3>
+        <p>A clean, intuitive interface for buying and selling data shares. Public investors can enter and exit positions freely. Corporate buyers place bids in a structured, transparent auction environment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════ DATA TYPES (Image 3 style) ═══════════════ -->
+<section id="data-types">
+  <div class="container">
+    <div class="dt-header">
+      <div class="section-eyebrow reveal">Data Categories</div>
+      <h2 class="section-h2 reveal">Not All Data Is Equal</h2>
+      <p class="section-sub reveal" style="margin:0 auto">Each dataset type carries a different intrinsic value based on rarity, demand, and sensitivity. The platform recognises five distinct categories.</p>
+    </div>
+    <div class="dt-grid">
+      <div class="dt-card reveal">
+        <span class="dt-arrow">↗</span>
+        <div class="dt-card-label">Data Type</div>
+        <span class="dt-emoji">🗺️</span>
+        <div class="dt-card-name">Regional Sales</div>
+        <div class="dt-card-desc">Geographic point-of-sale data, distribution patterns, and local purchasing behaviour across specific markets.</div>
+      </div>
+      <div class="dt-card reveal reveal-delay-1">
+        <span class="dt-arrow">↗</span>
+        <div class="dt-card-label">Data Type</div>
+        <span class="dt-emoji">📈</span>
+        <div class="dt-card-name">Usage Metrics</div>
+        <div class="dt-card-desc">Product engagement, retention rates, feature adoption, and in-depth user behavioural analytics.</div>
+      </div>
+      <div class="dt-card spotlight reveal reveal-delay-2">
+        <span class="dt-arrow" style="color:rgba(124,58,237,0.6)">↗</span>
+        <div class="dt-card-label">Highest Demand</div>
+        <span class="dt-emoji">🔮</span>
+        <div class="dt-card-name">Market Trends</div>
+        <div class="dt-card-desc">Industry-wide analytics, forward-looking forecasts, and trend data used for strategic planning and investment decisions.</div>
+      </div>
+      <div class="dt-card reveal reveal-delay-3">
+        <span class="dt-arrow">↗</span>
+        <div class="dt-card-label">Data Type</div>
+        <span class="dt-emoji">🎯</span>
+        <div class="dt-card-name">Competitor Intel</div>
+        <div class="dt-card-desc">Benchmarking datasets, competitive pricing analysis, and performance comparisons across industry peers.</div>
+      </div>
+      <div class="dt-card reveal reveal-delay-4" style="border-color:rgba(124,58,237,0.3)">
+        <span class="dt-arrow">↗</span>
+        <div class="dt-card-label">Premium Tier</div>
+        <span class="dt-emoji">🏆</span>
+        <div class="dt-card-name">Strategic Data</div>
+        <div class="dt-card-desc">High-value, proprietary, and restricted-access intelligence. Rarest category — commands the highest market premium.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════ SECURITY (Image 1 dashboard style) ═══════════════ -->
+<section id="security">
+  <div class="container">
+    <div class="security-layout">
+      <div>
+        <div class="section-eyebrow reveal">Security Protocol</div>
+        <h2 class="section-h2 reveal">Multi-Layer<br>Trust Architecture</h2>
+        <p class="section-sub reveal">Every dataset listed on Datic Currency passes through a rigorous trust assessment before shares can be issued. Data is never exposed until the majority unlock threshold is met.</p>
+        <div class="sec-features" style="margin-top:2rem">
+          <div class="sec-feat reveal">
+            <div class="sf-icon">⭐</div>
+            <div>
+              <div class="sf-title">Source Reputation Scoring</div>
+              <div class="sf-desc">Providers are scored on their trustworthiness and regulatory compliance history. Higher reputation scores increase the dataset's overall Risk Factor — and its listing price.</div>
+            </div>
+          </div>
+          <div class="sec-feat reveal reveal-delay-1">
+            <div class="sf-icon">✅</div>
+            <div>
+              <div class="sf-title">Data Completeness Validation</div>
+              <div class="sf-desc">Datasets must pass completeness checks. Datasets with major gaps or inconsistencies receive lower scores, reducing their market value — and incentivising quality submissions.</div>
+            </div>
+          </div>
+          <div class="sec-feat reveal reveal-delay-2">
+            <div class="sf-icon">🔒</div>
+            <div>
+              <div class="sf-title">Re-Identification Risk Assessment</div>
+              <div class="sf-desc">Anonymous datasets are evaluated for the risk of tracing data back to individuals. Low re-identification risk earns a higher security score — protecting both subjects and sellers.</div>
+            </div>
+          </div>
+          <div class="sec-feat reveal reveal-delay-3">
+            <div class="sf-icon">🔑</div>
+            <div>
+              <div class="sf-title">Majority Unlock Protocol</div>
+              <div class="sf-desc">All datasets remain AES-256 encrypted until a buyer acquires 51% stake. Partial access is impossible — ensuring full commercial intent before any data is released.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="encrypt-panel">
+          <div class="ep-header">
+            <div class="ep-dots">
+              <div class="ep-dot" style="background:#ff5f57"></div>
+              <div class="ep-dot" style="background:#febc2e"></div>
+              <div class="ep-dot" style="background:#28c840"></div>
+            </div>
+            <span style="font-size:.75rem;color:var(--text3);font-family:var(--font-mono)">dataset-7841-B.datic — Encryption Layer</span>
+          </div>
+          <div class="ep-body" id="ep-body">
+            <div class="ep-comment">// Source Reputation: Verified</div>
+            <div class="ep-line">reputation_score = 4.8 / 5.0</div>
+            <div class="ep-line">normalised = 0.95</div>
+            <div class="ep-comment">// Data Completeness Check</div>
+            <div class="ep-line">completeness = 98.4%  ✓ PASS</div>
+            <div class="ep-active">► Risk Factor: RF = 0.87</div>
+            <div class="ep-comment">// Re-ID Risk Assessment</div>
+            <div class="ep-line">re_id_risk = LOW (score: 4.6)</div>
+            <div class="ep-lock">► AES-256 Encryption: ACTIVE</div>
+            <div class="ep-lock">► Unlock Threshold: 51% NOT MET</div>
+            <div class="ep-comment">// Shares Sold: 24% of 50% pool</div>
+            <div class="ep-line">bidders_active = 4 corporations</div>
+            <div class="ep-active">► Data remains encrypted ...</div>
+            <div class="ep-comment">// Key rotation every 6h</div>
+            <div class="ep-line">next_rotation = 04:32:11</div>
+            <div class="ep-comment">// Source Reputation: Verified</div>
+            <div class="ep-line">reputation_score = 4.8 / 5.0</div>
+            <div class="ep-line">normalised = 0.95</div>
+            <div class="ep-active">► Risk Factor: RF = 0.87</div>
+            <div class="ep-lock">► AES-256 Encryption: ACTIVE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════ SHARES ═══════════════ -->
+<section id="shares">
+  <div class="container">
+    <div class="shares-layout">
+      <div>
+        <div class="section-eyebrow reveal">Tokenomics</div>
+        <h2 class="section-h2 reveal">Transparent<br>Share Allocation</h2>
+        <p class="section-sub reveal">Every dataset listed on Datic Currency is divided into shares with a fixed, transparent distribution model. This ensures fair access for public investors, corporate buyers, and platform stability.</p>
+        <div class="share-legend" style="margin-top:2rem">
+          <div class="sl-item reveal">
+            <div class="sl-color" style="background:linear-gradient(135deg,var(--purple2),var(--teal2))"></div>
+            <div class="sl-info">
+              <div class="sl-title">Public Investors</div>
+              <div class="sl-desc">Open market shares — tradeable by anyone on the platform</div>
+            </div>
+            <div class="sl-pct" style="color:var(--purple3)">50%</div>
+          </div>
+          <div class="sl-item reveal reveal-delay-1">
+            <div class="sl-color" style="background:linear-gradient(135deg,var(--teal),var(--green2))"></div>
+            <div class="sl-info">
+              <div class="sl-title">Corporate Bidding Pool</div>
+              <div class="sl-desc">Reserved for verified enterprise buyers during the auction window</div>
+            </div>
+            <div class="sl-pct" style="color:var(--teal2)">40%</div>
+          </div>
+          <div class="sl-item reveal reveal-delay-2">
+            <div class="sl-color" style="background:linear-gradient(135deg,var(--orange),var(--orange2))"></div>
+            <div class="sl-info">
+              <div class="sl-title">Datic Reserve</div>
+              <div class="sl-desc">Held for tie-breakers, liquidity provision, and unlock support</div>
+            </div>
+            <div class="sl-pct" style="color:var(--orange2)">10%</div>
+          </div>
+        </div>
+      </div>
+      <div class="donut-container reveal">
+        <svg viewBox="0 0 300 300">
+          <defs>
+            <linearGradient id="dg1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a855f7"/>
+              <stop offset="100%" stop-color="#2dd4bf"/>
+            </linearGradient>
+            <linearGradient id="dg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0d9488"/>
+              <stop offset="100%" stop-color="#34d399"/>
+            </linearGradient>
+            <linearGradient id="dg3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ea580c"/>
+              <stop offset="100%" stop-color="#fb923c"/>
+            </linearGradient>
+          </defs>
+          <!-- 50% = 188 of 376 circumference (r=60) -->
+          <circle cx="150" cy="150" r="110" fill="none" stroke="#111" stroke-width="32"/>
+          <!-- public 50% -->
+          <circle cx="150" cy="150" r="110" fill="none" stroke="url(#dg1)" stroke-width="32" stroke-dasharray="345.4 690.8" stroke-dashoffset="172.7" transform="rotate(-90 150 150)" stroke-linecap="round"/>
+          <!-- corporate 40% -->
+          <circle cx="150" cy="150" r="110" fill="none" stroke="url(#dg2)" stroke-width="32" stroke-dasharray="276.3 690.8" stroke-dashoffset="-172.7" transform="rotate(-90 150 150)" stroke-linecap="round"/>
+          <!-- reserve 10% -->
+          <circle cx="150" cy="150" r="110" fill="none" stroke="url(#dg3)" stroke-width="32" stroke-dasharray="69.1 690.8" stroke-dashoffset="-449" transform="rotate(-90 150 150)" stroke-linecap="round"/>
+        </svg>
+        <div class="donut-center-label">
+          <div class="dcl-num">100%</div>
+          <div class="dcl-text">Total Shares</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════ AUCTION ═══════════════ -->
+<section id="auction">
+  <div class="container">
+    <div class="section-eyebrow reveal">Auction System</div>
+    <h2 class="section-h2 reveal">Live Bidding.<br>Algorithmic Fairness.</h2>
+    <div class="auction-layout">
+      <div class="auction-steps">
+        <div class="as-item reveal">
+          <div class="as-num">01</div>
+          <div class="as-content">
+            <h4>Auction Opens at Initial Price</h4>
+            <p>Bidding begins at the algorithmically calculated Initial Share Price. All verified corporate entities are eligible to participate in the open window.</p>
+          </div>
+        </div>
+        <div class="as-item reveal reveal-delay-1">
+          <div class="as-num">02</div>
+          <div class="as-content">
+            <h4>Incremental Bidding</h4>
+            <p>Each new bid must exceed the previous by a minimum increment. This prevents bid clustering and ensures meaningful, progressive price discovery throughout the window.</p>
+          </div>
+        </div>
+        <div class="as-item reveal reveal-delay-2">
+          <div class="as-num">03</div>
+          <div class="as-content">
+            <h4>Demand Drives Live Price</h4>
+            <p>As bidder count, trade volume, and order book depth increase, the Demand Factor rises — pushing the live market price upward. Public shareholders benefit from every new bid.</p>
+          </div>
+        </div>
+        <div class="as-item reveal reveal-delay-3">
+          <div class="as-num">04</div>
+          <div class="as-content">
+            <h4>7-Day Window Closes</h4>
+            <p>At the end of the auction window, the highest bidder wins. If tied, Datic's 10% reserve breaks the deadlock by prioritising the longer-held position.</p>
+          </div>
+        </div>
+        <div class="as-item reveal reveal-delay-4">
+          <div class="as-num">05</div>
+          <div class="as-content">
+            <h4>Majority Unlock & Settlement</h4>
+            <p>The winner purchases ≥51% stake, triggering full dataset decryption and delivery. Returns are automatically distributed to all shareholders based on price appreciation.</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="bid-panel">
+          <div class="live-pill">● Live Auction — Dataset #7841-B</div>
+          <div style="font-size:.78rem;color:var(--text3);font-family:var(--font-mono);margin-bottom:1rem">Market Trend Analytics · Corporate Pool</div>
+          <div class="bid-row">
+            <div class="br-left">
+              <div class="br-co">Adobe Inc. <span class="br-tag br-tag-lead">Leading</span></div>
+              <div class="br-bar" style="width:90%"></div>
+            </div>
+            <div style="text-align:right">
+              <div class="br-amount" style="color:var(--orange2)">DC 310.00</div>
+              <div class="br-time">2 min ago</div>
+            </div>
+          </div>
+          <div class="bid-row">
+            <div class="br-left">
+              <div class="br-co">Salesforce</div>
+              <div class="br-bar" style="width:70%;background:rgba(96,165,250,0.4)"></div>
+            </div>
+            <div style="text-align:right">
+              <div class="br-amount" style="color:var(--text2)">DC 285.00</div>
+              <div class="br-time">18 min ago</div>
+            </div>
+          </div>
+          <div class="bid-row">
+            <div class="br-left">
+              <div class="br-co">McKinsey & Co.</div>
+              <div class="br-bar" style="width:52%;background:rgba(52,211,153,0.4)"></div>
+            </div>
+            <div style="text-align:right">
+              <div class="br-amount" style="color:var(--text2)">DC 260.00</div>
+              <div class="br-time">1h ago</div>
+            </div>
+          </div>
+          <div class="bid-row">
+            <div class="br-left">
+              <div class="br-co">Bloomberg LP</div>
+              <div class="br-bar" style="width:38%;background:rgba(192,132,252,0.4)"></div>
+            </div>
+            <div style="text-align:right">
+              <div class="br-amount" style="color:var(--text2)">DC 240.00</div>
+              <div class="br-time">3h ago</div>
+            </div>
+          </div>
+          <div class="bid-timer">
+            <div class="bt-label">Time Remaining</div>
+            <div class="bt-blocks">
+              <div class="bt-block"><span id="t-d">04</span><small>days</small></div>
+              <div class="bt-block"><span id="t-h">14</span><small>hrs</small></div>
+              <div class="bt-block"><span id="t-m">32</span><small>min</small></div>
+              <div class="bt-block"><span id="t-s">00</span><small>sec</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section id="cta">
+  <div class="cta-rings">
+    <div class="cr cr1"></div>
+    <div class="cr cr2"></div>
+    <div class="cr cr3"></div>
+  </div>
+  <h2 class="cta-h2 reveal">
+    Ready to Monetize<br><span class="grad">Your Data?</span>
+  </h2>
+  <p class="cta-sub reveal">Join the waitlist to list your first dataset and get early access to our bidding marketplace.</p>
+  <div class="cta-btns reveal">
+    <a href="#" class="btn-primary">Request Early Access →</a>
+    <a href="#how" class="btn-secondary">Learn More</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Datic Currency</div>
+  <div class="footer-copy">© 2025 Datic Currency. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#what">About</a>
+    <a href="#data-types">Data Types</a>
+    <a href="#auction">Auction</a>
+    <a href="#">Whitepaper</a>
+  </div>
+</footer>
+
+<script>
+/* ── Intersection Observer reveal ── */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => io.observe(el));
+
+/* ── Countdown ── */
+const endTime = Date.now() + (4*86400 + 14*3600 + 32*60)*1000;
+function tick(){
+  const diff = Math.max(0, endTime - Date.now());
+  const d = Math.floor(diff/86400000),
+        h = Math.floor((diff%86400000)/3600000),
+        m = Math.floor((diff%3600000)/60000),
+        s = Math.floor((diff%60000)/1000);
+  document.getElementById('t-d').textContent = String(d).padStart(2,'0');
+  document.getElementById('t-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('t-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('t-s').textContent = String(s).padStart(2,'0');
+}
+tick(); setInterval(tick, 1000);
+
+/* ── Encrypt scroll ── */
+const epBody = document.getElementById('ep-body');
+let ey = 0;
+setInterval(() => {
+  ey -= 20;
+  if (ey < -epBody.scrollHeight / 2) ey = 0;
+  epBody.style.transform = `translateY(${ey}px)`;
+}, 200);
+
+/* ── Nav active link ── */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-pill a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#'+cur);
+  });
+});
+</script>
+</body>
+</html>
