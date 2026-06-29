@@ -3,772 +3,1093 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Datic Currency — World's First Financial Market for Data</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,300&display=swap" rel="stylesheet">
+<title>Datic Currency — Financial Market for Data</title>
 <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
 :root{
-  --bg:       #080A08;
-  --surface:  #0E1210;
-  --surface2: #141A15;
-  --border:   rgba(255,255,255,0.06);
-  --border-h: rgba(255,255,255,0.11);
-  --green:    #1E7A3C;
-  --green-lt: #26944A;
-  --green-dim:rgba(30,122,60,0.10);
-  --green-br: #2DAA56;   /* for text accents only */
-  --text:     #EEF1EE;
-  --muted:    #7A8279;
-  --muted2:   #4A5249;
-  --radius:   12px;
+  --bg:          #050d08;
+  --bg2:         #071209;
+  --forest:      #0a2414;
+  --green-d:     #0e3320;
+  --green-m:     #1a5c38;
+  --green-acc:   #1e7a4a;
+  --green-hi:    #2ea865;
+  --green-glow:  #34c96e;
+  --teal:        #0d8c5a;
+  --cream:       #ede8df;
+  --warm-white:  #f5f2ec;
+  --muted:       #7a9282;
+  --muted2:      #4a6154;
+  --gold:        #a8884a;
+  --gold-light:  #c9a96e;
+  --red:         #e05555;
+  --serif: Georgia,'Times New Roman',Times,serif;
+  --sans: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono: 'SF Mono','Fira Code','Fira Mono',monospace;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
 html{scroll-behavior:smooth}
 body{
-  font-family:'DM Sans',sans-serif;
   background:var(--bg);
-  color:var(--text);
-  line-height:1.6;
+  color:var(--cream);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.65;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:10px}
 
-/* ─── LOGO SVG ─── */
-.logo-svg{width:36px;height:36px;flex-shrink:0}
+/* ─── TOP BAR ─── */
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:201;
+  background:linear-gradient(90deg, var(--green-d) 0%, var(--forest) 50%, var(--green-d) 100%);
+  border-bottom:1px solid rgba(52,201,110,0.2);
+  display:flex;align-items:center;justify-content:center;
+  padding:0.5rem 1rem;
+  gap:0.6rem;
+  font-size:0.74rem;
+  letter-spacing:0.06em;
+  color:var(--cream);
+}
+.top-bar-dot{
+  width:6px;height:6px;
+  background:var(--green-glow);
+  border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
+  flex-shrink:0;
+}
+.top-bar a{
+  color:var(--green-glow);
+  text-decoration:none;
+  font-weight:500;
+  border-bottom:1px solid rgba(52,201,110,0.35);
+  padding-bottom:1px;
+  transition:color 0.2s,border-color 0.2s;
+}
+.top-bar a:hover{color:var(--warm-white);border-color:var(--warm-white)}
+.top-bar-close{
+  position:absolute;right:1rem;
+  background:none;border:none;color:var(--muted2);
+  cursor:pointer;font-size:1rem;line-height:1;
+  padding:0.2rem 0.4rem;
+  transition:color 0.2s;
+}
+.top-bar-close:hover{color:var(--cream)}
 
 /* ─── NAV ─── */
 nav{
-  position:sticky;top:0;z-index:100;
-  height:62px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 5%;
-  background:rgba(8,10,8,0.94);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
+  position:fixed;top:36px;left:0;right:0;z-index:200;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:0.6rem 2.8rem;
+  background:rgba(5,13,8,0.8);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(30,122,74,0.15);
 }
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-wordmark{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em}
-.logo-wordmark span{color:var(--muted);font-weight:400}
-.nav-links{display:flex;gap:2px;list-style:none}
+.nav-logo{
+  display:flex;align-items:center;gap:0.6rem;
+  text-decoration:none;
+}
+.nav-links{display:flex;gap:2rem;align-items:center;justify-content:center}
+.nav-right{display:flex;align-items:center;gap:0.7rem;justify-content:flex-end}
 .nav-links a{
-  text-decoration:none;color:var(--muted);
-  font-size:14px;font-weight:500;
-  padding:7px 14px;border-radius:8px;
-  transition:color .2s,background .2s;
+  font-size:0.82rem;
+  color:var(--muted);
+  text-decoration:none;
+  letter-spacing:0.05em;
+  transition:color 0.2s;
 }
-.nav-links a:hover{color:var(--text);background:var(--surface)}
-.nav-right{display:flex;align-items:center;gap:8px}
-.btn-ghost-sm{
-  font-size:14px;font-weight:500;color:var(--muted);
-  padding:7px 14px;border-radius:8px;text-decoration:none;
-  transition:color .2s,background .2s;
+.nav-links a:hover{color:var(--cream)}
+.nav-cta{
+  font-size:0.78rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--bg);
+  background:var(--green-glow);
+  text-decoration:none;
+  padding:0.5rem 1.25rem;
+  border-radius:3px;
+  font-weight:500;
+  transition:opacity 0.2s;
 }
-.btn-ghost-sm:hover{color:var(--text);background:var(--surface)}
-.btn-primary{
-  background:var(--green);color:#EEF1EE;
-  font-family:'DM Sans',sans-serif;
-  font-weight:600;font-size:14px;
-  padding:9px 20px;border-radius:8px;
-  text-decoration:none;border:none;cursor:pointer;
-  transition:background .2s,transform .15s,box-shadow .2s;
-  display:inline-block;
+.nav-cta:hover{opacity:0.85}
+.nav-li{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-size:0.78rem;
+  color:var(--muted);
+  text-decoration:none;
+  letter-spacing:0.05em;
+  transition:color 0.2s;
+  border:1px solid rgba(30,122,74,0.3);
+  padding:0.45rem 0.9rem;
+  border-radius:3px;
 }
-.btn-primary:hover{background:var(--green-lt);transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,122,60,.25)}
-.btn-primary:active{transform:translateY(0) scale(.98)}
+.nav-li:hover{color:var(--cream);border-color:rgba(52,201,110,0.5)}
+.nav-li svg{flex-shrink:0}
 
 /* ─── HERO ─── */
-#hero{
-  min-height:calc(100vh - 62px);
-  display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;gap:60px;
-  padding:80px 5% 60px;
-  position:relative;overflow:hidden;
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:11rem 2.8rem 4rem;
+  text-align:center;
+  overflow:hidden;
 }
-#hero::before{
-  content:'';position:absolute;inset:0;
+
+/* bg mesh gradient */
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 60% 70% at 65% 40%,rgba(30,122,60,.07) 0%,transparent 65%),
-    radial-gradient(ellipse 40% 40% at 20% 80%,rgba(30,122,60,.04) 0%,transparent 60%);
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(30,122,74,0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 20% 80%, rgba(13,140,90,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 25% at 80% 70%, rgba(14,51,32,0.15) 0%, transparent 60%);
   pointer-events:none;
 }
-.hero-left{position:relative;z-index:1}
+
 .hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(30,122,60,.1);
-  border:1px solid rgba(30,122,60,.22);
-  padding:5px 14px;border-radius:20px;
-  font-size:11.5px;font-weight:600;color:var(--green-br);
-  letter-spacing:.04em;text-transform:uppercase;
-  margin-bottom:24px;
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(30,122,74,0.15);
+  border:1px solid rgba(52,201,110,0.25);
+  border-radius:100px;
+  padding:0.35rem 1rem;
+  font-size:0.72rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--green-glow);
+  margin-bottom:2.2rem;
 }
-.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green-br);animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-.hero-h1{
-  font-size:clamp(2.6rem,4.8vw,3.8rem);
-  font-weight:800;line-height:1.08;
-  letter-spacing:-.035em;
-  margin-bottom:20px;
+.hero-badge-dot{
+  width:6px;height:6px;
+  background:var(--green-glow);
+  border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
 }
-.hero-h1 .hl{color:var(--green-br)}
-.hero-p{
-  font-size:16px;color:var(--muted);
-  line-height:1.75;max-width:460px;
-  margin-bottom:36px;font-weight:400;
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(0.8)}
 }
-.hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.btn-lg{
-  background:var(--green);color:#EEF1EE;
-  font-family:'DM Sans',sans-serif;
-  font-weight:700;font-size:15px;
-  padding:13px 26px;border-radius:9px;
-  text-decoration:none;
-  transition:background .2s,transform .15s,box-shadow .2s;
-  display:inline-block;
-}
-.btn-lg:hover{background:var(--green-lt);transform:translateY(-2px);box-shadow:0 10px 28px rgba(30,122,60,.3)}
-.btn-lg:active{transform:translateY(0) scale(.98)}
-.hero-note{font-size:13px;color:var(--muted2)}
 
-/* ─── HERO CARD ─── */
-.hero-right{position:relative;z-index:1}
-.hero-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:18px;padding:26px;
-  position:relative;overflow:hidden;
+.hero-headline{
+  font-family:var(--serif);
+  font-size:clamp(2.8rem,5.5vw,5rem);
+  font-weight:normal;
+  line-height:1.08;
+  letter-spacing:-0.02em;
+  color:var(--warm-white);
+  max-width:16ch;
+  margin:0 auto 1.6rem;
 }
-.hero-card::before{
-  content:'';position:absolute;top:-50px;right:-50px;
-  width:200px;height:200px;border-radius:50%;
-  background:radial-gradient(circle,rgba(30,122,60,.1),transparent 70%);
+.hero-headline em{
+  font-style:italic;
+  background:linear-gradient(120deg, var(--green-glow) 0%, var(--gold-light) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero-sub{
+  font-size:clamp(1rem,1.6vw,1.12rem);
+  color:var(--muted);
+  max-width:46ch;
+  margin:0 auto 2.5rem;
+  line-height:1.75;
+}
+
+.hero-actions{
+  display:flex;gap:0.9rem;justify-content:center;flex-wrap:wrap;
+  margin-bottom:5rem;
+}
+.btn-p{
+  font-size:0.82rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--bg);
+  background:linear-gradient(135deg, var(--green-glow), var(--green-acc));
+  text-decoration:none;
+  padding:0.8rem 2rem;
+  border-radius:3px;
+  font-weight:500;
+  transition:opacity 0.2s,transform 0.15s;
+  box-shadow:0 0 30px rgba(52,201,110,0.25);
+}
+.btn-p:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-g{
+  font-size:0.82rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--cream);
+  background:transparent;
+  text-decoration:none;
+  padding:0.8rem 2rem;
+  border:1px solid rgba(240,237,230,0.18);
+  border-radius:3px;
+  transition:border-color 0.2s;
+}
+.btn-g:hover{border-color:rgba(240,237,230,0.45)}
+
+/* ─── MACBOOK MOCKUP ─── */
+.macbook-wrap{
+  position:relative;
+  width:100%;
+  max-width:860px;
+  margin:0 auto;
+}
+
+.macbook{
+  position:relative;
+  background:linear-gradient(180deg,#2d2d2d 0%,#1a1a1a 100%);
+  border-radius:16px 16px 0 0;
+  padding:10px 12px 0;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 30px 80px rgba(0,0,0,0.7),
+    0 0 120px rgba(30,122,74,0.12);
+}
+
+.macbook-top-bar{
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:8px;
+  position:relative;
+}
+.traffic-lights{
+  display:flex;gap:7px;
+  position:absolute;left:6px;top:50%;transform:translateY(-50%);
+}
+.tl{width:12px;height:12px;border-radius:50%}
+.tl-r{background:#ff5f57}
+.tl-y{background:#febc2e}
+.tl-g{background:#28c840}
+.notch{
+  width:120px;height:22px;
+  background:#111;
+  border-radius:0 0 12px 12px;
+}
+
+/* Screen */
+.macbook-screen{
+  background:#0a0f0b;
+  border-radius:6px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.05);
+  aspect-ratio:16/10;
+  display:grid;
+  grid-template-rows:36px 1fr;
+}
+
+/* Screen top bar */
+.screen-bar{
+  background:#0e1a12;
+  border-bottom:1px solid rgba(30,122,74,0.2);
+  display:flex;align-items:center;
+  padding:0 1rem;
+  gap:1rem;
+}
+.screen-tabs{display:flex;gap:0}
+.s-tab{
+  font-size:0.62rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:0 1rem;
+  height:36px;
+  display:flex;align-items:center;
+  color:var(--muted2);
+  border-bottom:2px solid transparent;
+  cursor:pointer;
+}
+.s-tab.active{
+  color:var(--green-glow);
+  border-bottom-color:var(--green-glow);
+}
+.screen-spacer{flex:1}
+.screen-status{
+  display:flex;align-items:center;gap:0.4rem;
+  font-size:0.6rem;
+  color:var(--green-glow);
+  font-family:var(--mono);
+}
+.status-dot{width:5px;height:5px;background:var(--green-glow);border-radius:50%;animation:pulse 2s infinite}
+
+/* Screen body */
+.screen-body{
+  display:grid;
+  grid-template-columns:1fr 200px;
+  overflow:hidden;
+}
+
+/* Left panel - chart + tickers */
+.panel-left{
+  display:flex;flex-direction:column;
+  border-right:1px solid rgba(30,122,74,0.15);
+  overflow:hidden;
+}
+
+.chart-area{
+  flex:1;
+  position:relative;
+  padding:0.8rem 1rem 0.4rem;
+  overflow:hidden;
+}
+.chart-header{
+  display:flex;align-items:baseline;gap:0.8rem;
+  margin-bottom:0.5rem;
+}
+.chart-symbol{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  color:var(--muted2);
+  letter-spacing:0.1em;
+}
+.chart-price{
+  font-family:var(--mono);
+  font-size:1.1rem;
+  color:var(--warm-white);
+  font-weight:600;
+}
+.chart-change{
+  font-family:var(--mono);
+  font-size:0.62rem;
+  color:var(--green-glow);
+}
+
+/* SVG sparkline */
+.sparkline-svg{width:100%;height:90px;display:block}
+
+/* Ticker rows */
+.ticker-table{
+  border-top:1px solid rgba(30,122,74,0.12);
+}
+.ticker-head{
+  display:grid;
+  grid-template-columns:1fr 70px 70px 55px;
+  padding:0.3rem 1rem;
+  font-size:0.55rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--muted2);
+  border-bottom:1px solid rgba(30,122,74,0.1);
+}
+.ticker-row{
+  display:grid;
+  grid-template-columns:1fr 70px 70px 55px;
+  padding:0.38rem 1rem;
+  border-bottom:1px solid rgba(30,122,74,0.07);
+  align-items:center;
+}
+.ticker-row:hover{background:rgba(30,122,74,0.06)}
+.t-name{font-family:var(--mono);font-size:0.62rem;color:var(--warm-white)}
+.t-sub{font-size:0.5rem;color:var(--muted2)}
+.t-price{font-family:var(--mono);font-size:0.62rem;color:var(--warm-white);text-align:right}
+.t-vol{font-family:var(--mono);font-size:0.58rem;color:var(--muted);text-align:right}
+.t-chg{font-family:var(--mono);font-size:0.6rem;text-align:right}
+.up{color:var(--green-glow)}
+.dn{color:var(--red)}
+
+/* Right panel - order book */
+.panel-right{
+  background:#080e0a;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.ob-header{
+  padding:0.5rem 0.7rem;
+  font-size:0.58rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--muted2);
+  border-bottom:1px solid rgba(30,122,74,0.12);
+  display:flex;justify-content:space-between;
+}
+.ob-rows{display:flex;flex-direction:column;flex:1;overflow:hidden;padding:0.2rem 0}
+.ob-row{
+  display:grid;
+  grid-template-columns:70px 1fr 50px;
+  padding:0.25rem 0.7rem;
+  align-items:center;
+  position:relative;
+}
+.ob-bar{
+  position:absolute;right:0;top:0;bottom:0;
+  opacity:0.08;
+  border-radius:1px 0 0 1px;
+}
+.ob-bar.ask{background:var(--red)}
+.ob-bar.bid{background:var(--green-glow)}
+.ob-price{font-family:var(--mono);font-size:0.58rem;font-weight:600}
+.ob-size{font-family:var(--mono);font-size:0.54rem;color:var(--muted);text-align:right}
+.ob-depth{
+  height:3px;
+  border-radius:2px;
+  margin:0 0.5rem;
+}
+.ob-spread-row{
+  border-top:1px solid rgba(30,122,74,0.15);
+  border-bottom:1px solid rgba(30,122,74,0.15);
+  padding:0.25rem 0.7rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.ob-spread-label{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2)}
+.ob-spread-val{font-family:var(--mono);font-size:0.58rem;color:var(--gold-light)}
+
+/* MacBook chin */
+.macbook-chin{
+  height:20px;
+  background:linear-gradient(180deg,#1a1a1a,#111);
+  border-radius:0 0 4px 4px;
+}
+.macbook-base{
+  width:110%;
+  margin-left:-5%;
+  height:14px;
+  background:linear-gradient(180deg,#222,#111);
+  border-radius:0 0 8px 8px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.5);
+}
+.macbook-foot{
+  width:35%;
+  margin:0 auto;
+  height:6px;
+  background:#0a0a0a;
+  border-radius:0 0 12px 12px;
+}
+
+/* Glow under macbook */
+.macbook-glow{
+  position:absolute;
+  bottom:-60px;left:10%;right:10%;
+  height:120px;
+  background:radial-gradient(ellipse, rgba(30,122,74,0.25) 0%, transparent 70%);
+  filter:blur(20px);
   pointer-events:none;
 }
-.hc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px}
-.hc-label{font-size:11.5px;color:var(--muted);font-weight:500;margin-bottom:3px;letter-spacing:.02em}
-.hc-name{font-size:17px;font-weight:700;letter-spacing:-.015em}
-.hc-live{
-  display:flex;align-items:center;gap:5px;
-  background:rgba(30,122,60,.12);border:1px solid rgba(30,122,60,.22);
-  padding:4px 10px;border-radius:20px;
-  font-size:11px;font-weight:600;color:var(--green-br);
-}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green-br);animation:blink 1.5s infinite}
-canvas#heroChart{width:100%;height:110px;display:block;margin-bottom:20px}
-.hc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.hc-stat-lbl{font-size:11px;color:var(--muted);margin-bottom:2px;letter-spacing:.02em}
-.hc-stat-val{font-size:14.5px;font-weight:700}
-.hc-stat-val.up{color:var(--green-br)}
-.hc-rows{margin-top:18px;border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:9px}
-.hc-row{display:flex;justify-content:space-between;align-items:center}
-.hc-row-name{font-size:13px;color:var(--muted)}
-.tag-g{background:rgba(30,122,60,.14);color:var(--green-br);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
-.tag-m{background:var(--surface2);color:var(--muted);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
 
-/* ─── TRUST BAR ─── */
-#trust{
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  padding:28px 5%;
-  background:var(--surface);
+/* ─── DIVIDER ─── */
+.rule{border:none;border-top:1px solid rgba(30,122,74,0.15);margin:0}
+
+/* ─── STATS BAR ─── */
+.stats-bar{
+  display:flex;
+  justify-content:center;
+  gap:0;
+  padding:0;
+  border-bottom:1px solid rgba(30,122,74,0.15);
 }
-.trust-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto}
-.trust-item{text-align:center}
-.trust-num{font-size:25px;font-weight:800;letter-spacing:-.03em;color:var(--text)}
-.trust-num .g{color:var(--green-br)}
-.trust-lbl{font-size:12.5px;color:var(--muted);margin-top:2px}
+.stat-item{
+  flex:1;
+  max-width:260px;
+  padding:2.5rem 2rem;
+  border-right:1px solid rgba(30,122,74,0.12);
+  text-align:center;
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:var(--serif);
+  font-size:2.4rem;
+  color:var(--warm-white);
+  display:block;
+  line-height:1;
+  margin-bottom:0.4rem;
+}
+.stat-num span{color:var(--green-glow)}
+.stat-lbl{
+  font-size:0.68rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--muted2);
+}
 
 /* ─── SECTIONS ─── */
-section{padding:88px 5%}
-.inner{max-width:1100px;margin:0 auto}
-.sec-label{font-size:11.5px;font-weight:600;color:var(--green-br);letter-spacing:.1em;text-transform:uppercase;margin-bottom:11px}
-.sec-h2{font-size:clamp(1.8rem,3.2vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:11px}
-.sec-p{font-size:15px;color:var(--muted);max-width:500px;line-height:1.75}
+.wrap{max-width:1060px;margin:0 auto;padding:0 2.8rem}
+
+.s-eyebrow{
+  font-size:0.68rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--green-glow);
+  margin-bottom:1.2rem;
+}
+.s-h2{
+  font-family:var(--serif);
+  font-size:clamp(1.9rem,3vw,2.8rem);
+  font-weight:normal;
+  color:var(--warm-white);
+  line-height:1.15;
+  margin-bottom:1.2rem;
+}
+.s-body{
+  font-size:1rem;
+  color:var(--muted);
+  line-height:1.8;
+  max-width:50ch;
+}
+
+/* ─── FEATURES GRID ─── */
+.features{
+  padding:7rem 0;
+}
+.features-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:rgba(30,122,74,0.12);
+  border:1px solid rgba(30,122,74,0.12);
+  border-radius:6px;
+  overflow:hidden;
+  margin-top:4rem;
+}
+.feat-card{
+  background:var(--bg);
+  padding:2.5rem;
+  transition:background 0.2s;
+}
+.feat-card:hover{background:var(--forest)}
+.feat-icon{
+  width:36px;height:36px;
+  border:1px solid rgba(30,122,74,0.35);
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.4rem;
+  background:rgba(30,122,74,0.1);
+}
+.feat-icon svg{width:18px;height:18px;stroke:var(--green-glow);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.feat-title{
+  font-family:var(--serif);
+  font-size:1.2rem;
+  font-weight:normal;
+  color:var(--warm-white);
+  margin-bottom:0.6rem;
+}
+.feat-desc{font-size:0.9rem;color:var(--muted);line-height:1.7}
 
 /* ─── HOW IT WORKS ─── */
-#how{background:var(--bg)}
-.how-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:flex-end;margin-bottom:56px}
-.steps{display:flex;flex-direction:column}
+.how{padding:7rem 0}
+.steps{margin-top:4rem;display:flex;flex-direction:column}
 .step{
-  display:flex;gap:22px;
-  padding:22px 18px;
-  border-radius:11px;
-  border-bottom:1px solid var(--border);
-  cursor:default;
-  transition:background .22s,border-color .22s;
+  display:grid;
+  grid-template-columns:56px 1fr;
+  gap:0 1.8rem;
+  padding:2.2rem 0;
+  border-top:1px solid rgba(30,122,74,0.15);
 }
-.step:last-child{border-bottom:none}
-.step:hover{background:var(--surface)}
-.step-num{
-  width:34px;height:34px;border-radius:8px;
-  background:var(--surface2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12.5px;font-weight:700;color:var(--muted);
-  flex-shrink:0;margin-top:1px;
-  transition:background .22s,color .22s,border-color .22s;
+.step:last-child{border-bottom:1px solid rgba(30,122,74,0.15)}
+.step-n{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  color:rgba(52,201,110,0.35);
+  padding-top:0.2rem;
+  letter-spacing:0.05em;
 }
-.step:hover .step-num{background:rgba(30,122,60,.12);color:var(--green-br);border-color:rgba(30,122,60,.25)}
-.step-title{font-size:15.5px;font-weight:700;margin-bottom:5px;letter-spacing:-.01em;transition:color .22s}
-.step:hover .step-title{color:var(--green-br)}
-.step-body{font-size:13.5px;color:var(--muted);line-height:1.72}
+.step-title{
+  font-family:var(--serif);
+  font-size:1.15rem;
+  font-weight:normal;
+  color:var(--warm-white);
+  margin-bottom:0.5rem;
+}
+.step-desc{font-size:0.92rem;color:var(--muted);line-height:1.75;max-width:52ch}
 
-/* ─── WHY DATIC ─── */
-#why{background:var(--surface)}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
-.feat-card{
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:var(--radius);padding:26px;
-  transition:border-color .25s,transform .25s,box-shadow .25s;
-  cursor:default;
+/* ─── MARKET STRIP ─── */
+.market{
+  background:linear-gradient(180deg, var(--forest) 0%, rgba(10,18,12,0.95) 100%);
+  border-top:1px solid rgba(30,122,74,0.2);
+  border-bottom:1px solid rgba(30,122,74,0.2);
+  padding:6rem 0;
 }
-.feat-card:hover{border-color:rgba(30,122,60,.28);transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.35)}
-.feat-icon{
-  width:42px;height:42px;border-radius:10px;
-  background:rgba(30,122,60,.1);border:1px solid rgba(30,122,60,.18);
-  display:flex;align-items:center;justify-content:center;
-  font-size:19px;margin-bottom:16px;
+.market-inner{max-width:1060px;margin:0 auto;padding:0 2.8rem}
+.market-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+  margin-top:3.5rem;
 }
-.feat-title{font-size:15.5px;font-weight:700;margin-bottom:7px;letter-spacing:-.01em}
-.feat-body{font-size:13.5px;color:var(--muted);line-height:1.72}
+.m-card{
+  border:1px solid rgba(30,122,74,0.22);
+  border-radius:5px;
+  padding:2rem;
+  background:rgba(5,13,8,0.6);
+  position:relative;
+  overflow:hidden;
+}
+.m-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(52,201,110,0.4), transparent);
+}
+.m-val{
+  font-family:var(--serif);
+  font-size:2.2rem;
+  color:var(--warm-white);
+  display:block;
+  margin-bottom:0.2rem;
+}
+.m-tag{
+  font-size:0.62rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--green-glow);
+  display:block;
+  margin-bottom:0.8rem;
+}
+.m-desc{font-size:0.85rem;color:var(--muted);line-height:1.65}
 
-/* ─── MARKET ─── */
-#market{background:var(--bg)}
-.market-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:48px}
-.mkt-cards{display:flex;flex-direction:column;gap:12px}
-.mkt-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:20px 22px;
-  display:flex;align-items:flex-start;gap:16px;
-  transition:border-color .22s,transform .22s;cursor:default;
+/* ─── CTA ─── */
+.cta-wrap{
+  text-align:center;
+  padding:8rem 2.8rem;
+  max-width:640px;
+  margin:0 auto;
 }
-.mkt-card:hover{border-color:rgba(30,122,60,.22);transform:translateX(4px)}
-.mkt-icon{
-  width:40px;height:40px;border-radius:9px;
-  background:rgba(30,122,60,.1);border:1px solid rgba(30,122,60,.15);
-  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;
+.cta-h{
+  font-family:var(--serif);
+  font-size:clamp(2rem,3.5vw,3rem);
+  font-weight:normal;
+  color:var(--warm-white);
+  line-height:1.18;
+  margin-bottom:1.2rem;
 }
-.mkt-tag{font-size:10.5px;font-weight:600;color:var(--green-br);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
-.mkt-title{font-size:14.5px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em}
-.mkt-body{font-size:13px;color:var(--muted);line-height:1.65}
-.market-note{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:20px 22px;
-  margin-top:12px;font-size:13px;color:var(--muted);line-height:1.7;
-  border-left:2px solid var(--green);
+.cta-sub{font-size:1rem;color:var(--muted);margin-bottom:2.5rem;line-height:1.7}
+.email-row{display:flex;gap:0.5rem;max-width:400px;margin:0 auto}
+.email-row input{
+  flex:1;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(30,122,74,0.3);
+  border-radius:3px;
+  padding:0.8rem 1rem;
+  color:var(--cream);
+  font-size:0.9rem;
+  font-family:var(--sans);
+  outline:none;
+  transition:border-color 0.2s;
 }
-.market-right{display:flex;flex-direction:column;gap:12px}
-.market-big{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:16px;padding:30px;text-align:center;
+.email-row input::placeholder{color:var(--muted2)}
+.email-row input:focus{border-color:var(--green-glow)}
+.email-row button{
+  background:linear-gradient(135deg,var(--green-glow),var(--green-acc));
+  color:var(--bg);
+  border:none;border-radius:3px;
+  padding:0.8rem 1.4rem;
+  font-size:0.75rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  cursor:pointer;
+  font-family:var(--sans);
+  font-weight:500;
+  white-space:nowrap;
+  transition:opacity 0.2s;
 }
-.mb-lbl{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
-.mb-val{font-size:42px;font-weight:800;letter-spacing:-.05em;color:var(--green-br);line-height:1;margin-bottom:7px}
-.mb-desc{font-size:12.5px;color:var(--muted)}
-.mss-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mss-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius);padding:20px;
-}
-.mss-val{font-size:22px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
-.mss-lbl{font-size:12px;color:var(--muted)}
-
-/* ─── REVENUE ─── */
-#revenue{background:var(--surface)}
-.rev-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:flex-end;margin-bottom:48px}
-.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.rev-card{
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:var(--radius);padding:26px;
-  position:relative;overflow:hidden;
-  transition:border-color .25s,transform .25s;cursor:default;
-}
-.rev-card:hover{border-color:rgba(30,122,60,.25);transform:translateY(-3px)}
-.rev-card::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--green),transparent);
-  opacity:0;transition:opacity .3s;
-}
-.rev-card:hover::after{opacity:1}
-.rev-num{font-size:10.5px;font-weight:700;color:var(--muted2);letter-spacing:.1em;margin-bottom:14px}
-.rev-title{font-size:15.5px;font-weight:700;margin-bottom:9px;letter-spacing:-.01em}
-.rev-body{font-size:13.5px;color:var(--muted);line-height:1.72}
-
-/* ─── WAITLIST ─── */
-#waitlist{background:var(--bg);padding:80px 5%}
-.wl-box{
-  max-width:560px;margin:0 auto;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:18px;padding:44px 38px;text-align:center;
-  position:relative;overflow:hidden;
-}
-.wl-box::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--green),transparent);
-}
-.wl-box::after{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(30,122,60,.07),transparent 60%);
-  pointer-events:none;
-}
-.wl-h{font-size:26px;font-weight:800;letter-spacing:-.025em;margin-bottom:9px;position:relative;z-index:1}
-.wl-p{font-size:14.5px;color:var(--muted);margin-bottom:26px;position:relative;z-index:1;line-height:1.65}
-.wl-form{display:flex;gap:9px;position:relative;z-index:1}
-.wl-form input{
-  flex:1;background:var(--bg);border:1px solid var(--border);
-  border-radius:8px;padding:11px 15px;
-  font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;
-  outline:none;transition:border-color .2s;
-}
-.wl-form input:focus{border-color:rgba(30,122,60,.4)}
-.wl-form input::placeholder{color:var(--muted2)}
-.wl-form button{
-  background:var(--green);color:#EEF1EE;
-  border:none;border-radius:8px;
-  padding:11px 20px;font-size:14px;font-weight:600;
-  font-family:'DM Sans',sans-serif;cursor:pointer;
-  transition:background .2s,transform .15s;white-space:nowrap;
-}
-.wl-form button:hover{background:var(--green-lt);transform:translateY(-1px)}
-.wl-form button:active{transform:scale(.97)}
-.wl-note{font-size:12px;color:var(--muted2);margin-top:12px;position:relative;z-index:1}
+.email-row button:hover{opacity:0.85}
 
 /* ─── FOOTER ─── */
-footer{border-top:1px solid var(--border);padding:36px 5%;background:var(--surface)}
-.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
-.footer-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
-.footer-wordmark{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.01em}
-.footer-wordmark span{color:var(--muted);font-weight:400}
-.footer-links{display:flex;gap:22px;flex-wrap:wrap}
-.footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
-.footer-links a:hover{color:var(--text)}
-.footer-cr{font-size:12px;color:var(--muted2)}
-
-/* ─── ANIMATIONS ─── */
-.fade-up{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease}
-.fade-up.in{opacity:1;transform:none}
-.ripple-host{position:relative;overflow:hidden}
-.ripple{
-  position:absolute;border-radius:50%;
-  background:rgba(30,122,60,.15);
-  transform:scale(0);animation:rippleAnim .5s linear;pointer-events:none;
+footer{
+  border-top:1px solid rgba(30,122,74,0.15);
+  padding:2rem 2.8rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
-@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+.f-logo{font-family:var(--serif);font-size:0.9rem;color:var(--muted);letter-spacing:0.06em}
+.f-copy{font-size:0.72rem;color:var(--muted2)}
+.f-link{font-size:0.72rem;color:var(--muted);text-decoration:none;letter-spacing:0.06em;transition:color 0.2s}
+.f-link:hover{color:var(--cream)}
 
-/* ─── RESPONSIVE ─── */
-@media(max-width:920px){
-  #hero{grid-template-columns:1fr;min-height:auto;padding:48px 5%;gap:36px}
-  .how-head,.market-layout,.rev-head{grid-template-columns:1fr}
-  .feat-grid,.rev-grid{grid-template-columns:1fr 1fr}
-  .trust-inner{grid-template-columns:1fr 1fr}
-  .mss-grid{grid-template-columns:1fr 1fr}
+/* ─── MOBILE ─── */
+@media(max-width:700px){
+  nav{padding:0.5rem 1.2rem;grid-template-columns:1fr auto}
   .nav-links{display:none}
-  section{padding:60px 5%}
+  .nav-right{justify-content:flex-end}
+  .hero{padding:9rem 1.2rem 3rem}
+  .hero-headline{font-size:2.5rem}
+  .macbook-wrap{max-width:100%}
+  .screen-body{grid-template-columns:1fr}
+  .panel-right{display:none}
+  .stats-bar{flex-direction:column}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(30,122,74,0.12);padding:1.8rem}
+  .wrap{padding:0 1.2rem}
+  .features-grid{grid-template-columns:1fr}
+  .market-grid{grid-template-columns:1fr}
+  .market-inner{padding:0 1.2rem}
+  .cta-wrap{padding:5rem 1.2rem}
+  .email-row{flex-direction:column}
+  footer{flex-direction:column;gap:0.8rem;text-align:center;padding:1.5rem 1.2rem}
 }
-@media(max-width:560px){
-  .feat-grid,.rev-grid,.trust-inner{grid-template-columns:1fr}
-  .wl-form{flex-direction:column}
-  .hero-h1{font-size:2.4rem}
-  footer{flex-direction:column;text-align:center}
-  .footer-links{justify-content:center}
+@media(prefers-reduced-motion:reduce){
+  .hero-badge-dot,.status-dot{animation:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
+<!-- TOP BAR -->
+<div class="top-bar" id="top-bar">
+  <span class="top-bar-dot"></span>
+  Datic Currency is now in private beta —
+  <a href="https://www.linkedin.com/company/daticcurrency/" target="_blank" rel="noopener">Follow us on LinkedIn</a>
+  for launch updates
+  <button class="top-bar-close" onclick="document.getElementById('top-bar').style.display='none';document.querySelector('nav').style.top='0';" aria-label="Close">×</button>
+</div>
+
+<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <!-- DC Logo SVG — faithful to uploaded mark -->
-    <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Green D shape: flat left, curved right -->
-      <path d="M6 4 H18 C28 4 30 11 30 18 C30 25 28 32 18 32 H6 Z" fill="#1E7A3C"/>
-      <!-- White C overlaid, slightly right-shifted -->
-      <text x="11" y="30" font-family="Georgia,'Times New Roman',serif" font-size="26" font-weight="900" fill="white" letter-spacing="-1">C</text>
-    </svg>
-    <span class="logo-wordmark">Datic <span>Currency</span></span>
+    <img src="logo.png" alt="Datic Currency" style="height:52px;width:auto;display:block;">
   </a>
-  <ul class="nav-links">
-    <li><a href="#how">How it Works</a></li>
-    <li><a href="#why">Why Datic</a></li>
-    <li><a href="#market">Market</a></li>
-    <li><a href="#revenue">Revenue</a></li>
-  </ul>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#market">Market</a>
+    <a href="#waitlist">Contact</a>
+  </div>
   <div class="nav-right">
-    <a href="https://daticurrency.com" class="btn-ghost-sm" target="_blank">Website ↗</a>
-    <a href="#waitlist" class="btn-primary">Join Waitlist</a>
+    <a href="https://www.linkedin.com/company/daticcurrency/" target="_blank" rel="noopener" class="nav-li">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="#waitlist" class="nav-cta">Early Access</a>
   </div>
 </nav>
 
-<!-- ─── HERO ─── -->
-<section id="hero">
-  <div class="hero-left fade-up">
-    <div class="hero-badge"><div class="badge-dot"></div>World's First — Data Financial Market</div>
-    <h1 class="hero-h1">The Stock Market,<br>but for <span class="hl">Data.</span></h1>
-    <p class="hero-p">Datic Currency tokenizes verified corporate datasets into tradeable data shares — creating a new asset class where dormant data becomes real, investable value.</p>
-    <div class="hero-actions">
-      <a href="#how" class="btn-lg">See How It Works</a>
-      <span class="hero-note">No sign-up needed to explore</span>
-    </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="hero-badge-dot"></span>Now in private beta</div>
+  <h1 class="hero-headline">The world's first <em>financial market</em> for data.</h1>
+  <p class="hero-sub">Proprietary datasets tokenised into tradeable shares. Buy exclusively. Sell publicly. Invest in data like you invest in companies.</p>
+  <div class="hero-actions">
+    <a href="#waitlist" class="btn-p">Request Early Access</a>
+    <a href="#how" class="btn-g">How It Works</a>
   </div>
 
-  <div class="hero-right fade-up" style="transition-delay:.15s">
-    <div class="hero-card">
-      <div class="hc-header">
-        <div>
-          <div class="hc-label">Live Market · Dataset #7841-B</div>
-          <div class="hc-name">Market Trend Analytics</div>
+  <!-- MACBOOK MOCKUP -->
+  <div class="macbook-wrap">
+    <div class="macbook">
+      <div class="macbook-top-bar">
+        <div class="traffic-lights">
+          <div class="tl tl-r"></div>
+          <div class="tl tl-y"></div>
+          <div class="tl tl-g"></div>
         </div>
-        <div class="hc-live"><div class="live-dot"></div>Live Auction</div>
+        <div class="notch"></div>
       </div>
-      <canvas id="heroChart" width="420" height="110"></canvas>
-      <div class="hc-stats">
-        <div><div class="hc-stat-lbl">Data Type</div><div class="hc-stat-val">Analytics</div></div>
-        <div><div class="hc-stat-lbl">Demand</div><div class="hc-stat-val up">↑ High</div></div>
-        <div><div class="hc-stat-lbl">Bidders</div><div class="hc-stat-val up">4 Active</div></div>
+
+      <div class="macbook-screen">
+        <!-- Screen top bar -->
+        <div class="screen-bar">
+          <div class="screen-tabs">
+            <div class="s-tab active">Market</div>
+            <div class="s-tab">Portfolio</div>
+            <div class="s-tab">Bids</div>
+          </div>
+          <div class="screen-spacer"></div>
+          <div class="screen-status">
+            <div class="status-dot"></div>
+            LIVE · 14:32:07
+          </div>
+        </div>
+
+        <!-- Screen body -->
+        <div class="screen-body">
+          <!-- Left: chart + tickers -->
+          <div class="panel-left">
+            <div class="chart-area">
+              <div class="chart-header">
+                <span class="chart-symbol">FINDATA-S1</span>
+                <span class="chart-price">₹ 4,218.50</span>
+                <span class="chart-change">▲ 8.4%</span>
+              </div>
+              <!-- Sparkline SVG -->
+              <svg class="sparkline-svg" viewBox="0 0 420 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#34c96e" stop-opacity="0.25"/>
+                    <stop offset="100%" stop-color="#34c96e" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Area fill -->
+                <path d="M0,72 C20,70 30,68 50,62 C70,56 80,50 100,45 C120,40 130,48 150,38 C170,28 180,32 200,25 C220,18 230,30 250,22 C270,14 280,20 300,15 C320,10 340,18 360,12 C380,6 400,10 420,8 L420,90 L0,90 Z" fill="url(#sg)"/>
+                <!-- Line -->
+                <path d="M0,72 C20,70 30,68 50,62 C70,56 80,50 100,45 C120,40 130,48 150,38 C170,28 180,32 200,25 C220,18 230,30 250,22 C270,14 280,20 300,15 C320,10 340,18 360,12 C380,6 400,10 420,8" fill="none" stroke="#34c96e" stroke-width="1.8" stroke-linecap="round"/>
+                <!-- Dot at end -->
+                <circle cx="420" cy="8" r="3.5" fill="#34c96e"/>
+                <circle cx="420" cy="8" r="6" fill="#34c96e" opacity="0.2"/>
+              </svg>
+            </div>
+
+            <!-- Tickers -->
+            <div class="ticker-table">
+              <div class="ticker-head">
+                <span>Dataset</span><span style="text-align:right">Price</span><span style="text-align:right">Volume</span><span style="text-align:right">24h</span>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">FINDATA-S1</div><div class="t-sub">FinTech · Series 1</div></div>
+                <div class="t-price">₹4,218</div>
+                <div class="t-vol">2.4M</div>
+                <div class="t-chg up">+8.4%</div>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">ESGMSME-A3</div><div class="t-sub">ESG · MSME Cluster</div></div>
+                <div class="t-price">₹1,870</div>
+                <div class="t-vol">880K</div>
+                <div class="t-chg up">+3.1%</div>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">RETLBHV-B2</div><div class="t-sub">Retail · Behaviour</div></div>
+                <div class="t-price">₹6,540</div>
+                <div class="t-vol">1.1M</div>
+                <div class="t-chg dn">−1.2%</div>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">CRDRISK-C1</div><div class="t-sub">Credit Risk · Alt</div></div>
+                <div class="t-price">₹3,105</div>
+                <div class="t-vol">670K</div>
+                <div class="t-chg up">+5.7%</div>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">LOGIST-D1</div><div class="t-sub">Logistics · Route</div></div>
+                <div class="t-price">₹2,290</div>
+                <div class="t-vol">430K</div>
+                <div class="t-chg dn">−0.4%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: order book -->
+          <div class="panel-right">
+            <div class="ob-header">
+              <span>Order Book</span><span>FINDATA-S1</span>
+            </div>
+            <div class="ob-rows">
+              <!-- Asks -->
+              <div class="ob-row"><div class="ob-bar ask" style="width:55%"></div><span class="ob-price dn">4,310</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:55%"></div><span class="ob-size">184</span></div>
+              <div class="ob-row"><div class="ob-bar ask" style="width:40%"></div><span class="ob-price dn">4,280</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:40%"></div><span class="ob-size">230</span></div>
+              <div class="ob-row"><div class="ob-bar ask" style="width:65%"></div><span class="ob-price dn">4,260</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:65%"></div><span class="ob-size">115</span></div>
+              <div class="ob-row"><div class="ob-bar ask" style="width:30%"></div><span class="ob-price dn">4,240</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:30%"></div><span class="ob-size">340</span></div>
+              <div class="ob-row"><div class="ob-bar ask" style="width:80%"></div><span class="ob-price dn">4,225</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:80%"></div><span class="ob-size">92</span></div>
+              <div class="ob-spread-row">
+                <span class="ob-spread-label">Spread</span>
+                <span class="ob-spread-val">₹6.50</span>
+              </div>
+              <!-- Bids -->
+              <div class="ob-row"><div class="ob-bar bid" style="width:70%"></div><span class="ob-price up">4,218</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:70%"></div><span class="ob-size">410</span></div>
+              <div class="ob-row"><div class="ob-bar bid" style="width:45%"></div><span class="ob-price up">4,200</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:45%"></div><span class="ob-size">275</span></div>
+              <div class="ob-row"><div class="ob-bar bid" style="width:55%"></div><span class="ob-price up">4,185</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:55%"></div><span class="ob-size">190</span></div>
+              <div class="ob-row"><div class="ob-bar bid" style="width:35%"></div><span class="ob-price up">4,160</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:35%"></div><span class="ob-size">520</span></div>
+              <div class="ob-row"><div class="ob-bar bid" style="width:60%"></div><span class="ob-price up">4,130</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:60%"></div><span class="ob-size">145</span></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="hc-rows">
-        <div class="hc-row"><span class="hc-row-name">Adobe Inc.</span><span class="tag-g">Leading</span></div>
-        <div class="hc-row"><span class="hc-row-name">Salesforce</span><span class="tag-m">Bidding</span></div>
-        <div class="hc-row"><span class="hc-row-name">Bloomberg LP</span><span class="tag-m">Bidding</span></div>
-      </div>
+      <div class="macbook-chin"></div>
     </div>
+    <div class="macbook-base"></div>
+    <div class="macbook-foot"></div>
+    <div class="macbook-glow"></div>
   </div>
 </section>
 
-<!-- ─── TRUST BAR ─── -->
-<div id="trust" class="fade-up">
-  <div class="trust-inner inner">
-    <div class="trust-item">
-      <div class="trust-num">$<span class="g">4T</span></div>
-      <div class="trust-lbl">Total Addressable Market</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-num"><span class="g">$800B</span></div>
-      <div class="trust-lbl">Target Data Asset Market</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-num"><span class="g">51%</span></div>
-      <div class="trust-lbl">Majority Stake to Unlock Data</div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-num"><span class="g">3</span></div>
-      <div class="trust-lbl">Diversified Revenue Streams</div>
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">$<span>4</span>T</span>
+    <span class="stat-lbl">Total Addressable Market</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num"><span>0</span></span>
+    <span class="stat-lbl">Direct competitors globally</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num"><span>1.2</span>%</span>
+    <span class="stat-lbl">Commission per transaction</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num"><span>87</span>%</span>
+    <span class="stat-lbl">MSMEs with no ESG platform</span>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="wrap">
+    <p class="s-eyebrow">The Platform</p>
+    <h2 class="s-h2">Data is an asset. Now it trades like one.</h2>
+    <p class="s-body">We built the infrastructure layer that has never existed — a legal, transparent marketplace where proprietary datasets become tradeable financial instruments.</p>
+
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><circle cx="17.5" cy="17.5" r="3.5"/></svg>
+        </div>
+        <h3 class="feat-title">Exclusive Dataset Acquisition</h3>
+        <p class="feat-desc">Win a dataset at auction and own it exclusively — permanently. No competitor can ever buy the same data. The first and only mechanism of its kind.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3 class="feat-title">Public Data Share Market</h3>
+        <p class="feat-desc">List your proprietary dataset and sell shares in it to public investors. Like an IPO for your data. The more in-demand the data, the higher the share price rises.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feat-title">Data Escrow & Insurance</h3>
+        <p class="feat-desc">Every transaction is protected by our Data Escrow system and a Guaranteed Buy-Back programme — ensuring full trust on both sides of every trade.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3 class="feat-title">ESG Reports for MSMEs</h3>
+        <p class="feat-desc">We create verified, affordable ESG reports for small businesses and turn them into tradeable data assets on DC — unlocking a market that has never had a platform.</p>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ─── HOW IT WORKS ─── -->
-<section id="how">
-  <div class="inner">
-    <div class="how-head">
-      <div class="fade-up">
-        <div class="sec-label">Product & Service</div>
-        <h2 class="sec-h2">How Datic Currency Works</h2>
-      </div>
-      <p class="sec-p fade-up" style="transition-delay:.1s">A clear, transparent process — from the moment data is listed to the moment investors earn returns.</p>
-    </div>
+<hr class="rule">
+
+<!-- HOW IT WORKS -->
+<div class="how" id="how">
+  <div class="wrap">
+    <p class="s-eyebrow">How It Works</p>
+    <h2 class="s-h2">A new financial primitive for the data economy.</h2>
     <div class="steps">
-      <div class="step fade-up ripple-host">
-        <div class="step-num">01</div>
+      <div class="step">
+        <span class="step-n">01</span>
         <div>
-          <div class="step-title">List & Tokenize</div>
-          <div class="step-body">A company securely lists a non-personal dataset. We verify its quality and tokenize it into a fixed number of data shares. These shares represent a stake in the series, growing in value as the company merges new datasets over time — creating recurring cycles of demand and rewarding long-term holders.</div>
+          <h3 class="step-title">List &amp; Tokenise</h3>
+          <p class="step-desc">A company securely lists a verified, anonymised dataset. We tokenise it into a fixed number of "data shares" — representing a stake in that series, which grows in value as new datasets are merged into it over time.</p>
         </div>
       </div>
-      <div class="step fade-up ripple-host" style="transition-delay:.07s">
-        <div class="step-num">02</div>
+      <div class="step">
+        <span class="step-n">02</span>
         <div>
-          <div class="step-title">Trade & Discover</div>
-          <div class="step-body">50% of the shares are released to public investors. Trading on our open market discovers the real-time live price of the data — driven entirely by market demand, not arbitrary pricing. Anyone can participate in the public market.</div>
+          <h3 class="step-title">Bid for Insight</h3>
+          <p class="step-desc">Corporate buyers compete in a transparent auction for the main 40% share block. To gain exclusive access to the underlying data, the winning bidder must acquire a majority stake (≥51%). Competitive bidding drives the price.</p>
         </div>
       </div>
-      <div class="step fade-up ripple-host" style="transition-delay:.14s">
-        <div class="step-num">03</div>
+      <div class="step">
+        <span class="step-n">03</span>
         <div>
-          <div class="step-title">Bid for Insight</div>
-          <div class="step-body">Corporate bidders compete in a transparent auction to win the main 40% block of shares. To gain exclusive access to the underlying data, the winner must acquire a majority stake — ensuring serious, committed buyers only.</div>
+          <h3 class="step-title">Trade &amp; Invest</h3>
+          <p class="step-desc">50% of shares are released to public investors on our live open market. A self-regulating, formula-driven pricing engine (α_dynamic) determines real-time value. Long-term holders earn as the dataset compounds in value.</p>
         </div>
       </div>
-      <div class="step fade-up ripple-host" style="transition-delay:.21s">
-        <div class="step-num">04</div>
+      <div class="step">
+        <span class="step-n">04</span>
         <div>
-          <div class="step-title">Evolve & Grow</div>
-          <div class="step-body">Shares can be part of a Data Series, where new datasets are merged into existing shares. This transforms the asset from a one-time key into a living, long-term investment that grows in value with each update — like a stock that earns from ongoing company performance.</div>
+          <h3 class="step-title">Evolve &amp; Earn</h3>
+          <p class="step-desc">Data sellers earn from the auction, the public market, and future merges. Investors earn as demand rises. DC earns 1.2% on every buy and sell — a scalable, exchange-model revenue stream with no precedent.</p>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ─── WHY DATIC ─── -->
-<section id="why">
-  <div class="inner">
-    <div class="sec-label fade-up">Competitive Advantage</div>
-    <h2 class="sec-h2 fade-up">Built on Trust and Transparency</h2>
-    <div class="feat-grid">
-      <div class="feat-card fade-up">
-        <div class="feat-icon">⚡</div>
-        <div class="feat-title">Dynamic Pricing Engine</div>
-        <div class="feat-body">A self-regulating model responds to real market demand in real time. Prices emerge from the market itself — no manual intervention, no manipulation. Every share is priced fairly and transparently.</div>
+<!-- MARKET STRIP -->
+<div class="market" id="market">
+  <div class="market-inner">
+    <p class="s-eyebrow">Market Opportunity</p>
+    <h2 class="s-h2">A $4 trillion market with no incumbent to displace.</h2>
+    <div class="market-grid">
+      <div class="m-card">
+        <span class="m-val">$4T</span>
+        <span class="m-tag">TAM</span>
+        <p class="m-desc">The entire global data economy — analytics, storage, AI, and enterprise data services.</p>
       </div>
-      <div class="feat-card fade-up" style="transition-delay:.1s">
-        <div class="feat-icon">🛡️</div>
-        <div class="feat-title">Guaranteed Buy-Back</div>
-        <div class="feat-body">Investors participate with confidence knowing an institutional safety net exists. Our buy-back mechanism protects liquidity and builds market trust — an unparalleled safety mechanism in the data economy.</div>
+      <div class="m-card">
+        <span class="m-val">$800B</span>
+        <span class="m-tag">SAM</span>
+        <p class="m-desc">Tradable, non-personal corporate data assets we are directly positioned to serve and monetise.</p>
       </div>
-      <div class="feat-card fade-up" style="transition-delay:.2s">
-        <div class="feat-icon">🔐</div>
-        <div class="feat-title">Data Escrow & Insurance</div>
-        <div class="feat-body">All listed data is held in secure escrow and covered by insurance until the auction concludes. Sellers are protected. Buyers are verified. The market is safe for every participant.</div>
+      <div class="m-card">
+        <span class="m-val">$800M</span>
+        <span class="m-tag">SOM — Year 2</span>
+        <p class="m-desc">Our 2-year target: capture 0.1% of the SAM and establish the definitive standard for data trading.</p>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ─── MARKET ─── -->
-<section id="market">
-  <div class="inner">
-    <div class="sec-label fade-up">Market Analysis & Opportunity</div>
-    <h2 class="sec-h2 fade-up" style="max-width:560px">We're Not Competing in an Existing Market — We're Creating One</h2>
-    <div class="market-layout">
-      <div>
-        <p class="sec-p fade-up" style="margin-bottom:24px">A precise, traditional valuation is challenging at this stage because the financial market for data has no direct competitors or historical multiples to apply.</p>
-        <div class="mkt-cards">
-          <div class="mkt-card fade-up">
-            <div class="mkt-icon">🌐</div>
-            <div>
-              <div class="mkt-tag">TAM — Total Addressable Market</div>
-              <div class="mkt-title">The Entire Global Data Economy</div>
-              <div class="mkt-body">Analytics, storage, AI services, and all data-driven sectors — the full universe of value this platform can reach.</div>
-            </div>
-          </div>
-          <div class="mkt-card fade-up" style="transition-delay:.1s">
-            <div class="mkt-icon">🎯</div>
-            <div>
-              <div class="mkt-tag">SAM — Serviceable Addressable Market</div>
-              <div class="mkt-title">Tradeable Corporate Data Assets</div>
-              <div class="mkt-body">Verified, non-personal, tradeable corporate datasets. This is where Datic Currency directly operates and creates liquidity where none existed.</div>
-            </div>
-          </div>
-          <div class="mkt-card fade-up" style="transition-delay:.2s">
-            <div class="mkt-icon">🚀</div>
-            <div>
-              <div class="mkt-tag">SOM — Serviceable Obtainable Market</div>
-              <div class="mkt-title">Our Initial 2-Year Target</div>
-              <div class="mkt-body">Our realistic near-term goal — establishing the world's first regulated financial market for data.</div>
-            </div>
-          </div>
-        </div>
-        <div class="market-note fade-up" style="transition-delay:.3s">
-          Every day, companies generate vast amounts of valuable data that sits unused, locked away on servers. This is a multi-billion dollar untapped asset — and Datic Currency exists to unlock it.
-        </div>
-      </div>
-      <div class="market-right fade-up" style="transition-delay:.15s">
-        <div class="market-big">
-          <div class="mb-lbl">Total Addressable Market</div>
-          <div class="mb-val">$4T</div>
-          <div class="mb-desc">Global data economy — analytics, storage, AI, and beyond</div>
-        </div>
-        <div class="mss-grid">
-          <div class="mss-card">
-            <div class="mss-val" style="color:var(--green-br)">$800B</div>
-            <div class="mss-lbl">SAM — Tradeable corporate data</div>
-          </div>
-          <div class="mss-card">
-            <div class="mss-val">$800M</div>
-            <div class="mss-lbl">SOM — 2-year realistic goal</div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- CTA -->
+<div class="cta-wrap" id="waitlist">
+  <h2 class="cta-h">Be first on the world's first data exchange.</h2>
+  <p class="cta-sub">Early partners receive priority listing access and reduced fees at launch.</p>
+  <div class="email-row">
+    <input type="email" placeholder="your@company.com">
+    <button type="button">Join Waitlist</button>
   </div>
-</section>
+</div>
 
-<!-- ─── REVENUE ─── -->
-<section id="revenue">
-  <div class="inner">
-    <div class="rev-head">
-      <div>
-        <div class="sec-label fade-up">Financial Model</div>
-        <h2 class="sec-h2 fade-up">Diversified Revenue,<br>Built to Scale</h2>
-      </div>
-      <p class="sec-p fade-up" style="transition-delay:.1s">A commission-based model designed for high margins and scalability — revenue grows directly with platform activity.</p>
-    </div>
-    <div class="rev-grid">
-      <div class="rev-card fade-up ripple-host">
-        <div class="rev-num">STREAM 01</div>
-        <div class="rev-title">Corporate Transaction Fees</div>
-        <div class="rev-body">A commission is charged to both the data seller and the winning corporate bidder at the conclusion of each auction — calculated as a percentage of the final auction price. Revenue scales with data value.</div>
-      </div>
-      <div class="rev-card fade-up ripple-host" style="transition-delay:.1s">
-        <div class="rev-num">STREAM 02</div>
-        <div class="rev-title">Public Market Fees</div>
-        <div class="rev-body">A small percentage-based transaction fee applied to every trade on the public market. As trading volume grows with adoption, this stream compounds without additional overhead.</div>
-      </div>
-      <div class="rev-card fade-up ripple-host" style="transition-delay:.2s">
-        <div class="rev-num">STREAM 03</div>
-        <div class="rev-title">Platform Service Fees</div>
-        <div class="rev-body">One-time listing fees for new Data Series, commissions on Platform Reserve sales, and service fees for the Resale Bank and Guaranteed Buy-Back program create a stable recurring base.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── WAITLIST ─── -->
-<section id="waitlist">
-  <div class="wl-box fade-up">
-    <h2 class="wl-h">Get Early Access</h2>
-    <p class="wl-p">Be among the first data owners and investors on the world's first financial market for data.</p>
-    <div class="wl-form">
-      <input type="email" id="wl-email" placeholder="Your email address">
-      <button type="button" onclick="handleWL()">Join Waitlist</button>
-    </div>
-    <div class="wl-note" id="wl-note">No commitments. We'll reach out when the platform launches.</div>
-  </div>
-</section>
-
-<!-- ─── FOOTER ─── -->
+<!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <a href="#" class="footer-logo">
-      <svg class="logo-svg" viewBox="0 0 36 36" fill="none">
-        <path d="M6 4 H18 C28 4 30 11 30 18 C30 25 28 32 18 32 H6 Z" fill="#1E7A3C"/>
-        <text x="11" y="30" font-family="Georgia,'Times New Roman',serif" font-size="26" font-weight="900" fill="white" letter-spacing="-1">C</text>
-      </svg>
-      <span class="footer-wordmark">Datic <span>Currency</span></span>
-    </a>
-    <div class="footer-links">
-      <a href="#how">How it Works</a>
-      <a href="#why">Why Datic</a>
-      <a href="#market">Market</a>
-      <a href="#revenue">Revenue</a>
-      <a href="#waitlist">Join Waitlist</a>
-      <a href="https://daticurrency.com" target="_blank">daticurrency.com ↗</a>
-    </div>
-    <div class="footer-cr">© 2025 Datic Currency. All rights reserved.</div>
-  </div>
+  <span class="f-logo">Datic Currency</span>
+  <span class="f-copy">© 2024 Datic Currency. All rights reserved.</span>
+  <a href="https://daticurrency.com" class="f-link">daticurrency.com ↗</a>
+  <a href="https://www.linkedin.com/company/daticcurrency/" target="_blank" rel="noopener" class="f-link" style="display:inline-flex;align-items:center;gap:0.35rem;">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    LinkedIn
+  </a>
 </footer>
 
 <script>
-/* ── SCROLL REVEAL ── */
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: 0.08, rootMargin: '0px 0px -28px 0px' });
-document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+// Waitlist
+document.querySelector('.email-row button').addEventListener('click',function(){
+  const inp = document.querySelector('.email-row input');
+  if(inp.value && inp.value.includes('@')){
+    this.textContent='Joined ✓';
+    this.style.background='#0e3320';
+    this.style.color='#34c96e';
+    inp.value='';
+    inp.placeholder="You're on the list.";
+  } else {
+    inp.focus();
+    inp.style.borderColor='#a8884a';
+    setTimeout(()=>inp.style.borderColor='',1500);
+  }
+});
 
-/* ── RIPPLE ── */
-document.querySelectorAll('.ripple-host').forEach(el => {
-  el.addEventListener('mousedown', e => {
-    const r = el.getBoundingClientRect();
-    const d = Math.max(el.clientWidth, el.clientHeight);
-    const rip = document.createElement('div');
-    rip.className = 'ripple';
-    Object.assign(rip.style, {
-      width: d + 'px', height: d + 'px',
-      left: (e.clientX - r.left - d / 2) + 'px',
-      top: (e.clientY - r.top - d / 2) + 'px'
-    });
-    el.appendChild(rip);
-    setTimeout(() => rip.remove(), 600);
+// Ticker tab switching (visual only)
+document.querySelectorAll('.s-tab').forEach(t=>{
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.s-tab').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');
   });
 });
 
-/* ── HERO CHART ── */
-(function () {
-  const canvas = document.getElementById('heroChart');
-  if (!canvas) return;
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = canvas.offsetWidth * dpr;
-  canvas.height = 110 * dpr;
-  canvas.style.height = '110px';
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
+// Subtle ticker animation
+const prices = document.querySelectorAll('.t-price');
+const changes = document.querySelectorAll('.t-chg');
+setInterval(()=>{
+  const idx = Math.floor(Math.random()*prices.length);
+  const dir = Math.random()>0.4 ? 1 : -1;
+  const delta = (Math.random()*15+2).toFixed(0);
+  const current = parseInt(prices[idx].textContent.replace(/[₹,]/g,''));
+  const next = current + dir*parseInt(delta);
+  prices[idx].textContent = '₹'+next.toLocaleString('en-IN');
+  const pct = ((dir*delta/current)*100).toFixed(1);
+  const el = changes[idx];
+  if(dir>0){el.textContent='+'+pct+'%';el.className='t-chg up'}
+  else{el.textContent='−'+Math.abs(pct)+'%';el.className='t-chg dn'}
+}, 1800);
 
-  /* generate smooth upward-trending data */
-  let raw = Array.from({ length: 60 }, (_, i) => 0.3 + (i / 60) * 0.35 + (Math.random() - 0.5) * 0.18);
-  const smooth = arr => arr.map((v, i) => {
-    const s = arr.slice(Math.max(0, i - 3), i + 4);
-    return s.reduce((a, b) => a + b, 0) / s.length;
-  });
-  raw = smooth(smooth(raw));
-
-  let offset = 0;
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    const pad = 8 * dpr;
-    const w = W - pad * 2, h = H - pad * 2;
-    const window_size = 32;
-    const slice = [];
-    for (let i = 0; i < window_size; i++) {
-      slice.push(raw[(Math.floor(offset) + i) % raw.length]);
-    }
-    const mn = Math.min(...slice), mx = Math.max(...slice), rng = mx - mn || 1;
-    const gx = i => pad + (i / (window_size - 1)) * w;
-    const gy = v => pad + h - ((v - mn) / rng) * h;
-
-    /* fill */
-    const grad = ctx.createLinearGradient(0, pad, 0, H - pad);
-    grad.addColorStop(0, 'rgba(30,122,60,0.2)');
-    grad.addColorStop(1, 'rgba(30,122,60,0)');
-    ctx.beginPath();
-    ctx.moveTo(gx(0), gy(slice[0]));
-    for (let i = 1; i < slice.length; i++) {
-      const cpx = (gx(i - 1) + gx(i)) / 2;
-      ctx.bezierCurveTo(cpx, gy(slice[i - 1]), cpx, gy(slice[i]), gx(i), gy(slice[i]));
-    }
-    ctx.lineTo(gx(window_size - 1), H); ctx.lineTo(gx(0), H); ctx.closePath();
-    ctx.fillStyle = grad; ctx.fill();
-
-    /* line */
-    ctx.beginPath();
-    ctx.moveTo(gx(0), gy(slice[0]));
-    for (let i = 1; i < slice.length; i++) {
-      const cpx = (gx(i - 1) + gx(i)) / 2;
-      ctx.bezierCurveTo(cpx, gy(slice[i - 1]), cpx, gy(slice[i]), gx(i), gy(slice[i]));
-    }
-    ctx.strokeStyle = '#2DAA56'; ctx.lineWidth = 2 * dpr; ctx.stroke();
-
-    /* dot */
-    const lx = gx(window_size - 1), ly = gy(slice[window_size - 1]);
-    ctx.beginPath(); ctx.arc(lx, ly, 4.5 * dpr, 0, Math.PI * 2);
-    ctx.fillStyle = '#2DAA56'; ctx.fill();
-    ctx.beginPath(); ctx.arc(lx, ly, 8 * dpr, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(45,170,86,0.2)'; ctx.fill();
+// Live clock
+function tick(){
+  const el = document.querySelector('.screen-status');
+  if(el){
+    const now = new Date();
+    const t = now.toTimeString().slice(0,8);
+    el.innerHTML='<div class="status-dot"></div>LIVE · '+t;
   }
-
-  draw();
-  let last = 0;
-  function tick(t) {
-    if (t - last > 40) { offset = (offset + 0.06) % raw.length; draw(); last = t; }
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-})();
-
-/* ── WAITLIST ── */
-function handleWL() {
-  const email = document.getElementById('wl-email').value.trim();
-  const note = document.getElementById('wl-note');
-  if (!email || !email.includes('@')) {
-    note.textContent = 'Please enter a valid email address.';
-    note.style.color = '#e05555';
-    return;
-  }
-  note.textContent = '✓ You\'re on the list. We\'ll be in touch soon.';
-  note.style.color = 'var(--green-br)';
-  document.getElementById('wl-email').value = '';
 }
-
-/* ── ACTIVE NAV ── */
-const secs = document.querySelectorAll('section[id]');
-const navAs = document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll', () => {
-  let cur = '';
-  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
-  navAs.forEach(a => { a.style.color = (a.getAttribute('href') === '#' + cur) ? 'var(--text)' : ''; });
-}, { passive: true });
+setInterval(tick,1000);
 </script>
 </body>
 </html>
