@@ -1,2 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datic Currency — Financial Market for Data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-  
+:root{
+  /* ── DESIGN.md Colors ── */
+  --color-obsidian:   #000000;
+  --color-carbon:     #030304;
+  --color-inkwell:    #08080a;
+  --color-graphite:   #121317;
+  --color-slate:      #1c1d22;
+  --color-iron:       #2e3038;
+  --color-steel:      #464853;
+  --color-fog:        #5e616e;
+  --color-ash:        #777a88;
+  --color-silver:     #9194a1;
+  --color-pearl:      #acafb9;
+  --color-chalk:      #cdcdcd;
+  --color-bone:       #e2e3e9;
+  --color-paper:      #ffffff;
+  --color-ember-gold: #cc9166;
+  --color-molten-gold:#ae9357;
+  --gradient-molten:  linear-gradient(103deg, rgb(174,147,87), rgb(255,240,204) 40%, rgb(174,147,87) 70%, rgba(189,157,79,0));
+  --color-chalk-glow: #fff0cc;
+
+  /* ── Typography ── */
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:  'SF Mono','Fira Code','Fira Mono',monospace;
+
+  /* ── Type Scale ── */
+  --text-caption:    12px;
+  --text-body-lg:    15px;
+  --text-subheading: 18px;
+  --text-heading-sm: 24px;
+  --text-heading:    32px;
+  --text-heading-lg: 48px;
+  --text-display:    64px;
+  --text-display-xl: 88px;
+
+  /* ── Border Radius ── */
+  --radius-sm:   2px;
+  --radius-lg:   10px;
+  --radius-full: 9999px;
+
+  /* ── Spacing ── */
+  --spacing-4:   4px;
+  --spacing-8:   8px;
+  --spacing-12:  12px;
+  --spacing-16:  16px;
+  --spacing-20:  20px;
+  --spacing-24:  24px;
+  --spacing-32:  32px;
+  --spacing-40:  40px;
+
+  /* ── Legacy aliases (keep internal refs working) ── */
+  --bg:         var(--color-inkwell);
+  --green-glow: var(--color-ember-gold);
+  --cream:      var(--color-bone);
+  --warm-white: var(--color-paper);
+  --muted:      var(--color-silver);
+  --muted2:     var(--color-ash);
+  --gold:       var(--color-molten-gold);
+  --gold-light: var(--color-chalk-glow);
+  --red:        #e05555;
+  --serif:      var(--font-serif);
+  --sans:       var(--font-sans);
+  --mono:       var(--font-mono);
+
+  /* ── Surfaces ── */
+  --surface-page:  var(--color-inkwell);
+  --surface-card:  var(--color-slate);
+  --surface-raise: var(--color-graphite);
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--color-inkwell);
+  color:var(--color-bone);
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  line-height:1.5;
+  letter-spacing:-0.007px;
+  font-weight:400;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"cv11","ss01";
+}
+
+/* ─── TOP BAR ─── */
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:201;
+  background:var(--color-graphite);
+  border-bottom:1px solid var(--color-silver);
+  display:flex;align-items:center;justify-content:center;
+  padding:var(--spacing-8) var(--spacing-16);
+  gap:var(--spacing-8);
+  font-family:var(--font-sans);
+  font-size:var(--text-caption);
+  font-weight:400;
+  letter-spacing:0.01px;
+  color:var(--color-pearl);
+}
+.top-bar-dot{
+  width:5px;height:5px;
+  background:var(--color-ember-gold);
+  border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
+  flex-shrink:0;
+}
+.top-bar a{
+  color:var(--color-ember-gold);
+  text-decoration:none;
+  font-weight:500;
+  border-bottom:1px solid rgba(204,145,102,0.4);
+  padding-bottom:1px;
+  transition:color 0.2s,border-color 0.2s;
+}
+.top-bar a:hover{color:var(--color-paper);border-color:var(--color-paper)}
+.top-bar-close{
+  position:absolute;right:var(--spacing-16);
+  background:none;border:none;color:var(--color-ash);
+  cursor:pointer;font-size:1rem;line-height:1;
+  padding:0.2rem 0.4rem;
+  transition:color 0.2s;
+}
+.top-bar-close:hover{color:var(--color-bone)}
+
+/* ─── CARD NAV ─── */
+.card-nav-container{
+  position:fixed;
+  top:52px;
+  left:50%;
+  transform:translateX(-50%);
+  width:92%;
+  max-width:860px;
+  z-index:200;
+  box-sizing:border-box;
+}
+.card-nav{
+  display:block;
+  height:62px;
+  padding:0;
+  background-color:rgba(18,19,23,0.95);
+  border:1px solid var(--color-iron);
+  border-radius:var(--radius-lg);
+  box-shadow:0 8px 32px rgba(0,0,0,0.6),0 0 0 1px rgba(46,48,56,0.5);
+  position:relative;
+  overflow:hidden;
+  will-change:height;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+.card-nav-top{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 var(--spacing-12) 0 var(--spacing-16);
+  z-index:2;
+}
+.hamburger-menu{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  gap:6px;
+  padding:0 var(--spacing-8);
+}
+.hamburger-menu:hover .hamburger-line{opacity:0.7}
+.hamburger-line{
+  width:24px;height:1.5px;
+  background-color:currentColor;
+  transition:transform 0.25s ease,opacity 0.2s ease;
+  transform-origin:50% 50%;
+}
+.hamburger-menu.open .hamburger-line:first-child{transform:translateY(3.75px) rotate(45deg)}
+.hamburger-menu.open .hamburger-line:last-child{transform:translateY(-3.75px) rotate(-45deg)}
+.cn-logo-container{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  display:flex;align-items:center;
+}
+.cn-logo{height:44px;width:auto;display:block;}
+.cn-right{
+  display:flex;align-items:center;gap:var(--spacing-8);
+  height:100%;
+}
+.cn-li-btn{
+  display:inline-flex;align-items:center;gap:var(--spacing-6);
+  font-family:var(--font-sans);
+  font-size:var(--text-caption);
+  font-weight:500;
+  color:var(--color-silver);
+  text-decoration:none;
+  letter-spacing:-0.007px;
+  border:1px solid var(--color-steel);
+  padding:var(--spacing-8) var(--spacing-12);
+  border-radius:var(--radius-sm);
+  transition:color 0.2s,border-color 0.2s;
+}
+.cn-li-btn:hover{color:var(--color-bone);border-color:var(--color-silver)}
+.cn-cta-btn{
+  background:var(--color-paper);
+  color:var(--color-inkwell);
+  border:none;
+  border-radius:var(--radius-sm);
+  padding:10px 20px;
+  height:calc(100% - 20px);
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:500;
+  letter-spacing:-0.007px;
+  cursor:pointer;
+  transition:opacity 0.2s;
+  white-space:nowrap;
+  text-decoration:none;
+  display:inline-flex;align-items:center;
+}
+.cn-cta-btn:hover{opacity:0.88}
+.card-nav-content{
+  position:absolute;
+  left:0;right:0;
+  top:62px;bottom:0;
+  padding:var(--spacing-8);
+  display:flex;
+  align-items:flex-end;
+  gap:var(--spacing-8);
+  visibility:hidden;
+  pointer-events:none;
+  z-index:1;
+}
+.card-nav.open .card-nav-content{
+  visibility:visible;
+  pointer-events:auto;
+}
+.nav-card{
+  height:100%;
+  flex:1 1 0;
+  min-width:0;
+  border-radius:var(--radius-lg);
+  border:1px solid var(--color-iron);
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  padding:var(--spacing-16);
+  gap:var(--spacing-8);
+  user-select:none;
+}
+.nav-card-label{
+  font-family:var(--font-serif);
+  font-weight:400;
+  font-size:var(--text-heading-sm);
+  letter-spacing:-0.013px;
+  color:var(--color-paper);
+  line-height:1.33;
+}
+.nav-card-links{
+  margin-top:auto;
+  display:flex;
+  flex-direction:column;
+  gap:var(--spacing-4);
+}
+.nav-card-link{
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:400;
+  cursor:pointer;
+  text-decoration:none;
+  transition:opacity 0.25s ease;
+  display:inline-flex;
+  align-items:center;
+  gap:var(--spacing-6);
+  color:var(--color-pearl);
+  opacity:0.8;
+}
+.nav-card-link:hover{opacity:1;color:var(--color-bone)}
+.nav-card-arrow{font-size:0.85rem;display:inline-block;transition:transform 0.2s;color:var(--color-ember-gold)}
+.nav-card-link:hover .nav-card-arrow{transform:translate(2px,-2px)}
+@media(max-width:768px){
+  .card-nav-container{width:94%;top:48px}
+  .cn-li-btn{display:none}
+  .cn-logo-container{position:static;transform:none}
+  .card-nav-content{flex-direction:column;align-items:stretch;gap:var(--spacing-6);padding:var(--spacing-8);justify-content:flex-start}
+  .nav-card{height:auto;min-height:56px;flex:none}
+  .nav-card-label{font-size:var(--text-subheading)}
+}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:11rem 2.8rem 4rem;
+  text-align:center;
+  overflow:hidden;
+}
+
+/* ShapeGrid canvas sits behind everything */
+#shape-grid-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:auto;
+  z-index:0;
+}
+
+/* gradient overlay on top of grid, below content */
+.hero-overlay{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(5,13,8,0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(5,13,8,0.7) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(5,13,8,0.2) 0%, transparent 80%);
+  pointer-events:none;
+  z-index:1;
+}
+
+/* All hero children above the grid */
+.hero > *:not(#shape-grid-canvas):not(.hero-overlay){
+  position:relative;
+  z-index:2;
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:var(--spacing-8);
+  background:transparent;
+  border:1px solid var(--color-steel);
+  border-radius:var(--radius-full);
+  padding:2px 10px;
+  font-family:var(--font-sans);
+  font-size:var(--text-caption);
+  font-weight:500;
+  letter-spacing:0.01px;
+  color:var(--color-pearl);
+  margin-bottom:var(--spacing-32);
+}
+.hero-badge-dot{
+  width:5px;height:5px;
+  background:var(--color-ember-gold);
+  border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(0.8)}
+}
+
+.hero-headline{
+  font-family:var(--font-serif);
+  font-size:clamp(var(--text-heading-lg), 6vw, var(--text-display-xl));
+  font-weight:400;
+  line-height:1.0;
+  letter-spacing:-0.04px;
+  color:var(--color-bone);
+  max-width:14ch;
+  margin:0 auto var(--spacing-24);
+}
+.hero-headline em{
+  font-style:italic;
+  font-weight:500;
+  color:var(--color-ember-gold);
+  background:none;
+  -webkit-text-fill-color:var(--color-ember-gold);
+}
+
+.hero-sub{
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:300;
+  line-height:1.56;
+  letter-spacing:-0.007px;
+  color:var(--color-silver);
+  max-width:46ch;
+  margin:0 auto var(--spacing-40);
+}
+
+.hero-actions{
+  display:flex;gap:0;justify-content:center;flex-wrap:wrap;
+  margin-bottom:5rem;
+}
+/* filled white CTA — DESIGN.md spec */
+.btn-p{
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:500;
+  letter-spacing:-0.007px;
+  color:var(--color-inkwell);
+  background:var(--color-paper);
+  text-decoration:none;
+  padding:10px 20px;
+  border-radius:var(--radius-sm);
+  transition:opacity 0.2s;
+}
+.btn-p:hover{opacity:0.88}
+/* ghost border — DESIGN.md spec */
+.btn-g{
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:400;
+  letter-spacing:-0.007px;
+  color:var(--color-bone);
+  background:transparent;
+  text-decoration:none;
+  padding:10px 20px;
+  border:1px solid var(--color-ash);
+  border-radius:var(--radius-sm);
+  transition:border-color 0.2s,color 0.2s;
+  margin-left:-1px;
+}
+.btn-g:hover{border-color:var(--color-bone);color:var(--color-paper)}
+
+/* ─── MACBOOK MOCKUP ─── */
+.macbook-wrap{
+  position:relative;
+  width:100%;
+  max-width:860px;
+  margin:0 auto;
+}
+
+.macbook{
+  position:relative;
+  background:linear-gradient(180deg,#2d2d2d 0%,#1a1a1a 100%);
+  border-radius:16px 16px 0 0;
+  padding:10px 12px 0;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 30px 80px rgba(0,0,0,0.7),
+    0 0 120px rgba(30,122,74,0.12);
+}
+
+.macbook-top-bar{
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:8px;
+  position:relative;
+}
+.traffic-lights{
+  display:flex;gap:7px;
+  position:absolute;left:6px;top:50%;transform:translateY(-50%);
+}
+.tl{width:12px;height:12px;border-radius:50%}
+.tl-r{background:#ff5f57}
+.tl-y{background:#febc2e}
+.tl-g{background:#28c840}
+.notch{
+  width:120px;height:22px;
+  background:#111;
+  border-radius:0 0 12px 12px;
+}
+
+/* Screen */
+.macbook-screen{
+  background:var(--color-inkwell);
+  border-radius:6px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.05);
+  aspect-ratio:16/10;
+  display:grid;
+  grid-template-rows:36px 1fr;
+}
+
+/* Screen top bar */
+.screen-bar{
+  background:var(--color-graphite);
+  border-bottom:1px solid var(--color-iron);
+  display:flex;align-items:center;
+  padding:0 1rem;
+  gap:1rem;
+}
+.screen-tabs{display:flex;gap:0}
+.s-tab{
+  font-family:var(--font-sans);
+  font-size:0.6rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  font-weight:500;
+  padding:0 1rem;
+  height:36px;
+  display:flex;align-items:center;
+  color:var(--color-ash);
+  border-bottom:2px solid transparent;
+  cursor:pointer;
+  transition:color 0.2s;
+}
+.s-tab.active{
+  color:var(--color-ember-gold);
+  border-bottom-color:var(--color-ember-gold);
+}
+.screen-spacer{flex:1}
+.screen-status{
+  display:flex;align-items:center;gap:0.4rem;
+  font-size:0.58rem;
+  color:var(--color-ember-gold);
+  font-family:var(--font-mono);
+  font-weight:500;
+}
+.status-dot{width:5px;height:5px;background:var(--color-ember-gold);border-radius:50%;animation:pulse 2s infinite}
+
+/* Screen body */
+.screen-body{
+  display:grid;
+  grid-template-columns:1fr 200px;
+  overflow:hidden;
+}
+
+/* Left panel - chart + tickers */
+.panel-left{
+  display:flex;flex-direction:column;
+  border-right:1px solid var(--color-iron);
+  overflow:hidden;
+}
+
+.chart-area{
+  flex:1;position:relative;
+  padding:0.8rem 1rem 0.4rem;
+  overflow:hidden;
+}
+.chart-header{display:flex;align-items:baseline;gap:0.8rem;margin-bottom:0.5rem;}
+.chart-symbol{font-family:var(--font-mono);font-size:0.6rem;color:var(--color-ash);letter-spacing:0.08em;}
+.chart-price{font-family:var(--font-mono);font-size:1.1rem;color:var(--color-paper);font-weight:600;font-feature-settings:"tnum";}
+.chart-change{font-family:var(--font-mono);font-size:0.6rem;color:var(--color-ember-gold);}
+
+.sparkline-svg{width:100%;height:90px;display:block}
+
+.ticker-table{border-top:1px solid var(--color-iron);}
+.ticker-head{
+  display:grid;grid-template-columns:1fr 70px 70px 55px;
+  padding:0.3rem 1rem;
+  font-family:var(--font-sans);font-size:0.52rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--color-ash);
+  border-bottom:1px solid var(--color-iron);
+}
+.ticker-row{
+  display:grid;grid-template-columns:1fr 70px 70px 55px;
+  padding:0.38rem 1rem;
+  border-bottom:1px solid rgba(46,48,56,0.5);
+  align-items:center;
+}
+.ticker-row:hover{background:var(--color-graphite)}
+.t-name{font-family:var(--font-mono);font-size:0.6rem;color:var(--color-bone);font-weight:500;}
+.t-sub{font-size:0.48rem;color:var(--color-ash);}
+.t-price{font-family:var(--font-mono);font-size:0.6rem;color:var(--color-bone);text-align:right;font-feature-settings:"tnum";}
+.t-vol{font-family:var(--font-mono);font-size:0.56rem;color:var(--color-silver);text-align:right;}
+.t-chg{font-family:var(--font-mono);font-size:0.58rem;text-align:right;font-feature-settings:"tnum";}
+.up{color:var(--color-ember-gold);}
+.dn{color:var(--red);}
+
+/* Right panel - order book */
+.panel-right{background:var(--color-graphite);display:flex;flex-direction:column;overflow:hidden;}
+.ob-header{
+  padding:0.5rem 0.7rem;
+  font-family:var(--font-sans);font-size:0.55rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--color-ash);
+  border-bottom:1px solid var(--color-iron);
+  display:flex;justify-content:space-between;
+}
+.ob-rows{display:flex;flex-direction:column;flex:1;overflow:hidden;padding:0.2rem 0}
+.ob-row{
+  display:grid;grid-template-columns:70px 1fr 50px;
+  padding:0.25rem 0.7rem;
+  align-items:center;position:relative;
+}
+.ob-bar{position:absolute;right:0;top:0;bottom:0;opacity:0.07;border-radius:1px 0 0 1px;}
+.ob-bar.ask{background:var(--red)}
+.ob-bar.bid{background:var(--color-ember-gold)}
+.ob-price{font-family:var(--font-mono);font-size:0.56rem;font-weight:600;font-feature-settings:"tnum";}
+.ob-size{font-family:var(--font-mono);font-size:0.52rem;color:var(--color-silver);text-align:right;font-feature-settings:"tnum";}
+.ob-depth{height:3px;border-radius:2px;margin:0 0.5rem;}
+.ob-spread-row{
+  border-top:1px solid var(--color-iron);border-bottom:1px solid var(--color-iron);
+  padding:0.25rem 0.7rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.ob-spread-label{font-size:0.48rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-ash);}
+.ob-spread-val{font-family:var(--font-mono);font-size:0.56rem;color:var(--color-ember-gold);font-feature-settings:"tnum";}
+
+/* MacBook chin */
+.macbook-chin{
+  height:20px;
+  background:linear-gradient(180deg,#1a1a1a,#111);
+  border-radius:0 0 4px 4px;
+}
+.macbook-base{
+  width:110%;
+  margin-left:-5%;
+  height:14px;
+  background:linear-gradient(180deg,#222,#111);
+  border-radius:0 0 8px 8px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.5);
+}
+.macbook-foot{
+  width:35%;
+  margin:0 auto;
+  height:6px;
+  background:#0a0a0a;
+  border-radius:0 0 12px 12px;
+}
+
+/* Glow under macbook */
+.macbook-glow{
+  position:absolute;bottom:-60px;left:10%;right:10%;height:120px;
+  background:radial-gradient(ellipse, rgba(174,147,87,0.12) 0%, transparent 70%);
+  filter:blur(20px);pointer-events:none;
+}
+
+/* ─── DIVIDER ─── */
+.rule{border:none;border-top:1px solid var(--color-iron);margin:0}
+
+/* ─── STATS BAR ─── */
+.stats-bar{
+  display:flex;justify-content:center;gap:0;padding:0;
+  border-bottom:1px solid var(--color-iron);
+}
+.stat-item{
+  flex:1;max-width:280px;
+  padding:var(--spacing-40) var(--spacing-32);
+  border-right:1px solid var(--color-iron);
+  text-align:center;
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:var(--font-serif);
+  font-size:var(--text-heading-lg);
+  font-weight:400;
+  line-height:1.13;
+  letter-spacing:-0.022px;
+  color:var(--color-paper);
+  display:block;margin-bottom:var(--spacing-8);
+  font-feature-settings:"tnum";
+}
+.stat-num span{color:var(--color-ember-gold)}
+.stat-lbl{
+  font-family:var(--font-sans);
+  font-size:var(--text-caption);
+  font-weight:500;
+  letter-spacing:0.01px;
+  color:var(--color-ash);
+}
+
+/* ─── SECTIONS ─── */
+.wrap{max-width:1200px;margin:0 auto;padding:0 var(--spacing-40)}
+
+.s-eyebrow{
+  font-family:var(--font-sans);
+  font-size:var(--text-caption);
+  font-weight:500;
+  letter-spacing:0.01px;
+  color:var(--color-ember-gold);
+  margin-bottom:var(--spacing-16);
+}
+.s-h2{
+  font-family:var(--font-serif);
+  font-size:clamp(var(--text-heading),3vw,var(--text-heading-lg));
+  font-weight:400;
+  line-height:1.13;
+  letter-spacing:-0.022px;
+  color:var(--color-paper);
+  margin-bottom:var(--spacing-16);
+}
+.s-body{
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:300;
+  line-height:1.56;
+  color:var(--color-silver);
+  max-width:52ch;
+}
+
+/* ─── FEATURES GRID ─── */
+.features{padding:120px 0;}
+.features-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--color-iron);
+  border:1px solid var(--color-iron);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  margin-top:var(--spacing-40);
+}
+.feat-card{
+  background:var(--color-slate);
+  padding:var(--spacing-32);
+  transition:background 0.2s;
+}
+.feat-card:hover{background:var(--color-graphite)}
+.feat-icon{
+  width:36px;height:36px;
+  border:1px solid var(--color-iron);
+  border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:var(--spacing-24);
+  background:var(--color-graphite);
+}
+.feat-icon svg{width:18px;height:18px;stroke:var(--color-ember-gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.feat-title{
+  font-family:var(--font-sans);
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-0.013px;
+  color:var(--color-bone);
+  margin-bottom:var(--spacing-8);
+  line-height:1.33;
+}
+.feat-desc{
+  font-family:var(--font-sans);
+  font-size:14px;
+  font-weight:400;
+  color:var(--color-pearl);
+  line-height:1.56;
+}
+
+/* ─── HOW IT WORKS ─── */
+.how{padding:120px 0}
+.steps{margin-top:var(--spacing-40);display:flex;flex-direction:column}
+.step{
+  display:grid;grid-template-columns:56px 1fr;
+  gap:0 var(--spacing-24);
+  padding:var(--spacing-24) 0;
+  border-top:1px solid var(--color-iron);
+}
+.step:last-child{border-bottom:1px solid var(--color-iron)}
+.step-n{
+  font-family:var(--font-mono);
+  font-size:var(--text-caption);
+  color:var(--color-steel);
+  padding-top:0.2rem;
+  letter-spacing:0.01em;
+}
+.step-title{
+  font-family:var(--font-serif);
+  font-size:var(--text-heading-sm);
+  font-weight:400;
+  line-height:1.33;
+  letter-spacing:-0.013px;
+  color:var(--color-paper);
+  margin-bottom:var(--spacing-8);
+}
+.step-desc{
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:400;
+  color:var(--color-silver);
+  line-height:1.56;
+  max-width:52ch;
+}
+
+/* ─── MARKET STRIP ─── */
+.market{
+  background:var(--color-graphite);
+  border-top:1px solid var(--color-iron);
+  border-bottom:1px solid var(--color-iron);
+  padding:120px 0;
+}
+.market-inner{max-width:1200px;margin:0 auto;padding:0 var(--spacing-40)}
+.market-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:var(--spacing-16);
+  margin-top:var(--spacing-40);
+}
+.m-card{
+  border:1px solid var(--color-iron);
+  border-radius:var(--radius-lg);
+  padding:var(--spacing-32);
+  background:var(--color-slate);
+  position:relative;overflow:hidden;
+  transition:background 0.2s;
+}
+.m-card:hover{background:var(--color-inkwell)}
+.m-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg, transparent, var(--color-ember-gold), transparent);
+  opacity:0.35;
+}
+.m-val{
+  font-family:var(--font-serif);
+  font-size:var(--text-heading-lg);
+  font-weight:400;
+  line-height:1.13;
+  letter-spacing:-0.022px;
+  color:var(--color-paper);
+  display:block;margin-bottom:var(--spacing-4);
+  font-feature-settings:"tnum";
+}
+.m-tag{
+  font-family:var(--font-sans);
+  font-size:var(--text-caption);
+  font-weight:500;
+  letter-spacing:0.01px;
+  color:var(--color-ember-gold);
+  display:block;margin-bottom:var(--spacing-12);
+}
+.m-desc{
+  font-family:var(--font-sans);
+  font-size:14px;
+  font-weight:400;
+  color:var(--color-pearl);
+  line-height:1.56;
+}
+
+/* ─── CTA ─── */
+.cta-wrap{
+  text-align:center;
+  padding:160px var(--spacing-40);
+  max-width:640px;margin:0 auto;
+}
+.cta-h{
+  font-family:var(--font-serif);
+  font-size:clamp(var(--text-heading),3.5vw,var(--text-display));
+  font-weight:400;
+  line-height:1.0;
+  letter-spacing:-0.025px;
+  color:var(--color-paper);
+  margin-bottom:var(--spacing-16);
+}
+.cta-sub{
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:300;
+  color:var(--color-silver);
+  margin-bottom:var(--spacing-40);
+  line-height:1.56;
+}
+/* Email capture — DESIGN.md spec: flush pair, no gap, 2px radius */
+.email-row{display:flex;gap:0;max-width:420px;margin:0 auto}
+.email-row input{
+  flex:1;
+  background:transparent;
+  border:1px solid var(--color-fog);
+  border-right:none;
+  border-radius:var(--radius-sm) 0 0 var(--radius-sm);
+  padding:14px 20px;
+  color:var(--color-bone);
+  font-size:var(--text-body-lg);
+  font-family:var(--font-sans);
+  font-weight:400;
+  outline:none;
+  transition:border-color 0.2s;
+}
+.email-row input::placeholder{color:var(--color-ash)}
+.email-row input:focus{border-color:var(--color-silver)}
+.email-row button{
+  background:var(--color-paper);
+  color:var(--color-inkwell);
+  border:1px solid var(--color-paper);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:14px 20px;
+  font-family:var(--font-sans);
+  font-size:var(--text-body-lg);
+  font-weight:500;
+  letter-spacing:-0.007px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:opacity 0.2s;
+}
+.email-row button:hover{opacity:0.88}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--color-iron);
+  padding:var(--spacing-24) var(--spacing-40);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.f-logo{
+  font-family:var(--font-serif);
+  font-size:var(--text-body-lg);
+  font-weight:400;
+  color:var(--color-silver);
+  letter-spacing:0.01em;
+}
+.f-copy{
+  font-family:var(--font-sans);
+  font-size:var(--text-caption);
+  font-weight:400;
+  color:var(--color-ash);
+  letter-spacing:0.01px;
+}
+.f-link{
+  font-family:var(--font-sans);
+  font-size:var(--text-caption);
+  font-weight:500;
+  color:var(--color-silver);
+  text-decoration:none;
+  letter-spacing:0.01px;
+  transition:color 0.2s;
+}
+.f-link:hover{color:var(--color-bone)}
+
+/* ─── MOBILE ─── */
+@media(max-width:700px){
+  .card-nav-container{width:94%;top:48px}
+  .hero{padding:9rem 1.2rem 3rem}
+  .hero-headline{font-size:2.5rem}
+  .macbook-wrap{max-width:100%}
+  .screen-body{grid-template-columns:1fr}
+  .panel-right{display:none}
+  .stats-bar{flex-direction:column}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(30,122,74,0.12);padding:1.8rem}
+  .wrap{padding:0 1.2rem}
+  .features-grid{grid-template-columns:1fr}
+  .market-grid{grid-template-columns:1fr}
+  .market-inner{padding:0 1.2rem}
+  .cta-wrap{padding:5rem 1.2rem}
+  .email-row{flex-direction:column}
+  footer{flex-direction:column;gap:0.8rem;text-align:center;padding:1.5rem 1.2rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-badge-dot,.status-dot{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar" id="top-bar">
+  <span class="top-bar-dot"></span>
+  Datic Currency is now in private beta —
+  <a href="https://www.linkedin.com/company/daticcurrency/" target="_blank" rel="noopener">Follow us on LinkedIn</a>
+  for launch updates
+  <button class="top-bar-close" onclick="document.getElementById('top-bar').style.display='none';document.querySelector('.card-nav-container').style.top='8px';" aria-label="Close">×</button>
+</div>
+
+<!-- CARD NAV -->
+<div class="card-nav-container">
+  <div class="card-nav" id="card-nav">
+
+    <!-- Top bar -->
+    <div class="card-nav-top">
+      <!-- Hamburger -->
+      <div class="hamburger-menu" id="hamburger" role="button" tabindex="0"
+           aria-label="Open menu" aria-expanded="false"
+           style="color:#7a9282;">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+      </div>
+
+      <!-- Logo centered -->
+      <div class="cn-logo-container">
+        <a href="#"><img src="logo.png" alt="Datic Currency" class="cn-logo"></a>
+      </div>
+
+      <!-- Right: LinkedIn + CTA -->
+      <div class="cn-right">
+        <a href="https://www.linkedin.com/company/daticcurrency/" target="_blank" rel="noopener" class="cn-li-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="#waitlist" class="cn-cta-btn">Early Access</a>
+      </div>
+    </div>
+
+    <!-- Expandable card content -->
+    <div class="card-nav-content" id="card-nav-content" aria-hidden="true">
+
+      <div class="nav-card" style="background:#1c1d22;">
+        <div class="nav-card-label">Platform</div>
+        <div class="nav-card-links">
+          <a href="#how" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> How It Works
+          </a>
+          <a href="#" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> Data Marketplace
+          </a>
+          <a href="#" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> ESG Reports
+          </a>
+        </div>
+      </div>
+
+      <div class="nav-card" style="background:#121317;">
+        <div class="nav-card-label">Market</div>
+        <div class="nav-card-links">
+          <a href="#market" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> Opportunity
+          </a>
+          <a href="#" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> Tokenisation
+          </a>
+          <a href="#" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> Investor Info
+          </a>
+        </div>
+      </div>
+
+      <div class="nav-card" style="background:#08080a;">
+        <div class="nav-card-label">Connect</div>
+        <div class="nav-card-links">
+          <a href="#waitlist" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> Early Access
+          </a>
+          <a href="https://www.linkedin.com/company/daticcurrency/" target="_blank" rel="noopener" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> LinkedIn
+          </a>
+          <a href="mailto:hello@daticurrency.com" class="nav-card-link">
+            <span class="nav-card-arrow">↗</span> Email Us
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="shape-grid-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-badge"><span class="hero-badge-dot"></span>Now in private beta</div>
+  <h1 class="hero-headline">The world's first <em>financial market</em> for data.</h1>
+  <p class="hero-sub">Proprietary datasets tokenised into tradeable shares. Buy exclusively. Sell publicly. Invest in data like you invest in companies.</p>
+  <div class="hero-actions">
+    <a href="#waitlist" class="btn-p">Request Early Access</a>
+    <a href="#how" class="btn-g">How It Works</a>
+  </div>
+
+  <!-- MACBOOK MOCKUP -->
+  <div class="macbook-wrap">
+    <div class="macbook">
+      <div class="macbook-top-bar">
+        <div class="traffic-lights">
+          <div class="tl tl-r"></div>
+          <div class="tl tl-y"></div>
+          <div class="tl tl-g"></div>
+        </div>
+        <div class="notch"></div>
+      </div>
+
+      <div class="macbook-screen">
+        <!-- Screen top bar -->
+        <div class="screen-bar">
+          <div class="screen-tabs">
+            <div class="s-tab active">Market</div>
+            <div class="s-tab">Portfolio</div>
+            <div class="s-tab">Bids</div>
+          </div>
+          <div class="screen-spacer"></div>
+          <div class="screen-status">
+            <div class="status-dot"></div>
+            LIVE · 14:32:07
+          </div>
+        </div>
+
+        <!-- Screen body -->
+        <div class="screen-body">
+          <!-- Left: chart + tickers -->
+          <div class="panel-left">
+            <div class="chart-area">
+              <div class="chart-header">
+                <span class="chart-symbol">FINDATA-S1</span>
+                <span class="chart-price">₹ 4,218.50</span>
+                <span class="chart-change">▲ 8.4%</span>
+              </div>
+              <!-- Sparkline SVG -->
+              <svg class="sparkline-svg" viewBox="0 0 420 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ae9357" stop-opacity="0.5"/>
+                    <stop offset="40%" stop-color="#fff0cc" stop-opacity="0.18"/>
+                    <stop offset="70%" stop-color="#ae9357" stop-opacity="0.08"/>
+                    <stop offset="100%" stop-color="#bd9d4f" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,72 C20,70 30,68 50,62 C70,56 80,50 100,45 C120,40 130,48 150,38 C170,28 180,32 200,25 C220,18 230,30 250,22 C270,14 280,20 300,15 C320,10 340,18 360,12 C380,6 400,10 420,8 L420,90 L0,90 Z" fill="url(#sg)"/>
+                <path d="M0,72 C20,70 30,68 50,62 C70,56 80,50 100,45 C120,40 130,48 150,38 C170,28 180,32 200,25 C220,18 230,30 250,22 C270,14 280,20 300,15 C320,10 340,18 360,12 C380,6 400,10 420,8" fill="none" stroke="#cc9166" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="420" cy="8" r="3" fill="#cc9166"/>
+                <circle cx="420" cy="8" r="6" fill="#cc9166" opacity="0.15"/>
+              </svg>
+            </div>
+
+            <!-- Tickers -->
+            <div class="ticker-table">
+              <div class="ticker-head">
+                <span>Dataset</span><span style="text-align:right">Price</span><span style="text-align:right">Volume</span><span style="text-align:right">24h</span>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">FINDATA-S1</div><div class="t-sub">FinTech · Series 1</div></div>
+                <div class="t-price">₹4,218</div>
+                <div class="t-vol">2.4M</div>
+                <div class="t-chg up">+8.4%</div>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">ESGMSME-A3</div><div class="t-sub">ESG · MSME Cluster</div></div>
+                <div class="t-price">₹1,870</div>
+                <div class="t-vol">880K</div>
+                <div class="t-chg up">+3.1%</div>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">RETLBHV-B2</div><div class="t-sub">Retail · Behaviour</div></div>
+                <div class="t-price">₹6,540</div>
+                <div class="t-vol">1.1M</div>
+                <div class="t-chg dn">−1.2%</div>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">CRDRISK-C1</div><div class="t-sub">Credit Risk · Alt</div></div>
+                <div class="t-price">₹3,105</div>
+                <div class="t-vol">670K</div>
+                <div class="t-chg up">+5.7%</div>
+              </div>
+              <div class="ticker-row">
+                <div><div class="t-name">LOGIST-D1</div><div class="t-sub">Logistics · Route</div></div>
+                <div class="t-price">₹2,290</div>
+                <div class="t-vol">430K</div>
+                <div class="t-chg dn">−0.4%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: order book -->
+          <div class="panel-right">
+            <div class="ob-header">
+              <span>Order Book</span><span>FINDATA-S1</span>
+            </div>
+            <div class="ob-rows">
+              <!-- Asks -->
+              <div class="ob-row"><div class="ob-bar ask" style="width:55%"></div><span class="ob-price dn">4,310</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:55%"></div><span class="ob-size">184</span></div>
+              <div class="ob-row"><div class="ob-bar ask" style="width:40%"></div><span class="ob-price dn">4,280</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:40%"></div><span class="ob-size">230</span></div>
+              <div class="ob-row"><div class="ob-bar ask" style="width:65%"></div><span class="ob-price dn">4,260</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:65%"></div><span class="ob-size">115</span></div>
+              <div class="ob-row"><div class="ob-bar ask" style="width:30%"></div><span class="ob-price dn">4,240</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:30%"></div><span class="ob-size">340</span></div>
+              <div class="ob-row"><div class="ob-bar ask" style="width:80%"></div><span class="ob-price dn">4,225</span><div class="ob-depth" style="background:rgba(224,85,85,0.3);width:80%"></div><span class="ob-size">92</span></div>
+              <div class="ob-spread-row">
+                <span class="ob-spread-label">Spread</span>
+                <span class="ob-spread-val">₹6.50</span>
+              </div>
+              <!-- Bids -->
+              <div class="ob-row"><div class="ob-bar bid" style="width:70%"></div><span class="ob-price up">4,218</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:70%"></div><span class="ob-size">410</span></div>
+              <div class="ob-row"><div class="ob-bar bid" style="width:45%"></div><span class="ob-price up">4,200</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:45%"></div><span class="ob-size">275</span></div>
+              <div class="ob-row"><div class="ob-bar bid" style="width:55%"></div><span class="ob-price up">4,185</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:55%"></div><span class="ob-size">190</span></div>
+              <div class="ob-row"><div class="ob-bar bid" style="width:35%"></div><span class="ob-price up">4,160</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:35%"></div><span class="ob-size">520</span></div>
+              <div class="ob-row"><div class="ob-bar bid" style="width:60%"></div><span class="ob-price up">4,130</span><div class="ob-depth" style="background:rgba(52,201,110,0.3);width:60%"></div><span class="ob-size">145</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="macbook-chin"></div>
+    </div>
+    <div class="macbook-base"></div>
+    <div class="macbook-foot"></div>
+    <div class="macbook-glow"></div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">$<span>4</span>T</span>
+    <span class="stat-lbl">Total Addressable Market</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num"><span>0</span></span>
+    <span class="stat-lbl">Direct competitors globally</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num"><span>1.2</span>%</span>
+    <span class="stat-lbl">Commission per transaction</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num"><span>87</span>%</span>
+    <span class="stat-lbl">MSMEs with no ESG platform</span>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="wrap">
+    <p class="s-eyebrow">The Platform</p>
+    <h2 class="s-h2">Data is an asset. Now it trades like one.</h2>
+    <p class="s-body">We built the infrastructure layer that has never existed — a legal, transparent marketplace where proprietary datasets become tradeable financial instruments.</p>
+
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><circle cx="17.5" cy="17.5" r="3.5"/></svg>
+        </div>
+        <h3 class="feat-title">Exclusive Dataset Acquisition</h3>
+        <p class="feat-desc">Win a dataset at auction and own it exclusively — permanently. No competitor can ever buy the same data. The first and only mechanism of its kind.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <h3 class="feat-title">Public Data Share Market</h3>
+        <p class="feat-desc">List your proprietary dataset and sell shares in it to public investors. Like an IPO for your data. The more in-demand the data, the higher the share price rises.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feat-title">Data Escrow & Insurance</h3>
+        <p class="feat-desc">Every transaction is protected by our Data Escrow system and a Guaranteed Buy-Back programme — ensuring full trust on both sides of every trade.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M2 12h4M18 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3 class="feat-title">ESG Reports for MSMEs</h3>
+        <p class="feat-desc">We create verified, affordable ESG reports for small businesses and turn them into tradeable data assets on DC — unlocking a market that has never had a platform.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- HOW IT WORKS -->
+<div class="how" id="how">
+  <div class="wrap">
+    <p class="s-eyebrow">How It Works</p>
+    <h2 class="s-h2">A new financial primitive for the data economy.</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-n">01</span>
+        <div>
+          <h3 class="step-title">List &amp; Tokenise</h3>
+          <p class="step-desc">A company securely lists a verified, anonymised dataset. We tokenise it into a fixed number of "data shares" — representing a stake in that series, which grows in value as new datasets are merged into it over time.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">02</span>
+        <div>
+          <h3 class="step-title">Bid for Insight</h3>
+          <p class="step-desc">Corporate buyers compete in a transparent auction for the main 40% share block. To gain exclusive access to the underlying data, the winning bidder must acquire a majority stake (≥51%). Competitive bidding drives the price.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">03</span>
+        <div>
+          <h3 class="step-title">Trade &amp; Invest</h3>
+          <p class="step-desc">50% of shares are released to public investors on our live open market. A self-regulating, formula-driven pricing engine (α_dynamic) determines real-time value. Long-term holders earn as the dataset compounds in value.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-n">04</span>
+        <div>
+          <h3 class="step-title">Evolve &amp; Earn</h3>
+          <p class="step-desc">Data sellers earn from the auction, the public market, and future merges. Investors earn as demand rises. DC earns 1.2% on every buy and sell — a scalable, exchange-model revenue stream with no precedent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARKET STRIP -->
+<div class="market" id="market">
+  <div class="market-inner">
+    <p class="s-eyebrow">Market Opportunity</p>
+    <h2 class="s-h2">A $4 trillion market with no incumbent to displace.</h2>
+    <div class="market-grid">
+      <div class="m-card">
+        <span class="m-val">$4T</span>
+        <span class="m-tag">TAM</span>
+        <p class="m-desc">The entire global data economy — analytics, storage, AI, and enterprise data services.</p>
+      </div>
+      <div class="m-card">
+        <span class="m-val">$800B</span>
+        <span class="m-tag">SAM</span>
+        <p class="m-desc">Tradable, non-personal corporate data assets we are directly positioned to serve and monetise.</p>
+      </div>
+      <div class="m-card">
+        <span class="m-val">$800M</span>
+        <span class="m-tag">SOM — Year 2</span>
+        <p class="m-desc">Our 2-year target: capture 0.1% of the SAM and establish the definitive standard for data trading.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-wrap" id="waitlist">
+  <h2 class="cta-h">Be first on the world's first data exchange.</h2>
+  <p class="cta-sub">Early partners receive priority listing access and reduced fees at launch.</p>
+  <div class="email-row">
+    <input type="email" placeholder="your@company.com">
+    <button type="button">Join Waitlist</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="f-logo">Datic Currency</span>
+  <span class="f-copy">© 2024 Datic Currency. All rights reserved.</span>
+  <a href="https://daticurrency.com" class="f-link">daticurrency.com ↗</a>
+  <a href="https://www.linkedin.com/company/daticcurrency/" target="_blank" rel="noopener" class="f-link" style="display:inline-flex;align-items:center;gap:0.35rem;">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    LinkedIn
+  </a>
+</footer>
+
+<script>
+// Waitlist
+document.querySelector('.email-row button').addEventListener('click',function(){
+  const inp = document.querySelector('.email-row input');
+  if(inp.value && inp.value.includes('@')){
+    this.textContent='Joined ✓';
+    this.style.background='#0e3320';
+    this.style.color='#34c96e';
+    inp.value='';
+    inp.placeholder="You're on the list.";
+  } else {
+    inp.focus();
+    inp.style.borderColor='#a8884a';
+    setTimeout(()=>inp.style.borderColor='',1500);
+  }
+});
+
+// Ticker tab switching (visual only)
+document.querySelectorAll('.s-tab').forEach(t=>{
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.s-tab').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Subtle ticker animation
+const prices = document.querySelectorAll('.t-price');
+const changes = document.querySelectorAll('.t-chg');
+setInterval(()=>{
+  const idx = Math.floor(Math.random()*prices.length);
+  const dir = Math.random()>0.4 ? 1 : -1;
+  const delta = (Math.random()*15+2).toFixed(0);
+  const current = parseInt(prices[idx].textContent.replace(/[₹,]/g,''));
+  const next = current + dir*parseInt(delta);
+  prices[idx].textContent = '₹'+next.toLocaleString('en-IN');
+  const pct = ((dir*delta/current)*100).toFixed(1);
+  const el = changes[idx];
+  if(dir>0){el.textContent='+'+pct+'%';el.className='t-chg up'}
+  else{el.textContent='−'+Math.abs(pct)+'%';el.className='t-chg dn'}
+}, 1800);
+
+// Live clock
+function tick(){
+  const el = document.querySelector('.screen-status');
+  if(el){
+    const now = new Date();
+    const t = now.toTimeString().slice(0,8);
+    el.innerHTML='<div class="status-dot"></div>LIVE · '+t;
+  }
+}
+setInterval(tick,1000);
+</script>
+
+<!-- ShapeGrid Background -->
+<script>
+(function(){
+  const canvas = document.getElementById('shape-grid-canvas');
+  const ctx = canvas.getContext('2d');
+  const SQUARE = 40;
+  const BORDER = '#1c1d22';   // slate — iron grid lines
+  const HOVER_FILL = '#121317'; // graphite on hover
+  const SPEED = 0.5;
+  const BASE_BG = '#08080a';
+
+  let cols, rows, cells, mouseX=-999, mouseY=-999, offset=0;
+  let rafId;
+
+  function resize(){
+    const hero = canvas.parentElement;
+    canvas.width  = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+    init();
+  }
+
+  function init(){
+    cols = Math.ceil(canvas.width  / SQUARE) + 2;
+    rows = Math.ceil(canvas.height / SQUARE) + 2;
+    cells = [];
+    for(let r=0; r<rows; r++){
+      for(let c=0; c<cols; c++){
+        cells.push({ c, r, fill: 0 }); // fill 0–1
+      }
+    }
+  }
+
+  function draw(ts){
+    rafId = requestAnimationFrame(draw);
+    // diagonal offset: moves grid diagonally
+    offset = (offset + SPEED * 0.4) % SQUARE;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = BASE_BG;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    cells.forEach(cell => {
+      // diagonal shift: x and y offset together
+      const x = cell.c * SQUARE - offset;
+      const y = cell.r * SQUARE - offset;
+
+      // distance from mouse
+      const cx = x + SQUARE/2;
+      const cy = y + SQUARE/2;
+      const dist = Math.hypot(cx - mouseX, cy - mouseY);
+      const target = dist < SQUARE * 1.5 ? 1 : 0;
+
+      // smooth fill interpolation
+      cell.fill += (target - cell.fill) * 0.12;
+
+      // draw square
+      ctx.beginPath();
+      ctx.rect(x, y, SQUARE, SQUARE);
+
+      if(cell.fill > 0.01){
+        // interpolate between base and hover fill
+        ctx.fillStyle = lerpColor(BASE_BG, HOVER_FILL, cell.fill);
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = BORDER;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    });
+  }
+
+  // Simple hex color lerp
+  function lerpColor(a, b, t){
+    const ah = parseInt(a.replace('#',''), 16);
+    const bh = parseInt(b.replace('#',''), 16);
+    const ar = (ah>>16)&0xff, ag=(ah>>8)&0xff, ab=ah&0xff;
+    const br = (bh>>16)&0xff, bg=(bh>>8)&0xff, bb=bh&0xff;
+    const rr = Math.round(ar+(br-ar)*t);
+    const rg = Math.round(ag+(bg-ag)*t);
+    const rb = Math.round(ab+(bb-ab)*t);
+    return `rgb(${rr},${rg},${rb})`;
+  }
+
+  // Track mouse over the hero
+  const hero = canvas.parentElement;
+  hero.addEventListener('mousemove', e=>{
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+  });
+  hero.addEventListener('mouseleave', ()=>{ mouseX=-999; mouseY=-999; });
+
+  // Touch support
+  hero.addEventListener('touchmove', e=>{
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches[0];
+    mouseX = t.clientX - rect.left;
+    mouseY = t.clientY - rect.top;
+  }, { passive:true });
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+</script>
+
+<!-- GSAP for CardNav -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function(){
+  const nav     = document.getElementById('card-nav');
+  const burger  = document.getElementById('hamburger');
+  const content = document.getElementById('card-nav-content');
+  const cards   = Array.from(document.querySelectorAll('.nav-card'));
+
+  let isOpen = false;
+  let tl = null;
+
+  function buildTimeline(){
+    if(tl) tl.kill();
+    const isMobile = window.innerWidth <= 768;
+    const expandedH = isMobile
+      ? 62 + cards.reduce((a,c)=>a+c.offsetHeight+6, 0) + 16
+      : 260;
+
+    gsap.set(nav, { height: 62, overflow:'hidden' });
+    gsap.set(cards, { y: 40, opacity: 0 });
+
+    tl = gsap.timeline({ paused: true });
+    tl.to(nav, { height: expandedH, duration: 0.42, ease:'power3.out' });
+    tl.to(cards, { y:0, opacity:1, duration:0.35, ease:'power3.out', stagger:0.07 }, '-=0.15');
+    return tl;
+  }
+
+  function toggle(){
+    if(!tl) buildTimeline();
+    if(!isOpen){
+      isOpen = true;
+      burger.classList.add('open');
+      burger.setAttribute('aria-expanded','true');
+      nav.classList.add('open');
+      tl.play(0);
+    } else {
+      isOpen = false;
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded','false');
+      tl.reverse().eventCallback('onReverseComplete', ()=>{ nav.classList.remove('open'); });
+    }
+  }
+
+  burger.addEventListener('click', toggle);
+  burger.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }});
+
+  // Close when a nav link is clicked
+  document.querySelectorAll('.nav-card-link').forEach(l=>{
+    l.addEventListener('click', ()=>{ if(isOpen) toggle(); });
+  });
+
+  // Rebuild on resize
+  window.addEventListener('resize', ()=>{ if(isOpen){ buildTimeline(); tl.progress(1); } else { tl=null; } });
+
+  // Init
+  buildTimeline();
+})();
+</script>
+</body>
+</html>
