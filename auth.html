@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign In | Datic Currency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Urbanist:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0e1410;
+    --paper:#f4f2ec;
+    --paper-soft:#eeece4;
+    --green-deep:#0d3a1f;
+    --green:#127a34;
+    --green-bright:#8fe23c;
+    --border: rgba(15,20,15,0.12);
+    --mono: 'Inter', sans-serif;
+    --serif: 'Playfair Display', serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--mono);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+
+  .wrap{
+    position:relative;
+    z-index:2;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  .navbar{
+    position:fixed;
+    top:20px;
+    left:0; right:0;
+    z-index:50;
+    display:flex;
+    justify-content:center;
+    pointer-events:none;
+  }
+  .nav-card{
+    pointer-events:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:nowrap;
+    gap:12px;
+    width:min(680px, calc(100% - 40px));
+    background:rgba(255,255,255,0.72);
+    backdrop-filter:blur(14px) saturate(160%);
+    -webkit-backdrop-filter:blur(14px) saturate(160%);
+    border:1px solid rgba(15,20,15,0.06);
+    border-radius:16px;
+    padding:10px 12px 10px 18px;
+    box-shadow: 0 10px 30px rgba(13,58,31,0.14), 0 2px 8px rgba(13,58,31,0.06);
+  }
+  .nav-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+    flex-shrink:1;
+  }
+  .nav-brand img{
+    height:44px;
+    width:auto;
+    display:block;
+    flex-shrink:0;
+  }
+  .nav-brand span{
+    font-family:'Urbanist', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:0.4px;
+    color:#111;
+    white-space:nowrap;
+    line-height:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .nav-back{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--green-deep);
+    color:var(--paper);
+    border:none;
+    border-radius:12px;
+    padding:11px 18px;
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.2px;
+    cursor:pointer;
+    white-space:nowrap;
+    flex-shrink:0;
+    text-decoration:none;
+    transition: background .2s ease, transform .2s ease;
+  }
+  .nav-back:hover{ background:#6b7280; transform: translateY(-1px); }
+
+  @media(max-width:480px){
+    .nav-card{ padding:8px 8px 8px 12px; gap:6px; width:calc(100% - 24px); }
+    .nav-brand img{ height:30px; }
+    .nav-brand span{ font-size:13px; }
+    .nav-back{ padding:8px 10px; font-size:11.5px; }
+  }
+  @media(max-width:360px){
+    .nav-brand span{ font-size:11.5px; }
+    .nav-back{ padding:7px 9px; font-size:11px; }
+  }
+
+  /* ---------- AUTH SECTION ---------- */
+  .auth-section{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:150px 20px 60px;
+  }
+  .auth-card{
+    width:100%;
+    max-width:420px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:40px 36px 36px;
+    box-shadow: 0 20px 60px rgba(13,58,31,0.10);
+  }
+  .auth-eyebrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    color:var(--green);
+    margin-bottom:10px;
+  }
+  .auth-eyebrow::before{
+    content:'';
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--green-bright);
+    box-shadow:0 0 0 4px rgba(143,226,60,0.25);
+  }
+  .auth-card h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:30px;
+    letter-spacing:-0.5px;
+    text-align:center;
+    margin-bottom:8px;
+  }
+  .auth-card .auth-sub{
+    text-align:center;
+    font-size:13.5px;
+    color:rgba(14,20,16,0.6);
+    font-weight:500;
+    margin-bottom:26px;
+  }
+
+  /* ---------- TABS ---------- */
+  .auth-tabs{
+    display:flex;
+    background:var(--paper-soft);
+    border-radius:14px;
+    padding:4px;
+    margin-bottom:26px;
+  }
+  .auth-tab{
+    flex:1;
+    text-align:center;
+    padding:10px 0;
+    border:none;
+    background:transparent;
+    border-radius:10px;
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.2px;
+    color:rgba(14,20,16,0.55);
+    cursor:pointer;
+    transition: background .25s ease, color .25s ease;
+  }
+  .auth-tab.active{
+    background:var(--green-deep);
+    color:var(--paper);
+  }
+
+  /* ---------- FORM ---------- */
+  .auth-form{ display:flex; flex-direction:column; gap:14px; }
+  .auth-form.hidden{ display:none; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.3px;
+    color:rgba(14,20,16,0.7);
+  }
+  .field input{
+    font-family:var(--mono);
+    font-size:14px;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--paper);
+    color:var(--ink);
+    outline:none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input:focus{
+    border-color:var(--green);
+    box-shadow:0 0 0 3px rgba(18,122,52,0.15);
+  }
+  .field-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:12px;
+  }
+  .field-row a{
+    color:var(--green-deep);
+    font-weight:600;
+  }
+  .field-row a:hover{ text-decoration:underline; }
+
+  .submit-btn{
+    margin-top:6px;
+    background:var(--green-deep);
+    color:var(--paper);
+    border:none;
+    border-radius:12px;
+    padding:13px 0;
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:0.2px;
+    cursor:pointer;
+    transition: background .25s ease, transform .25s ease;
+    width:100%;
+  }
+  .submit-btn:hover:not(:disabled){ background:#6b7280; transform: translateY(-1px); }
+  .submit-btn:disabled{ opacity:0.6; cursor:not-allowed; }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:22px 0 18px;
+    color:rgba(14,20,16,0.4);
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+  }
+  .divider::before, .divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--border);
+  }
+
+  .google-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 0;
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:13.5px;
+    color:var(--ink);
+    cursor:pointer;
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .google-btn:hover{ background:var(--paper-soft); border-color:rgba(15,20,15,0.2); }
+  .google-btn svg{ width:18px; height:18px; flex-shrink:0; }
+
+  .auth-foot{
+    text-align:center;
+    margin-top:22px;
+    font-size:12.5px;
+    color:rgba(14,20,16,0.55);
+  }
+  .auth-foot a{
+    color:var(--green-deep);
+    font-weight:700;
+  }
+  .auth-foot a:hover{ text-decoration:underline; }
+
+  .auth-status{
+    display:none;
+    text-align:center;
+    font-size:12.5px;
+    font-weight:600;
+    margin-bottom:14px;
+    padding:8px 12px;
+    border-radius:10px;
+  }
+
+  .toast{
+    position:fixed;
+    bottom:26px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--green-deep);
+    color:var(--paper);
+    padding:12px 22px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    box-shadow:0 10px 30px rgba(13,58,31,0.3);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease;
+    z-index:100;
+    white-space:nowrap;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 480px){
+    .auth-card{ padding:32px 24px 28px; border-radius:20px; }
+    .auth-card h1{ font-size:25px; }
+    .nav-card{ padding:8px 10px 8px 12px; gap:8px; }
+    .nav-brand img{ height:32px; }
+    .nav-brand span{ font-size:14px; }
+    .nav-back{ padding:8px 12px; font-size:12px; border-radius:10px; }
+  }
+  @media (max-width: 360px){
+    .nav-brand span{ font-size:12px; }
+    .nav-back{ padding:7px 10px; font-size:11px; }
+    .nav-brand img{ height:28px; }
+  }
+</style>
+</head>
+<body>
+
+<style>
+  .inapp-banner{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:999;
+    background:rgba(0,0,0,0.92);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .inapp-banner.show{ display:flex; }
+  .inapp-box{
+    background:#fff;
+    border-radius:24px;
+    padding:36px 32px;
+    max-width:360px;
+    width:100%;
+    text-align:center;
+  }
+  .inapp-box .inapp-icon{
+    font-size:48px;
+    margin-bottom:16px;
+  }
+  .inapp-box h2{
+    font-family:'DM Serif Display', serif;
+    font-size:22px;
+    color:#0e1410;
+    margin-bottom:10px;
+  }
+  .inapp-box p{
+    font-size:13.5px;
+    color:rgba(14,20,16,0.65);
+    line-height:1.6;
+    margin-bottom:22px;
+  }
+  .inapp-box .inapp-steps{
+    background:#f4f2ec;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:22px;
+    text-align:left;
+    font-size:13px;
+    color:#0e1410;
+    line-height:2;
+  }
+  .inapp-box .inapp-steps b{ color:#0d3a1f; }
+  .inapp-continue{
+    display:block;
+    width:100%;
+    background:#0d3a1f;
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    padding:13px 0;
+    font-family:'Inter', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .inapp-continue:hover{ background:#6b7280; }
+</style>
+
+<!-- In-App Browser Warning -->
+<div class="inapp-banner" id="inappBanner">
+  <div class="inapp-box">
+    <div class="inapp-icon">🌐</div>
+    <h2>Open in your browser</h2>
+    <p>Google Sign-In doesn't work inside LinkedIn's built-in browser. Please open this page in Chrome or Safari.</p>
+    <div class="inapp-steps">
+      <b>On iPhone:</b> Tap the <b>···</b> menu → <b>Open in Safari</b><br>
+      <b>On Android:</b> Tap the <b>⋮</b> menu → <b>Open in Chrome</b>
+    </div>
+    <button class="inapp-continue" onclick="document.getElementById('inappBanner').classList.remove('show')">
+      Continue anyway (email only)
+    </button>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="nav-card">
+    <div class="nav-brand">
+      <img src="logo.png" alt="Datic Currency" />
+      <span>Datic Currency</span>
+    </div>
+    <a class="nav-back" href="index.html">← Back home</a>
+  </div>
+</nav>
+
+<main class="auth-section">
+  <div class="auth-card">
+    <div class="auth-eyebrow">Early Access</div>
+    <h1 id="authTitle">Create your account</h1>
+    <p class="auth-sub" id="authSub">Join the world's first financial marketplace for data.</p>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabSignup">Sign Up</button>
+      <button class="auth-tab" id="tabSignin">Sign In</button>
+    </div>
+
+    <p class="auth-status" id="authStatus"></p>
+
+    <!-- Google Sign In -->
+    <button class="google-btn" id="googleBtn" type="button">
+      <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
+      Continue with Google
+    </button>
+
+    <div class="divider">or</div>
+
+    <!-- Sign Up Form -->
+    <form class="auth-form" id="signupForm">
+      <div class="field">
+        <label for="signupName">Full name</label>
+        <input type="text" id="signupName" placeholder="Jordan Blake" required />
+      </div>
+      <div class="field">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" placeholder="email.com" required />
+      </div>
+      <div class="field">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" placeholder="Min 8 chars, 1 capital, 1 number" required />
+      </div>
+      <button class="submit-btn" type="submit" id="signupBtn">Request Early Access</button>
+    </form>
+
+    <!-- Sign In Form -->
+    <form class="auth-form hidden" id="signinForm">
+      <div class="field">
+        <label for="signinEmail">Email</label>
+        <input type="email" id="signinEmail" placeholder="email.com" required />
+      </div>
+      <div class="field">
+        <label for="signinPassword">Password</label>
+        <input type="password" id="signinPassword" placeholder="Your password" required />
+      </div>
+      <div class="field-row">
+        <span></span>
+        <a href="#" id="forgotLink">Forgot password?</a>
+      </div>
+      <button class="submit-btn" type="submit" id="signinBtn">Sign In</button>
+    </form>
+
+    <p class="auth-foot" id="authFoot">
+      Already have access? <a href="#" id="switchLink">Sign in</a>
+    </p>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<!--
+  ============================================================
+  SUPABASE AUTH — SETUP STEPS (read carefully, takes ~5 mins)
+  ============================================================
+
+  STEP 1 — Create a free Supabase project
+    → Go to https://supabase.com and sign up
+    → Click "New Project", give it a name (e.g. datic-currency)
+    → Choose a region close to India (Singapore)
+    → Set a strong database password → Create project
+
+  STEP 2 — Get your credentials
+    → In your project dashboard, go to:
+       Settings → API
+    → Copy two things:
+       • Project URL  (looks like https://xxxx.supabase.co)
+       • anon public key (long string starting with eyJ...)
+    → Paste them below replacing YOUR_SUPABASE_URL and YOUR_SUPABASE_ANON_KEY
+
+  STEP 3 — Enable Email auth
+    → Go to Authentication → Providers
+    → Email is ON by default ✅
+    → Optional: turn OFF "Confirm email" for faster testing
+       (Authentication → Settings → uncheck "Enable email confirmations")
+
+  STEP 4 — Enable Google auth
+    → Go to Authentication → Providers → Google → Enable it
+    → You need a Google Client ID and Secret. To get them:
+       a) Go to https://console.cloud.google.com
+       b) Create a new project (or use existing)
+       c) Go to APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID
+       d) Application type: Web application
+       e) Under "Authorised redirect URIs" add:
+          https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback
+          (replace YOUR_PROJECT_REF with your Supabase project ref)
+       f) Copy the Client ID and Client Secret
+       g) Paste them into Supabase → Authentication → Providers → Google
+    → Save
+
+  STEP 5 — Add your site URL to Supabase
+    → Go to Authentication → URL Configuration
+    → Add your site URL under "Site URL" (e.g. https://yourdomain.com)
+    → Add http://localhost and your domain to "Redirect URLs"
+
+  STEP 6 — Done! Paste credentials below and deploy.
+  ============================================================
+-->
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  // ── PASTE YOUR CREDENTIALS HERE ─────────────────────────────────────
+  const SUPABASE_URL  = 'https://odiabdmzrfyznlfdlgtx.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kaWFiZG16cmZ5em5sZmRsZ3R4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NzE2MzAsImV4cCI6MjA5OTI0NzYzMH0.rF18H2DelUQjtu7mYwBmUni9rzaeLb7ij6w5NLXGBTk';
+  // ────────────────────────────────────────────────────────────────────
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  /* ── UI refs ── */
+  const tabSignup   = document.getElementById('tabSignup');
+  const tabSignin   = document.getElementById('tabSignin');
+  const signupForm  = document.getElementById('signupForm');
+  const signinForm  = document.getElementById('signinForm');
+  const authTitle   = document.getElementById('authTitle');
+  const authSub     = document.getElementById('authSub');
+  const authFoot    = document.getElementById('authFoot');
+  const authStatus  = document.getElementById('authStatus');
+  const googleBtn   = document.getElementById('googleBtn');
+  const forgotLink  = document.getElementById('forgotLink');
+  const toast       = document.getElementById('toast');
+
+  /* ── Helpers ── */
+  function flashToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3200);
+  }
+
+  function showStatus(msg, isError = false){
+    authStatus.textContent = msg;
+    authStatus.style.display = 'block';
+    authStatus.style.background = isError ? 'rgba(200,40,40,0.10)' : 'rgba(18,122,52,0.12)';
+    authStatus.style.color = isError ? '#a02020' : 'var(--green-deep)';
+  }
+
+  function hideStatus(){ authStatus.style.display = 'none'; }
+
+  function setLoading(btn, loading, label){
+    btn.disabled = loading;
+    btn.textContent = loading ? 'Please wait…' : label;
+  }
+
+  function rebindSwitchLink(){
+    const el = document.getElementById('switchLink');
+    if(!el) return;
+    el.addEventListener('click', e => { e.preventDefault(); isSignup ? showSignin() : showSignup(); });
+  }
+
+  let isSignup = true;
+
+  function showSignup(){
+    isSignup = true;
+    tabSignup.classList.add('active');
+    tabSignin.classList.remove('active');
+    signupForm.classList.remove('hidden');
+    signinForm.classList.add('hidden');
+    authTitle.textContent = 'Create your account';
+    authSub.textContent   = "Join the world's first financial marketplace for data.";
+    authFoot.innerHTML    = 'Already have access? <a href="#" id="switchLink">Sign in</a>';
+    rebindSwitchLink();
+    hideStatus();
+  }
+
+  function showSignin(){
+    isSignup = false;
+    tabSignin.classList.add('active');
+    tabSignup.classList.remove('active');
+    signinForm.classList.remove('hidden');
+    signupForm.classList.add('hidden');
+    authTitle.textContent = 'Welcome back';
+    authSub.textContent   = 'Sign in to your Datic Currency account.';
+    authFoot.innerHTML    = "Don't have access yet? <a href=\"#\" id=\"switchLink\">Sign up</a>";
+    rebindSwitchLink();
+    hideStatus();
+  }
+
+  tabSignup.addEventListener('click', showSignup);
+  tabSignin.addEventListener('click', showSignin);
+  rebindSwitchLink();
+
+  /* ── Sign Up ── */
+  signupForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    hideStatus();
+    const name     = document.getElementById('signupName').value.trim();
+    const email    = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const btn      = document.getElementById('signupBtn');
+
+    if(password.length < 8){
+      showStatus('Password must be at least 8 characters.', true);
+      return;
+    }
+    if(!/[A-Z]/.test(password)){
+      showStatus('Password must contain at least 1 capital letter.', true);
+      return;
+    }
+    if(!/[0-9]/.test(password)){
+      showStatus('Password must contain at least 1 number.', true);
+      return;
+    }
+
+    setLoading(btn, true, 'Request Early Access');
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } }
+    });
+
+    if(error){
+      showStatus(error.message, true);
+      setLoading(btn, false, 'Request Early Access');
+    } else {
+      flashToast('Account created! Redirecting…');
+      setTimeout(() => window.location.href = 'welcome.html', 800);
+    }
+  });
+
+  /* ── Sign In ── */
+  signinForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    hideStatus();
+    const email    = document.getElementById('signinEmail').value.trim();
+    const password = document.getElementById('signinPassword').value;
+    const btn      = document.getElementById('signinBtn');
+
+    setLoading(btn, true, 'Sign In');
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if(error){
+      showStatus(error.message, true);
+    } else {
+      flashToast('Signed in! Redirecting…');
+      setTimeout(() => window.location.href = 'welcome.html', 1000);
+    }
+    setLoading(btn, false, 'Sign In');
+  });
+
+  /* ── Google Sign In ── */
+  googleBtn.addEventListener('click', async () => {
+    hideStatus();
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + '/welcome.html'
+      }
+    });
+    if(error) showStatus(error.message, true);
+    // On success Supabase redirects automatically — no extra code needed
+  });
+
+  /* ── Forgot Password ── */
+  forgotLink.addEventListener('click', async e => {
+    e.preventDefault();
+    const email = document.getElementById('signinEmail').value.trim();
+    if(!email){
+      showStatus('Enter your email above first, then click Forgot password.', true);
+      return;
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/auth.html'
+    });
+    if(error){
+      showStatus(error.message, true);
+    } else {
+      showStatus('✅ Password reset email sent! Check your inbox.', false);
+    }
+  });
+
+  /* ── Check if already logged in ── */
+  const { data: { session } } = await supabase.auth.getSession();
+  if(session) window.location.href = 'welcome.html';
+</script>
+
+<!-- In-app browser detection -->
+<script>
+  (function(){
+    const ua = navigator.userAgent || '';
+    const isInApp =
+      /LinkedIn/i.test(ua) ||
+      /FBAN|FBAV/i.test(ua) ||        // Facebook
+      /Instagram/i.test(ua) ||
+      /Twitter/i.test(ua) ||
+      /Line\//i.test(ua) ||
+      /KAKAOTALK/i.test(ua) ||
+      /GSA\//i.test(ua) ||             // Google Search App
+      /Musical_ly/i.test(ua) ||
+      ((/iPhone|iPod|iPad/i.test(ua)) && !/Safari/i.test(ua) && !/CriOS/i.test(ua)) ||
+      (/Android/i.test(ua) && /wv/i.test(ua)); // Android WebView
+
+    if(isInApp){
+      document.getElementById('inappBanner').classList.add('show');
+      // Also hide the Google button since it won't work
+      const gBtn = document.getElementById('googleBtn');
+      if(gBtn){
+        gBtn.style.opacity = '0.35';
+        gBtn.style.pointerEvents = 'none';
+        gBtn.title = 'Google Sign-In not available in this browser';
+      }
+    }
+  })();
+</script>
+</body>
+</html>
