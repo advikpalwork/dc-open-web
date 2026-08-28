@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apply | Datic Currency</title>
+<meta name="description" content="Apply for a role at Datic Currency." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f1511;
+    --ink-soft:rgba(15,21,17,0.64);
+    --ink-faint:rgba(15,21,17,0.42);
+    --paper:#f4f2ec;
+    --white:#ffffff;
+    --deep:#0d3a1f;
+    --green:#127a34;
+    --lime:#8fe23c;
+    --line:rgba(15,21,17,0.11);
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --head-font:'Urbanist', sans-serif;
+    --brand-font:'Bricolage Grotesque', 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  @property --specular-angle{
+    syntax:'<angle>';
+    initial-value:220deg;
+    inherits:false;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  ::selection{ background:#8fe23c; color:var(--deep); }
+
+  .wrap{ max-width:660px; margin:0 auto; padding:0 30px; }
+
+  /* ================= NAV ================= */
+  .navbar{
+    position:fixed; top:14px; left:0; right:0; z-index:90;
+    display:flex; justify-content:center; pointer-events:none;
+  }
+  .nav-card{
+    pointer-events:auto;
+    width:min(980px, calc(100% - 48px));
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:5px 8px 5px 14px;
+    border-radius:13px;
+    background:rgba(255,255,255,0.72);
+    backdrop-filter:blur(18px) saturate(170%);
+    -webkit-backdrop-filter:blur(18px) saturate(170%);
+    border:1px solid rgba(255,255,255,0.75);
+    box-shadow:0 8px 30px rgba(13,58,31,0.09);
+  }
+  .nav-brand{ display:flex; align-items:center; gap:9px; }
+  .nav-brand img{ height:36px; width:auto; display:block; }
+  .nav-brand span{ font-family:var(--brand-font); font-size:19px; font-weight:700; letter-spacing:-0.2px; color:var(--ink); white-space:nowrap; }
+  .nav-links{ display:flex; align-items:center; gap:6px; }
+  .nav-cta{
+    position:relative; overflow:hidden;
+    padding:8px 17px; border-radius:10px;
+    background:rgba(15,21,17,0.055);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(15,21,17,0.13);
+    color:var(--ink); font-size:13px; font-weight:600;
+    letter-spacing:-0.05px; white-space:nowrap;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .nav-cta:hover{ background:rgba(15,21,17,0.10); border-color:rgba(15,21,17,0.22); }
+  .nav-cta::before{
+    content:''; position:absolute; inset:-1px; border-radius:inherit;
+    padding:1px;
+    background:conic-gradient(from var(--specular-angle), transparent 0%, rgba(255,255,255,0.65) 4%, transparent 9%, transparent 100%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite:exclude;
+    pointer-events:none;
+    animation:specular-sweep 5s ease-in-out infinite;
+  }
+  @keyframes specular-sweep{ 0%{--specular-angle:200deg} 100%{--specular-angle:560deg} }
+  .nav-cta--highlight{
+    background:rgba(18,122,52,0.09);
+    border-color:rgba(18,122,52,0.20);
+    color:var(--deep);
+  }
+  .nav-cta--highlight:hover{
+    background:rgba(18,122,52,0.15);
+    border-color:rgba(18,122,52,0.32);
+  }
+
+  /* ================= PAGE CONTENT ================= */
+  .page-content{ padding-top:100px; padding-bottom:100px; }
+  .page-header{
+    margin-bottom:36px;
+  }
+  .page-header h1{
+    font-family:var(--head-font);
+    font-size:clamp(26px, 5vw, 36px); font-weight:700;
+    letter-spacing:-0.6px; line-height:1.12;
+  }
+  .page-header p{
+    margin-top:10px;
+    font-size:15px; line-height:1.6;
+    color:var(--ink-soft);
+  }
+
+  .form-card{
+    background:rgba(255,255,255,0.52);
+    backdrop-filter:blur(14px) saturate(160%);
+    -webkit-backdrop-filter:blur(14px) saturate(160%);
+    border:1px solid rgba(255,255,255,0.68);
+    border-radius:22px;
+    padding:36px 34px;
+    box-shadow:0 8px 32px rgba(13,58,31,0.06);
+  }
+
+  .form-group{ margin-bottom:18px; }
+  .form-group label{
+    display:block; margin-bottom:6px;
+    font-size:13px; font-weight:600;
+    color:var(--ink); letter-spacing:-0.05px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea{
+    width:100%;
+    padding:11px 14px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--white);
+    font-family:var(--sans);
+    font-size:14px; color:var(--ink);
+    outline:none;
+    transition:border-color .15s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus{
+    border-color:var(--green);
+  }
+  .form-group textarea{ resize:vertical; min-height:52px; }
+  .form-group select{ cursor:pointer; }
+
+  .form-group .file-label{
+    display:flex; align-items:center; gap:10px;
+    padding:14px;
+    border-radius:10px;
+    border:1.5px dashed var(--line);
+    background:rgba(255,255,255,0.6);
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .form-group .file-label:hover{
+    border-color:rgba(18,122,52,0.30);
+    background:rgba(255,255,255,0.9);
+  }
+  .form-group .file-label .icon{
+    width:36px; height:36px; border-radius:8px;
+    background:rgba(18,122,52,0.08);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--green); font-size:16px; flex:none;
+  }
+  .form-group .file-label .file-text{
+    font-size:13px; color:var(--ink-soft);
+  }
+  .form-group .file-label .file-text strong{
+    display:block; color:var(--ink); font-weight:600;
+  }
+  .form-group input[type="file"]{ display:none; }
+
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+  .form-error{
+    display:none; margin-bottom:14px;
+    padding:10px 14px; border-radius:8px;
+    background:rgba(220,38,38,0.08);
+    border:1px solid rgba(220,38,38,0.18);
+    color:#b91c1c; font-size:13px; font-weight:500;
+  }
+  .form-success{
+    display:none;
+    text-align:center;
+    padding:44px 20px;
+  }
+  .form-success h3{
+    font-family:var(--head-font);
+    font-size:22px; font-weight:700;
+    margin-bottom:8px;
+  }
+  .form-success p{
+    font-size:14.5px; color:var(--ink-soft); line-height:1.6;
+    max-width:400px; margin:0 auto;
+  }
+  .form-success a{
+    display:inline-block; margin-top:20px;
+    font-size:14px; font-weight:600; color:var(--green);
+  }
+  .form-success a:hover{ text-decoration:underline; }
+
+  .submit-btn{
+    display:inline-block; margin-top:8px;
+    padding:13px 36px; border-radius:12px;
+    background:var(--deep);
+    border:1px solid var(--deep);
+    color:var(--paper); font-size:14px; font-weight:600;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .submit-btn:hover{ background:#155029; transform:translateY(-1px); }
+  .submit-btn:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+
+  /* ================= FOOTER ================= */
+  footer{ border-top:1px solid var(--line); padding:44px 0 40px; }
+  .foot-row{
+    max-width:900px; margin:0 auto; padding:0 30px;
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:14px;
+  }
+  .foot-brand{ display:flex; align-items:center; gap:9px; }
+  .foot-brand img{ height:20px; }
+  .foot-brand span{ font-size:14px; font-weight:600; letter-spacing:-0.1px; }
+  .foot-links{ display:flex; gap:24px; font-size:13.5px; font-weight:500; color:var(--ink-soft); }
+  .foot-links a:hover{ color:var(--deep); }
+  .foot-meta{ font-size:12px; color:var(--ink-faint); font-weight:500; }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:620px){
+    .wrap{ padding:0 20px; }
+    .nav-card{
+      width:calc(100% - 12px);
+      padding:18px 16px 18px 22px;
+      border-radius:18px; gap:8px;
+    }
+    .nav-brand{ gap:10px; }
+    .nav-brand img{ height:46px; }
+    .nav-brand span{ font-size:23px; font-weight:700; }
+    .nav-cta{ padding:14px 20px; font-size:15px; }
+    .page-content{ padding-top:110px; padding-bottom:60px; }
+    .form-card{ padding:24px 20px; border-radius:16px; }
+    .form-row{ grid-template-columns:1fr; }
+    .foot-row{ flex-direction:column; justify-content:center; text-align:center; gap:10px; padding:0 20px; }
+  }
+  @media (max-width:400px){
+    .nav-card{ padding:13px 12px 13px 16px; }
+    .nav-brand{ gap:8px; }
+    .nav-brand img{ height:38px; }
+    .nav-brand span{ font-size:19px; }
+    .nav-cta{ padding:11px 16px; font-size:13px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="navbar">
+  <div class="nav-card">
+    <a class="nav-brand" href="index.html">
+      <img src="logo.png" alt="Datic Currency" />
+      <span>Datic</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-cta nav-cta--highlight" href="careers.html">&larr; Careers</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap page-content">
+
+    <div class="page-header">
+      <h1>Apply - Backend &amp; Data Pipeline Intern</h1>
+      <p>All fields are required unless marked optional.</p>
+    </div>
+
+    <div class="form-card">
+      <div id="applyError" class="form-error"></div>
+
+      <form id="applyForm" autocomplete="on">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="appName">Full name</label>
+            <input type="text" id="appName" name="name" required placeholder="Your full name" />
+          </div>
+          <div class="form-group">
+            <label for="appCollege">College</label>
+            <input type="text" id="appCollege" name="college" required placeholder="e.g. IIT Bombay" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="appEmail">Email</label>
+            <input type="email" id="appEmail" name="email" required placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="appPhone">Phone number</label>
+            <input type="tel" id="appPhone" name="phone" required placeholder="+91 98765 43210" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="appBranch">Branch</label>
+            <input type="text" id="appBranch" name="branch" required placeholder="e.g. Computer Science" />
+          </div>
+          <div class="form-group">
+            <label for="appYear">Year</label>
+            <select id="appYear" name="year" required>
+              <option value="" disabled selected>Select year</option>
+              <option>1st year</option>
+              <option>2nd year</option>
+              <option>3rd year</option>
+              <option>4th year</option>
+              <option>5th year</option>
+              <option>Graduated</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="appGithub">GitHub profile link (optional)</label>
+          <input type="url" id="appGithub" name="github" placeholder="https://github.com/yourname" />
+        </div>
+
+        <div class="form-group">
+          <label for="appPython">Rate your Python</label>
+          <select id="appPython" name="python_level" required>
+            <option value="" disabled selected>Select level</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="appTools">Have you used RAG, PostgreSQL, or FastAPI? Which ones?</label>
+          <input type="text" id="appTools" name="tools_used" required placeholder="e.g. PostgreSQL and FastAPI" />
+        </div>
+
+        <div class="form-group">
+          <label for="appMessy">Have you worked with messy real-world data? One line.</label>
+          <input type="text" id="appMessy" name="messy_data_exp" required placeholder="e.g. Cleaned 50k rows of inconsistent invoice exports" />
+        </div>
+
+        <div class="form-group">
+          <label for="appCommit">Can you commit full-time for 1 month starting soon?</label>
+          <select id="appCommit" name="can_commit" required>
+            <option value="" disabled selected>Select</option>
+            <option>Yes</option>
+            <option>No</option>
+            <option>Depends on dates</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="appProject">Link to a project where you built a data pipeline or cleaned raw data (optional)</label>
+          <input type="url" id="appProject" name="project_link" placeholder="https://github.com/..." />
+        </div>
+
+        <div class="form-group">
+          <label for="appWhy">Why this role? One line.</label>
+          <input type="text" id="appWhy" name="why_this_role" required placeholder="What draws you to this work" />
+        </div>
+
+        <div class="form-group">
+          <label>Resume (PDF)</label>
+          <label class="file-label" for="appResume">
+            <span class="icon">&uarr;</span>
+            <span class="file-text">
+              <strong id="fileNameDisplay">Upload your resume</strong>
+              PDF, max 5 MB
+            </span>
+          </label>
+          <input type="file" id="appResume" name="resume" accept=".pdf" />
+        </div>
+
+        <button type="submit" class="submit-btn" id="applySubmit">Submit application</button>
+      </form>
+
+      <div class="form-success" id="applySuccess">
+        <h3>Application received</h3>
+        <p>We will review your submission and get back to you at the email on your resume. Thank you for your interest in Datic.</p>
+        <a href="careers.html">&larr; Back to Careers</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="foot-row">
+    <div class="foot-brand"><img src="logo.png" alt="" /><span>Datic Currency</span></div>
+    <div class="foot-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:hello@daticurrency.com">Contact</a>
+    </div>
+    <span class="foot-meta">&copy; 2026 Datic Currency</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('appResume').addEventListener('change', function(){
+    var label = document.getElementById('fileNameDisplay');
+    label.textContent = this.files.length > 0 ? this.files[0].name : 'Upload your resume';
+  });
+</script>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://odiabdmzrfyznlfdlgtx.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kaWFiZG16cmZ5em5sZmRsZ3R4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NzE2MzAsImV4cCI6MjA5OTI0NzYzMH0.rF18H2DelUQjtu7mYwBmUni9rzaeLb7ij6w5NLXGBTk'
+  );
+
+  const form     = document.getElementById('applyForm');
+  const success  = document.getElementById('applySuccess');
+  const errEl    = document.getElementById('applyError');
+  const submitBtn= document.getElementById('applySubmit');
+  const fileInput= document.getElementById('appResume');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errEl.style.display = 'none';
+
+    const data = {
+      full_name:       document.getElementById('appName').value.trim(),
+      email:           document.getElementById('appEmail').value.trim(),
+      phone:           document.getElementById('appPhone').value.trim(),
+      college:         document.getElementById('appCollege').value.trim(),
+      branch:          document.getElementById('appBranch').value.trim(),
+      year:            document.getElementById('appYear').value,
+      github:          document.getElementById('appGithub').value.trim() || null,
+      python_level:    document.getElementById('appPython').value,
+      tools_used:      document.getElementById('appTools').value.trim(),
+      messy_data_exp:  document.getElementById('appMessy').value.trim(),
+      can_commit:      document.getElementById('appCommit').value,
+      project_link:    document.getElementById('appProject').value.trim() || null,
+      why_this_role:   document.getElementById('appWhy').value.trim(),
+      role:            'Backend & Data Pipeline Intern',
+      created_at:      new Date().toISOString()
+    };
+
+    if(!data.full_name || !data.email || !data.phone || !data.college || !data.branch || !data.year ||
+       !data.python_level || !data.tools_used ||
+       !data.messy_data_exp || !data.can_commit || !data.why_this_role){
+      errEl.textContent = 'Please fill in all required fields.';
+      errEl.style.display = 'block';
+      window.scrollTo({top:0, behavior:'smooth'});
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try{
+      let resume_url = null;
+      const file = fileInput.files[0];
+      if(file){
+        if(file.size > 5 * 1024 * 1024){
+          throw new Error('Resume file must be under 5 MB.');
+        }
+        if(file.type !== 'application/pdf'){
+          throw new Error('Please upload a PDF file.');
+        }
+        const fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const { error: uploadError } = await supabase.storage
+          .from('resumes')
+          .upload(fileName, file, { contentType: 'application/pdf' });
+        if(uploadError) throw uploadError;
+        const { data: urlData } = supabase.storage.from('resumes').getPublicUrl(fileName);
+        resume_url = urlData.publicUrl;
+      }
+
+      data.resume_url = resume_url;
+
+      const { error } = await supabase
+        .from('career_applications')
+        .insert([data]);
+
+      if(error) throw error;
+
+      form.style.display = 'none';
+      success.style.display = 'block';
+      window.scrollTo({top:0, behavior:'smooth'});
+
+    } catch(err){
+      errEl.textContent = err.message || 'Something went wrong. Please try again or email hello@daticurrency.com.';
+      errEl.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit application';
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  });
+</script>
+
+</body>
+</html>
