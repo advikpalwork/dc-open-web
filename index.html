@@ -1,0 +1,2525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Datic Currency | Find the money your systems are hiding</title>
+<meta name="description" content="Datic connects every system your business runs on, detects where money leaks between them, and prevents it from happening again." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&family=Urbanist:wght@600;700;800&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root{
+    --ink:#0f1511;
+    --ink-soft:rgba(15,21,17,0.62);
+    --ink-faint:rgba(15,21,17,0.40);
+    --paper:#f4f2ec;
+    --paper-2:#edebe3;
+    --white:#ffffff;
+    --deep:#0d3a1f;
+    --green:#127a34;
+    --lime:#8fe23c;
+    --dark:#0c1a12;
+    --line:rgba(15,21,17,0.11);
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --serif:'DM Serif Text', Georgia, serif;
+    --head-font:'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+    --inset:14px;
+    --brand-font:'Bricolage Grotesque', 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+    --demo-font:'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  @property --specular-angle{
+    syntax:'<angle>';
+    initial-value:220deg;
+    inherits:false;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:inherit; text-decoration:none;}
+  ::selection{ background:var(--lime); color:var(--deep); }
+
+  #dotgrid-canvas{
+    position:fixed; inset:0;
+    width:100%; height:100%;
+    z-index:0; pointer-events:none;
+  }
+  .wrap{
+    position:relative; z-index:2;
+    max-width:1180px; margin:0 auto;
+    padding:0 30px;
+  }
+
+  /* ================= NAV ================= */
+  .navbar{
+    position:fixed; top:14px; left:0; right:0;
+    z-index:90;
+    display:flex; justify-content:center;
+    pointer-events:none;
+  }
+  .nav-card{
+    pointer-events:auto; position:relative;
+    width:calc(100% - 48px);
+    max-width:980px;
+    display:flex; align-items:center; gap:10px;
+    padding:5px 8px 5px 14px;
+    border-radius:13px;
+    background:rgba(255,255,255,0.38);
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.45);
+    box-shadow:0 8px 32px rgba(13,58,31,0.12);
+  }
+  .nav-brand{ display:flex; align-items:center; gap:9px; flex-shrink:0; }
+  .nav-brand img{ height:36px; width:auto; display:block; }
+  .nav-brand span{
+    font-family:var(--brand-font);
+    font-size:19px; font-weight:700;
+    letter-spacing:-0.2px; color:var(--ink); white-space:nowrap;
+  }
+  .nav-links{ display:flex; align-items:center; gap:6px; margin-left:auto; }
+  .nav-cta{
+    position:relative; overflow:hidden;
+    padding:8px 17px; border-radius:10px;
+    background:rgba(15,21,17,0.055);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(15,21,17,0.13);
+    color:var(--ink); font-size:13px; font-weight:600;
+    letter-spacing:-0.05px; white-space:nowrap;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .nav-cta:hover{ background:rgba(15,21,17,0.10); border-color:rgba(15,21,17,0.22); }
+  .nav-cta::before{
+    content:''; position:absolute; inset:-1px; border-radius:inherit;
+    padding:1px;
+    background:conic-gradient(from var(--specular-angle), transparent 0%, rgba(255,255,255,0.65) 4%, transparent 9%, transparent 100%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite:exclude;
+    pointer-events:none;
+    animation:specular-sweep 5s ease-in-out infinite;
+  }
+  @keyframes specular-sweep{ 0%{--specular-angle:200deg} 100%{--specular-angle:560deg} }
+  .nav-cta--green{
+    background:linear-gradient(135deg, #0d3a1f 0%, #1a6b35 50%, #22883f 100%);
+    border-color:rgba(13,58,31,0.30);
+    color:#fff;
+  }
+  .nav-cta--green:hover{
+    background:linear-gradient(135deg, #155029 0%, #1f7a3c 50%, #28994a 100%);
+    border-color:rgba(13,58,31,0.45);
+  }
+  .nav-cta--green::before{
+    background:conic-gradient(from var(--specular-angle), transparent 0%, rgba(255,255,255,0.45) 4%, transparent 9%, transparent 100%);
+  }
+  .nav-cta--highlight{
+    background:rgba(18,122,52,0.09);
+    border-color:rgba(18,122,52,0.20);
+    color:var(--deep);
+  }
+  .nav-cta--highlight:hover{
+    background:rgba(18,122,52,0.15);
+    border-color:rgba(18,122,52,0.32);
+  }
+
+  /* ================= PRIMITIVES ================= */
+  .eyebrow{
+    display:block; font-size:11px; font-weight:600;
+    letter-spacing:1.4px; text-transform:uppercase;
+    color:var(--green); margin-bottom:18px;
+  }
+  .eyebrow.on-dark{ color:var(--lime); }
+  h1,h2,h3{ font-weight:600; letter-spacing:-0.9px; line-height:1.09; }
+  .sec{ padding:90px 0; }
+  .sec.tight{ padding:0 0 90px; }
+  .sec.framed{
+    background:rgba(255,255,255,0.52);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.68);
+    border-radius:24px;
+    padding:52px 44px;
+    margin-bottom:48px;
+    box-shadow:0 8px 32px rgba(13,58,31,0.06);
+  }
+  .sec-head{ max-width:760px; }
+  .sec-head h2{ font-size:clamp(26px,3.5vw,42px); }
+  .sec-head p{
+    margin-top:18px; font-size:16.5px; line-height:1.6;
+    color:var(--ink-soft); max-width:600px;
+  }
+
+  /* ================= HERO ================= */
+  .hero-shell{ padding:var(--inset); padding-top:calc(var(--inset) + 60px); }
+  .hero-box{
+    position:relative;
+    border-radius:26px;
+    overflow:hidden;
+    min-height:min(720px, calc(100vh - 88px));
+    display:flex; align-items:center; justify-content:center;
+    background:#050d08;
+    border:1px solid rgba(15,21,17,0.16);
+    box-shadow:0 22px 60px rgba(12,26,18,0.20);
+  }
+  #terminal-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+  .hero-veil{
+    position:absolute; inset:0;
+    background:radial-gradient(75% 65% at 50% 52%, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 68%, rgba(0,0,0,0.75) 100%);
+    pointer-events:none;
+  }
+  .hero-inner{
+    position:relative; z-index:3;
+    text-align:center; padding:70px 30px;
+    max-width:900px;
+  }
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:6px 15px; border-radius:100px;
+    background:rgba(255,255,255,0.10);
+    border:1px solid rgba(255,255,255,0.20);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    font-size:11px; font-weight:600;
+    letter-spacing:1.2px; text-transform:uppercase;
+    color:rgba(255,255,255,0.80); margin-bottom:26px;
+  }
+  .hero-eyebrow::before{
+    content:''; width:5px; height:5px; border-radius:50%;
+    background:var(--lime); box-shadow:0 0 0 3px rgba(143,226,60,0.25);
+  }
+  .hero-inner h1{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:clamp(33px,5.4vw,66px);
+    letter-spacing:-0.4px; color:#fff;
+    text-shadow:0 2px 40px rgba(0,0,0,0.45);
+  }
+  .hero-inner h1 .accent{ color:var(--lime); }
+  .hero-sub{
+    max-width:620px; margin:24px auto 0;
+    font-size:17.5px; line-height:1.58;
+    color:rgba(255,255,255,0.65);
+    text-shadow:0 1px 22px rgba(0,0,0,0.45);
+  }
+  .hero-cta{
+    position:relative; overflow:hidden;
+    display:inline-block; margin-top:34px;
+    padding:15px 40px; border-radius:12px;
+    background:linear-gradient(135deg, #0d3a1f 0%, #1a6b35 50%, #22883f 100%);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(143,226,60,0.22);
+    color:#fff;
+    font-size:15px; font-weight:600; letter-spacing:-0.1px;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .hero-cta:hover{ background:linear-gradient(135deg, #155029 0%, #1f7a3c 50%, #28994a 100%); transform:translateY(-1px); }
+  .hero-cta::before{
+    content:''; position:absolute; inset:-1px; border-radius:inherit;
+    padding:1px;
+    background:conic-gradient(from var(--specular-angle), transparent 0%, rgba(255,255,255,0.7) 4%, transparent 9%, transparent 100%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite:exclude;
+    pointer-events:none;
+    animation:specular-sweep 5s ease-in-out infinite;
+  }
+  .hero-note{ margin-top:16px; font-size:13px; font-weight:500; color:rgba(255,255,255,0.38); }
+
+  @media (prefers-reduced-motion: reduce){
+    .logoloop__track{ transform:translate3d(0,0,0) !important; }
+    .logoloop__item img{ transition:none !important; }
+  }
+
+  /* ================= LOGO LOOP ================= */
+  .logoloop{
+    --logoloop-gap:32px;
+    --logoloop-logoHeight:64px;
+    --logoloop-fadeColor:var(--paper);
+    position:relative; overflow:hidden;
+    padding:66px 0 36px;
+  }
+  .logoloop__label{
+    text-align:center; font-size:11px; font-weight:600;
+    letter-spacing:1.3px; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:26px;
+  }
+  .logoloop__track{
+    display:flex; width:max-content; will-change:transform;
+    user-select:none; position:relative; z-index:0;
+  }
+  .logoloop__list{
+    display:flex; align-items:center;
+    list-style:none; margin:0; padding:0;
+  }
+  .logoloop__item{
+    flex:0 0 auto;
+    margin-right:var(--logoloop-gap);
+    display:inline-flex; align-items:center;
+    font-size:var(--logoloop-logoHeight);
+    line-height:1;
+  }
+  .logoloop__item:last-child{ margin-right:var(--logoloop-gap); }
+  .logoloop--scale-hover .logoloop__item:hover img{
+    transform:scale(1.2); transform-origin:center center;
+  }
+  .logoloop__item img{
+    height:var(--logoloop-logoHeight); width:auto;
+    display:block; object-fit:contain;
+    image-rendering:-webkit-optimize-contrast;
+    -webkit-user-drag:none; pointer-events:none;
+    transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .logoloop--fade::before,
+  .logoloop--fade::after{
+    content:''; position:absolute; top:0; bottom:0;
+    width:clamp(24px,8%,120px); pointer-events:none; z-index:10;
+  }
+  .logoloop--fade::before{
+    left:0;
+    background:linear-gradient(to right,var(--logoloop-fadeColor) 0%,rgba(0,0,0,0) 100%);
+  }
+  .logoloop--fade::after{
+    right:0;
+    background:linear-gradient(to left,var(--logoloop-fadeColor) 0%,rgba(0,0,0,0) 100%);
+  }
+
+  /* ================= CONNECT DETECT PREVENT ================= */
+  .cdp-grid{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:16px; margin-top:40px;
+  }
+  .cdp-card{
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.7);
+    border-radius:20px; padding:34px 28px 36px;
+    transition:transform .22s ease, background .22s ease, box-shadow .22s ease;
+  }
+  .cdp-card:hover{
+    transform:translateY(-3px);
+    background:rgba(255,255,255,0.70);
+    box-shadow:0 14px 34px rgba(13,58,31,0.10);
+  }
+  .cdp-step{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:32px; height:32px; border-radius:9px;
+    background:rgba(18,122,52,0.10);
+    color:var(--green);
+    font-size:13px; font-weight:700;
+    margin-bottom:16px;
+  }
+  .cdp-card h3{ font-size:21px; letter-spacing:-0.5px; margin-bottom:10px; }
+  .cdp-card p{ font-size:15px; line-height:1.6; color:var(--ink-soft); }
+
+  /* ================= PRODUCT DEMO : SCROLL-DRIVEN MAC ================= */
+  .demo-sec{ position:relative; z-index:2; }
+  .demo-intro{ padding-bottom:26px; }
+
+  /* tall track drives the 5 stages; stage sticks inside it */
+  .demo-track{ position:relative; }
+  .demo-stage{
+    position:sticky; top:0;
+    height:100vh; padding:0 20px;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  /* fixed design box — JS scales it to fit any viewport, desktop layout preserved */
+  .mac-scaler{
+    flex:0 0 auto;
+    width:1200px; height:694px;
+    transform-origin:center center;
+    will-change:transform;
+  }
+
+  .mac-screen{
+    width:100%; height:100%;
+    background:linear-gradient(180deg,#ececeb 0%,#d4d4d2 62%,#bdbdbb 100%);
+    border-radius:18px; padding:10px 10px 12px;
+    box-shadow:
+      0 0 0 1px rgba(15,21,17,.13),
+      0 2px 0 rgba(255,255,255,.85) inset,
+      0 46px 90px -24px rgba(15,21,17,.42),
+      0 10px 28px -12px rgba(15,21,17,.22);
+  }
+  .mac-window{
+    width:100%; height:100%;
+    border-radius:9px; overflow:hidden;
+    background:#0a0a0a;
+    display:flex; flex-direction:column;
+    font-family:var(--demo-font);
+    color:#fff; font-weight:400;
+    box-shadow:0 0 0 1px rgba(0,0,0,.55);
+  }
+
+  .mac-titlebar{
+    flex:0 0 36px; display:flex; align-items:center; gap:10px;
+    padding:0 12px; background:#141414; border-bottom:1px solid #1f1f1f;
+  }
+  .mac-dots{ display:flex; gap:6px; width:60px; }
+  .mac-dot{ width:10px; height:10px; border-radius:50%; background:#343434; }
+  .mac-title{
+    flex:1; text-align:center; font-size:11px;
+    color:rgba(255,255,255,.40); letter-spacing:.2px;
+  }
+  .mac-tb-end{ width:60px; text-align:right; font-size:9px; color:rgba(255,255,255,.22); letter-spacing:.4px; }
+
+  .mac-body{ flex:1; display:grid; grid-template-columns:214px 1fr; min-height:0; }
+
+  /* ---------- sidebar ---------- */
+  .dt-side{
+    background:#0d0d0d; border-right:1px solid #1b1b1b;
+    display:flex; flex-direction:column; padding-top:12px; min-height:0;
+  }
+  .dt-brand{ display:flex; align-items:center; gap:8px; padding:0 14px 12px; }
+  .dt-brand-mark{
+    width:22px; height:22px; border-radius:6px; background:#fff; color:#000;
+    display:grid; place-items:center; font-size:12px; font-weight:500;
+  }
+  .dt-brand-name{ font-size:13px; letter-spacing:-.1px; color:rgba(255,255,255,.92); }
+  .dt-ws{
+    margin:0 10px 12px; padding:8px 10px;
+    border:1px solid #1e1e1e; border-radius:7px;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  .dt-ws-name{ font-size:11px; color:rgba(255,255,255,.72); }
+  .dt-ws-sub{ font-size:9px; color:rgba(255,255,255,.26); margin-top:2px; }
+  .dt-ws-car{ font-size:8px; color:rgba(255,255,255,.3); }
+  .dt-lab{
+    font-size:8.5px; letter-spacing:1.1px; text-transform:uppercase;
+    color:rgba(255,255,255,.24); padding:0 14px 7px;
+  }
+  .dt-tabs{ display:flex; flex-direction:column; gap:3px; padding:0 8px 12px; }
+  .dt-tab{
+    display:flex; gap:9px; align-items:flex-start; text-align:left;
+    background:transparent; border:1px solid transparent; border-radius:7px;
+    padding:8px 9px; cursor:pointer; font-family:inherit; color:inherit;
+    transition:background .18s ease, border-color .18s ease;
+  }
+  .dt-tab:hover{ background:#141414; }
+  .dt-tab.on{ background:#181818; border-color:#2a2a2a; }
+  .dt-tab-n{ font-size:9px; color:rgba(255,255,255,.28); padding-top:2px; font-variant-numeric:tabular-nums; }
+  .dt-tab-t{ display:block; font-size:11.5px; color:rgba(255,255,255,.56); transition:color .18s ease; }
+  .dt-tab.on .dt-tab-t{ color:#fff; }
+  .dt-tab-s{ display:block; font-size:9px; color:rgba(255,255,255,.26); margin-top:2px; line-height:1.4; }
+
+  .dt-nav{ list-style:none; padding:0 8px 10px; display:flex; flex-direction:column; gap:1px; }
+  .dt-nav li{
+    font-size:11px; color:rgba(255,255,255,.40);
+    padding:5px 9px; border-radius:6px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .dt-nav li.on{ background:#161616; color:rgba(255,255,255,.82); }
+  .dt-badge{ font-size:9px; padding:1px 5px; border-radius:4px; background:#241010; color:#ff6a6a; }
+
+  .dt-src{
+    margin-top:auto; border-top:1px solid #1b1b1b;
+    padding:10px 14px 12px; display:flex; flex-direction:column; gap:7px;
+  }
+  .dt-src-row{ display:flex; align-items:center; gap:8px; font-size:10px; color:rgba(255,255,255,.42); }
+  .dt-src-dot{ width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,.6); flex:0 0 5px; }
+  .dt-src-dot.idle{ background:rgba(255,255,255,.15); }
+  .dt-src-n{ margin-left:auto; font-size:9px; color:rgba(255,255,255,.22); font-variant-numeric:tabular-nums; }
+
+  /* ---------- main ---------- */
+  .dt-main{ display:flex; flex-direction:column; min-width:0; min-height:0; background:#0a0a0a; }
+  .dt-top{
+    flex:0 0 46px; display:flex; align-items:center; gap:10px;
+    padding:0 20px; border-bottom:1px solid #1b1b1b;
+  }
+  .dt-top-step{ font-size:10px; color:rgba(255,255,255,.3); font-variant-numeric:tabular-nums; }
+  .dt-top-title{ font-size:13px; color:rgba(255,255,255,.9); }
+  .dt-top-end{ margin-left:auto; display:flex; align-items:center; gap:7px; }
+  .dt-pill{
+    font-size:9.5px; padding:3px 9px; border-radius:20px;
+    border:1px solid #242424; color:rgba(255,255,255,.4); white-space:nowrap;
+  }
+  .dt-pill.bad{ border-color:#3a1414; color:#ff6a6a; }
+  .dt-pill.good{ border-color:#2f2f2f; color:rgba(255,255,255,.8); }
+
+  .dt-screens{ position:relative; flex:1; min-height:0; }
+  .dt-screen{
+    position:absolute; inset:0; padding:18px 20px 18px; overflow:hidden;
+    opacity:0; transform:translateY(12px); pointer-events:none;
+    transition:opacity .16s ease, transform .16s ease;
+  }
+  /* incoming screen waits for the outgoing one to clear, so they never overlap */
+  .dt-screen.on{
+    opacity:1; transform:none; pointer-events:auto;
+    transition:opacity .34s ease .14s, transform .34s ease .14s;
+  }
+
+  .dt-h{ font-size:17px; font-weight:500; letter-spacing:-.25px; margin-bottom:4px; }
+  .dt-p{ font-size:11.5px; line-height:1.55; color:rgba(255,255,255,.44); margin-bottom:12px; max-width:700px; }
+  .dt-p b{ font-weight:400; color:rgba(255,255,255,.72); }
+
+  .dt-stats{ display:flex; gap:8px; margin-bottom:13px; }
+  .dt-stat{ flex:1; border:1px solid #1c1c1c; border-radius:8px; padding:9px 11px; }
+  .dt-stat-k{ font-size:8.5px; letter-spacing:.9px; text-transform:uppercase; color:rgba(255,255,255,.26); }
+  .dt-stat-v{ font-size:16px; font-weight:500; margin-top:3px; font-variant-numeric:tabular-nums; }
+  .dt-stat.bad{ border-color:#2a1414; }
+  .dt-stat.bad .dt-stat-v{ color:#ff5a5a; }
+
+  /* ---------- data table ---------- */
+  .dt-tblwrap{ border:1px solid #1c1c1c; border-radius:8px; overflow:hidden; }
+  .dt-tbl{ width:100%; border-collapse:collapse; font-size:11px; font-variant-numeric:tabular-nums; }
+  .dt-tbl th{
+    text-align:left; font-size:8.5px; font-weight:500; letter-spacing:.9px; text-transform:uppercase;
+    color:rgba(255,255,255,.28); padding:7px 11px;
+    background:#101010; border-bottom:1px solid #1c1c1c; white-space:nowrap;
+  }
+  .dt-tbl td{
+    padding:6px 11px; color:rgba(255,255,255,.56);
+    border-bottom:1px solid #141414; white-space:nowrap;
+  }
+  .dt-tbl tr:last-child td{ border-bottom:0; }
+  .dt-tbl .n{ text-align:right; }
+  .dt-tbl .k{ color:rgba(255,255,255,.82); }
+  .dt-tbl tr.flag td{ background:#120b0b; color:rgba(255,255,255,.88); }
+  .dt-tbl tr.flag td.n{ color:#fff; }
+  .dt-tbl .dim{ color:rgba(255,255,255,.2); }
+
+  .rdot{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:#ff4d4d; margin-right:7px; vertical-align:middle;
+    animation:rpulse 2.2s ease-in-out infinite;
+  }
+  @keyframes rpulse{
+    0%,100%{ box-shadow:0 0 0 2px rgba(255,77,77,.16); }
+    50%{ box-shadow:0 0 0 5px rgba(255,77,77,.03); }
+  }
+
+  .dt-note{
+    margin-top:11px; border:1px solid #2a1414; background:#0f0909;
+    border-radius:8px; padding:11px 13px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .dt-note-t{ font-size:11px; color:#ff6a6a; }
+  .dt-note-d{ font-size:11px; color:rgba(255,255,255,.5); }
+  .dt-note-calc{
+    margin-left:auto; font-size:10.5px; white-space:nowrap;
+    color:rgba(255,255,255,.62); font-variant-numeric:tabular-nums;
+  }
+  .dt-note-calc b{ color:#fff; font-weight:500; }
+
+  /* ---------- nomenclature ---------- */
+  .dt-nom{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .dt-nom-card{ border:1px solid #1e1e1e; border-radius:9px; padding:11px 13px; background:#0d0d0d; }
+  .dt-nom-src{ font-size:8.5px; letter-spacing:.9px; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:9px; }
+  .dt-nom-name{ font-size:14px; font-weight:500; letter-spacing:-.2px; color:rgba(255,255,255,.95); }
+  .dt-nom-code{ font-size:10px; color:rgba(255,255,255,.34); margin-top:4px; font-variant-numeric:tabular-nums; }
+  .dt-nom-rows{ margin-top:10px; padding-top:9px; border-top:1px solid #1a1a1a; display:flex; flex-direction:column; gap:5px; }
+  .dt-nom-row{ display:flex; justify-content:space-between; font-size:10px; color:rgba(255,255,255,.44); font-variant-numeric:tabular-nums; }
+  .dt-nom-row b{ color:rgba(255,255,255,.78); font-weight:400; }
+
+  .dt-link{ display:flex; align-items:center; gap:12px; margin:9px 0; }
+  .dt-link-line{ flex:1; height:1px; background:linear-gradient(90deg,transparent,#2e2e2e 35%,#2e2e2e 65%,transparent); }
+  .dt-link-tag{
+    font-size:9.5px; color:rgba(255,255,255,.44);
+    border:1px solid #262626; border-radius:20px; padding:4px 11px; white-space:nowrap;
+  }
+  .dt-merge{
+    border:1px solid #1e1e1e; border-radius:9px; padding:10px 15px;
+    display:flex; align-items:center; gap:22px;
+  }
+  .dt-merge-i{ display:flex; flex-direction:column; gap:3px; }
+  .dt-merge-k{ font-size:8.5px; letter-spacing:.9px; text-transform:uppercase; color:rgba(255,255,255,.26); }
+  .dt-merge-v{ font-size:13px; color:rgba(255,255,255,.88); font-variant-numeric:tabular-nums; }
+  .dt-merge-v.bad{ color:#ff5a5a; }
+  .dt-merge-sep{ width:1px; align-self:stretch; background:#1c1c1c; }
+
+  /* ---------- sequence ---------- */
+  .dt-rule{
+    border:1px solid #1e1e1e; border-radius:8px; padding:11px 13px; margin-bottom:11px;
+    font-size:11px; color:rgba(255,255,255,.5); display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .dt-rule code{
+    color:rgba(255,255,255,.92); background:#161616; border:1px solid #232323;
+    padding:2px 7px; border-radius:4px; font-size:10px; font-family:var(--demo-font);
+  }
+  .dt-seq{ display:flex; flex-direction:column; gap:4px; }
+  .dt-seq-row{
+    display:flex; align-items:center; gap:14px;
+    border:1px solid #1a1a1a; border-radius:7px; padding:8px 12px;
+  }
+  .dt-seq-i{ font-size:9px; color:rgba(255,255,255,.26); width:14px; font-variant-numeric:tabular-nums; }
+  .dt-seq-name{ font-size:11.5px; color:rgba(255,255,255,.84); width:210px; }
+  .dt-seq-src{ font-size:10px; color:rgba(255,255,255,.34); width:150px; }
+  .dt-seq-date{ font-size:10px; color:rgba(255,255,255,.3); font-variant-numeric:tabular-nums; }
+  .dt-seq-n{ margin-left:auto; font-size:10.5px; color:rgba(255,255,255,.54); font-variant-numeric:tabular-nums; }
+  .dt-add{
+    margin-top:9px; width:100%; background:transparent;
+    border:1px dashed #292929; border-radius:7px; padding:9px 12px;
+    color:rgba(255,255,255,.38); font-family:inherit; font-size:10.5px; cursor:pointer;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .dt-add:hover{ border-color:#3d3d3d; color:rgba(255,255,255,.72); }
+  .dt-add.added{ border-style:solid; border-color:#2a2a2a; color:rgba(255,255,255,.72); }
+
+  .dt-sub{
+    font-size:8.5px; letter-spacing:1px; text-transform:uppercase;
+    color:rgba(255,255,255,.26); margin:10px 0 6px;
+  }
+  .dt-rulelist{ border:1px solid #1c1c1c; border-radius:8px; overflow:hidden; }
+  .dt-rulerow{
+    display:flex; gap:12px; padding:8px 13px; font-size:10.5px;
+    color:rgba(255,255,255,.55); border-bottom:1px solid #141414;
+  }
+  .dt-rulerow:last-child{ border-bottom:0; }
+  .dt-rulerow b{ color:rgba(255,255,255,.9); font-weight:400; }
+  .dt-rulekw{ flex:0 0 42px; color:rgba(255,255,255,.28); letter-spacing:.7px; }
+  .dt-audit{ display:flex; flex-direction:column; gap:6px; }
+  .dt-auditrow{ display:flex; align-items:center; gap:11px; font-size:10.5px; color:rgba(255,255,255,.45); }
+  .dt-audit-t{ flex:0 0 40px; color:rgba(255,255,255,.26); font-variant-numeric:tabular-nums; }
+  .dt-audit-d{ flex:0 0 5px; width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,.3); }
+  .dt-auditrow b{ color:rgba(255,255,255,.82); font-weight:400; }
+
+  /* ---------- prevention methods ---------- */
+  .dt-methods{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .dt-method{
+    display:flex; gap:11px; align-items:flex-start; text-align:left;
+    background:#0d0d0d; border:1px solid #1e1e1e; border-radius:9px;
+    padding:12px 13px; cursor:pointer; font-family:inherit; color:inherit;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .dt-method:hover{ border-color:#343434; }
+  .dt-method.sel{ border-color:#ffffff; background:#151515; }
+  .dt-method-box{
+    flex:0 0 14px; width:14px; height:14px; margin-top:1px;
+    border:1px solid #333; border-radius:4px;
+    display:grid; place-items:center; font-size:9px; color:transparent;
+    transition:background .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .dt-method.sel .dt-method-box{ background:#fff; border-color:#fff; color:#000; }
+  .dt-method-t{ display:block; font-size:11.5px; color:rgba(255,255,255,.88); }
+  .dt-method-d{ display:block; font-size:10px; line-height:1.5; color:rgba(255,255,255,.36); margin-top:3px; }
+  .dt-apply{ margin-top:12px; display:flex; align-items:center; gap:13px; }
+  .dt-btn{
+    background:#fff; color:#000; border:0; border-radius:7px;
+    padding:9px 17px; font-family:inherit; font-size:11px; font-weight:500; cursor:pointer;
+    transition:opacity .2s ease;
+  }
+  .dt-btn:hover{ opacity:.86; }
+  .dt-apply-note{ font-size:10.5px; color:rgba(255,255,255,.34); }
+
+  /* ---------- prevented ---------- */
+  .dt-code{
+    border:1px solid #1e1e1e; border-radius:9px; padding:12px 15px;
+    display:flex; align-items:center; gap:20px; margin-bottom:11px; background:#0d0d0d;
+  }
+  .dt-code-v{ font-size:18px; font-weight:500; letter-spacing:1.2px; }
+  .dt-ba{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .dt-ba-col{ border:1px solid #1c1c1c; border-radius:9px; padding:12px 14px; }
+  .dt-ba-col.after{ border-color:#2e2e2e; background:#0e0e0e; }
+  .dt-ba-h{ font-size:8.5px; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:10px; }
+  .dt-ba-list{ list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .dt-ba-list li{
+    font-size:10.5px; line-height:1.45; color:rgba(255,255,255,.42);
+    padding-left:15px; position:relative;
+  }
+  .dt-ba-list li::before{ content:'↓'; position:absolute; left:0; top:0; font-size:9px; color:rgba(255,255,255,.2); }
+  .dt-ba-list li:first-child::before{ content:'·'; font-size:12px; top:-2px; }
+  .dt-ba-col.after .dt-ba-list li{ color:rgba(255,255,255,.74); }
+  .dt-ba-col.after .dt-ba-list li::before{ color:rgba(255,255,255,.4); }
+  .dt-prevented{
+    margin-top:10px; border:1px solid #232323; border-radius:8px;
+    padding:10px 14px; display:flex; align-items:center; gap:13px; font-size:11px;
+    color:rgba(255,255,255,.5);
+  }
+  .dt-prevented b{ font-weight:500; color:#fff; }
+  .dt-prevented-tag{
+    margin-left:auto; font-size:9.5px; letter-spacing:1px; text-transform:uppercase;
+    border:1px solid #2f2f2f; border-radius:20px; padding:4px 11px; color:rgba(255,255,255,.85);
+  }
+
+  /* ---------- status bar / stepper ---------- */
+  .dt-statusbar{
+    flex:0 0 38px; display:flex; align-items:center; gap:12px;
+    padding:0 14px; background:#0d0d0d; border-top:1px solid #1b1b1b;
+  }
+  .dt-steps{ display:flex; align-items:center; }
+  .dt-step{ display:flex; align-items:center; gap:7px; cursor:pointer; background:none; border:0; font-family:inherit; padding:0; }
+  .dt-step-dot{
+    width:6px; height:6px; border-radius:50%; background:#282828;
+    transition:background .3s ease, box-shadow .3s ease;
+  }
+  .dt-step.done .dt-step-dot{ background:#4e4e4e; }
+  .dt-step.on .dt-step-dot{ background:#fff; box-shadow:0 0 0 3px rgba(255,255,255,.09); }
+  .dt-step-l{ font-size:9.5px; color:rgba(255,255,255,.26); white-space:nowrap; transition:color .3s ease; }
+  .dt-step.on .dt-step-l{ color:rgba(255,255,255,.82); }
+  .dt-step-sep{ width:22px; height:1px; background:#222; margin:0 9px; }
+  .dt-status-end{ margin-left:auto; font-size:9px; letter-spacing:.5px; color:rgba(255,255,255,.2); }
+
+  /* ---------- scroll hint ---------- */
+  .demo-hint{
+    position:absolute; left:50%; bottom:14px; transform:translateX(-50%);
+    font-size:9.5px; letter-spacing:1.4px; text-transform:uppercase;
+    color:var(--ink-faint); transition:opacity .45s ease; pointer-events:none;
+  }
+  .demo-hint.gone{ opacity:0; }
+
+  /* ---------- phone frame (hidden on desktop) ---------- */
+  .phone-notch{ display:none; }
+  .phone-home{ display:none; }
+
+  /* ================= CASE STUDIES ================= */
+  .cases-grid{
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:16px; margin-top:40px;
+  }
+  .case-card{
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.7);
+    border-radius:20px; padding:34px 30px 36px;
+    transition:transform .22s ease, background .22s ease;
+  }
+  .case-card:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,0.70);
+  }
+  .case-label{
+    font-size:11px; font-weight:600;
+    letter-spacing:1px; text-transform:uppercase;
+    color:var(--green); margin-bottom:14px;
+  }
+  .case-card h3{
+    font-size:19px; letter-spacing:-0.4px; margin-bottom:10px;
+  }
+  .case-card p{
+    font-size:14.5px; line-height:1.6; color:var(--ink-soft);
+    margin-bottom:16px;
+  }
+  .case-stats{ display:flex; gap:16px; }
+  .case-stat{
+    padding:10px 16px; border-radius:10px;
+    background:rgba(18,122,52,0.06);
+    border:1px solid rgba(18,122,52,0.12);
+  }
+  .case-stat-num{
+    font-size:20px; font-weight:700; color:var(--deep);
+    letter-spacing:-0.5px;
+  }
+  .case-stat-label{
+    font-size:11px; color:var(--ink-faint); margin-top:2px;
+  }
+
+  /* ================= GLOBE ================= */
+  .globe-sec{ padding:44px 0 90px; }
+  .globe-frame{
+    border-radius:26px; background:var(--dark);
+    background-image:radial-gradient(rgba(143,226,60,0.10) 1px, transparent 1px);
+    background-size:18px 18px;
+    border:1px solid rgba(255,255,255,0.07);
+    padding:58px 50px;
+    display:grid; grid-template-columns:1fr 1fr;
+    align-items:center; gap:36px; overflow:hidden;
+  }
+  .globe-copy h2{ font-size:clamp(25px,3.2vw,38px); color:#fff; letter-spacing:-0.9px; }
+  .globe-copy p{ margin-top:18px; font-size:16px; line-height:1.62; color:rgba(255,255,255,0.45); max-width:420px; }
+  .globe-list{ list-style:none; margin-top:24px; display:flex; flex-direction:column; gap:11px; }
+  .globe-list li{ display:flex; gap:10px; align-items:flex-start; font-size:14.5px; line-height:1.5; color:rgba(255,255,255,0.60); }
+  .globe-list li::before{
+    content:''; width:5px; height:5px; border-radius:50%;
+    background:var(--lime); margin-top:7px; flex-shrink:0;
+    box-shadow:0 0 0 3px rgba(143,226,60,0.16);
+  }
+  #globe-holder{ position:relative; width:100%; aspect-ratio:1/1; max-height:420px; cursor:grab; }
+  #globe-holder:active{ cursor:grabbing; }
+  #globe-holder canvas{ display:block; }
+
+  /* ================= OFFER ================= */
+  .offer{
+    background:rgba(255,255,255,0.50);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,0.68);
+    border-radius:24px; padding:60px 44px; text-align:center; margin-bottom:16px;
+  }
+  .offer h2{ font-size:clamp(26px,3.5vw,40px); max-width:640px; margin:0 auto; }
+  .offer p{ max-width:520px; margin:18px auto 0; font-size:16.5px; line-height:1.6; color:var(--ink-soft); }
+  .offer .btn{
+    position:relative; overflow:hidden;
+    display:inline-block; margin-top:30px; padding:15px 38px; border-radius:12px;
+    background:rgba(15,21,17,0.055);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(15,21,17,0.13);
+    color:var(--ink); font-size:15px; font-weight:600;
+    transition:background .2s ease, transform .2s ease, border-color .2s ease;
+  }
+  .offer .btn:hover{ background:rgba(15,21,17,0.10); border-color:rgba(15,21,17,0.22); transform:translateY(-1px); }
+  .offer .btn::before{
+    content:''; position:absolute; inset:-1px; border-radius:inherit;
+    padding:1px;
+    background:conic-gradient(from var(--specular-angle), transparent 0%, rgba(255,255,255,0.65) 4%, transparent 9%, transparent 100%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite:exclude;
+    pointer-events:none;
+    animation:specular-sweep 5s ease-in-out infinite;
+  }
+  .offer .fine{ display:block; margin-top:14px; font-size:12.5px; font-weight:500; color:var(--ink-faint); }
+
+  /* ================= SCROLL REVEAL ================= */
+  .reveal{
+    opacity:0;
+    transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.from-left{ transform:translateX(-60px); }
+  .reveal.from-right{ transform:translateX(60px); }
+  .reveal.visible{ opacity:1; transform:translateX(0); }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+
+  /* ================= FOOTER ================= */
+  footer{ position:relative; padding:70px 0 42px; overflow:hidden; z-index:2; }
+  .foot-word-wrap{
+    position:absolute; left:0; right:0; bottom:0;
+    display:flex; justify-content:center; align-items:flex-end;
+    pointer-events:none; line-height:0; z-index:0;
+  }
+  .foot-word{
+    font-family:var(--brand-font);
+    font-size:clamp(120px,18vw,320px); font-weight:800; letter-spacing:-0.04em;
+    color:var(--deep); opacity:0.18; white-space:nowrap;
+    transform:translateY(22%);
+  }
+  .foot-row{
+    position:relative; z-index:1;
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:18px;
+  }
+  .foot-brand{ display:flex; align-items:center; gap:9px; }
+  .foot-brand img{ height:20px; }
+  .foot-brand span{ font-size:14px; font-weight:600; letter-spacing:-0.1px; }
+  .foot-links{ display:flex; gap:24px; font-size:13.5px; font-weight:500; color:var(--ink-soft); }
+  .foot-links a:hover{ color:var(--ink); }
+  .foot-meta{ font-size:12px; color:var(--ink-faint); font-weight:500; }
+
+  /* ================= DEMO MODAL ================= */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(10,16,12,0.55);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    opacity:0; visibility:hidden;
+    transition:opacity .25s ease, visibility .25s;
+  }
+  .modal-overlay.open{ opacity:1; visibility:visible; }
+  .modal-box{
+    width:100%; max-width:480px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:36px 32px 32px;
+    box-shadow:0 28px 60px rgba(12,26,18,0.22);
+    position:relative;
+    transform:translateY(16px) scale(0.97);
+    transition:transform .25s cubic-bezier(0.22,1,0.36,1);
+  }
+  .modal-overlay.open .modal-box{ transform:translateY(0) scale(1); }
+  .modal-close{
+    position:absolute; top:14px; right:14px;
+    width:32px; height:32px;
+    border-radius:8px; border:none;
+    background:rgba(15,21,17,0.05);
+    color:var(--ink); font-size:18px; line-height:1;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .18s ease;
+  }
+  .modal-close:hover{ background:rgba(15,21,17,0.10); }
+  .modal-title{ font-size:22px; font-weight:600; letter-spacing:-0.6px; margin-bottom:6px; }
+  .modal-sub{ font-size:14px; color:var(--ink-soft); margin-bottom:24px; }
+  .modal-form{ display:flex; flex-direction:column; gap:14px; }
+  .modal-field{ display:flex; flex-direction:column; gap:5px; }
+  .modal-field label{ font-size:12px; font-weight:600; letter-spacing:0.2px; color:var(--ink-faint); }
+  .modal-field input,
+  .modal-field select{
+    font-family:var(--sans);
+    font-size:14px; font-weight:500; padding:10px 13px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    outline:none;
+    transition:border-color .18s ease, box-shadow .18s ease;
+    -webkit-appearance:none;
+  }
+  .modal-field input::placeholder{ color:var(--ink-faint); font-weight:500; opacity:1; }
+  .modal-field input:focus,
+  .modal-field select:focus{ border-color:var(--green); box-shadow:0 0 0 3px rgba(18,122,52,0.12); }
+  .modal-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .modal-submit{
+    margin-top:6px;
+    background:var(--deep); color:var(--paper);
+    border:none; border-radius:11px;
+    padding:12px 0; width:100%;
+    font-family:var(--sans);
+    font-size:14px; font-weight:600;
+    letter-spacing:-0.05px;
+    cursor:pointer;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .modal-submit:hover:not(:disabled){ background:#155029; transform:translateY(-1px); }
+  .modal-submit:disabled{ opacity:0.55; cursor:not-allowed; }
+  .modal-success{ display:none; text-align:center; padding:30px 10px; }
+  .modal-success .check{
+    width:52px; height:52px; border-radius:50%;
+    background:rgba(18,122,52,0.10);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 16px; font-size:24px;
+  }
+  .modal-success h3{ font-size:19px; font-weight:600; letter-spacing:-0.4px; margin-bottom:8px; }
+  .modal-success p{ font-size:14px; color:var(--ink-soft); line-height:1.55; }
+  .modal-error{ display:none; font-size:12.5px; font-weight:600; color:#b91c1c; text-align:center; margin-top:8px; }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:960px){
+    .globe-frame{ grid-template-columns:1fr; padding:44px 26px 32px; gap:14px; }
+    #globe-holder{ order:-1; max-height:310px; }
+    .globe-copy p{ max-width:none; }
+    .cdp-grid{ grid-template-columns:1fr; }
+    .cases-grid{ grid-template-columns:1fr; }
+  }
+  @media (max-width:760px){
+    /* product demo showcase removed on mobile */
+    .demo-sec{ display:none !important; }
+
+    .navbar{ transition:transform .32s cubic-bezier(0.22,1,0.36,1); }
+    .navbar.nav-hidden{ transform:translateY(-140%); }
+    .nav-card{
+      width:calc(100% - 12px);
+      padding:16px 16px 16px 22px;
+      border-radius:18px; gap:8px;
+    }
+    .nav-brand{ gap:10px; }
+    .nav-brand img{ height:42px; }
+    .nav-brand span{ font-size:21px; font-weight:700; letter-spacing:-0.2px; }
+    .nav-cta{ padding:12px 18px; font-size:14px; }
+
+    /* ---- phone frame for demo ---- */
+    .mac-scaler{ width:390px; height:760px; }
+    .mac-screen{
+      position:relative;
+      background:#1a1a1a;
+      border-radius:44px;
+      padding:6px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06),
+        0 30px 70px -15px rgba(0,0,0,.45),
+        0 8px 24px -8px rgba(0,0,0,.25);
+    }
+    .mac-window{
+      border-radius:38px;
+    }
+    .mac-titlebar{ display:none; }
+    .mac-dots{ display:none; }
+    .phone-notch{
+      display:flex; align-items:center; justify-content:space-between;
+      flex:0 0 48px; padding:10px 26px 0;
+      font-size:15px; font-weight:600; letter-spacing:.3px;
+      color:rgba(255,255,255,.7);
+    }
+    .phone-pill{
+      width:120px; height:32px;
+      border-radius:18px; background:#1a1a1a;
+    }
+    .phone-sig{
+      font-size:7px; letter-spacing:2px; color:rgba(255,255,255,.35);
+    }
+    .phone-home{
+      display:block; flex:0 0 28px;
+      width:134px; height:5px; border-radius:3px;
+      background:rgba(255,255,255,.15);
+      margin:0 auto; margin-top:auto;
+      padding:0;
+    }
+    .mac-body{ grid-template-columns:1fr; }
+    .dt-side{ display:none; }
+
+    .dt-nom{ grid-template-columns:1fr; gap:8px; }
+    .dt-methods{ grid-template-columns:1fr; gap:6px; }
+    .dt-ba{ grid-template-columns:1fr; gap:8px; }
+    .dt-tblwrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .dt-tbl{ min-width:580px; }
+    .dt-seq-row{ flex-wrap:wrap; gap:6px 10px; }
+    .dt-seq-name{ width:auto; }
+    .dt-seq-src{ width:auto; }
+    .dt-code{ flex-wrap:wrap; gap:10px; }
+    .dt-prevented{ flex-wrap:wrap; gap:8px; }
+    .dt-prevented-tag{ margin-left:0; }
+    .dt-note{ flex-wrap:wrap; gap:8px; }
+    .dt-note-calc{ margin-left:0; }
+    .dt-statusbar{ flex-wrap:wrap; justify-content:center; gap:8px; }
+    .dt-status-end{ margin-left:0; display:none; }
+    .dt-steps{ flex-wrap:wrap; justify-content:center; }
+    .dt-step-sep{ width:12px; margin:0 4px; }
+    .dt-step-l{ font-size:8px; }
+  }
+  @media (max-width:620px){
+    :root{ --inset:16px; }
+    .wrap{ padding:0 var(--inset); }
+    .hero-shell{
+      padding:var(--inset);
+      padding-top:calc(var(--inset) + 92px);
+    }
+    .hero-box{
+      min-height:min(520px, calc(100vh - 90px));
+      border-radius:18px;
+    }
+    .hero-inner{ padding:48px 18px; }
+    .hero-inner h1{ letter-spacing:-0.2px; font-size:clamp(28px,7.5vw,46px); }
+    .hero-sub{ font-size:15px; }
+
+    .sec{ padding:0 var(--inset); margin:44px 0; }
+    .sec.tight{ padding:0 var(--inset); margin:44px 0; }
+    .sec.framed{
+      padding:28px 18px; border-radius:16px;
+      margin:44px var(--inset); width:auto;
+    }
+
+    .demo-stage{ padding:0 10px; }
+    .demo-hint{ bottom:10px; }
+
+    .globe-sec{ padding:0 var(--inset); margin:44px 0; }
+    .globe-frame{ border-radius:16px; padding:32px 20px 24px; margin:0; }
+
+    .offer{ padding:36px 20px; border-radius:16px; margin:44px 0; }
+
+    .logoloop{ padding:36px 0 30px; }
+    .logoloop{ --logoloop-gap:24px; --logoloop-logoHeight:48px; }
+
+    .cdp-grid{ grid-template-columns:1fr; gap:10px; }
+    .cdp-card{ padding:24px 20px 26px; border-radius:14px; }
+
+    .cases-grid{ grid-template-columns:1fr; gap:10px; }
+    .case-card{ padding:24px 20px 26px; border-radius:14px; }
+    .case-stats{ flex-wrap:wrap; }
+
+    .sec-head h2{ font-size:clamp(22px,6vw,32px); }
+    .sec-head p{ font-size:15px; }
+
+    .eyebrow{ font-size:10px; letter-spacing:1.2px; margin-bottom:14px; }
+    .hero-eyebrow{ font-size:10px; padding:5px 12px; }
+
+    .foot-row{ justify-content:flex-start; }
+    .foot-links{ order:3; width:100%; gap:16px; font-size:13px; }
+
+    .modal-box{ margin:0 var(--inset); }
+  }
+  @media (max-width:520px){
+    .modal-box{ padding:28px 20px 24px; border-radius:18px; }
+    .modal-row{ grid-template-columns:1fr 1fr; gap:8px; }
+    .modal-title{ font-size:19px; }
+  }
+  @media (max-width:400px){
+    .nav-card{ padding:13px 12px 13px 16px; }
+    .nav-brand{ gap:8px; }
+    .nav-brand span{ font-size:18px; }
+    .nav-brand img{ height:36px; }
+    .nav-cta{ padding:10px 15px; font-size:13px; }
+  }
+  @media (max-width:360px){
+    .modal-row{ grid-template-columns:1fr; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+
+<canvas id="dotgrid-canvas"></canvas>
+
+<!-- ================= NAV ================= -->
+<nav class="navbar">
+  <div class="nav-card" id="navCard">
+    <a class="nav-brand" href="index.html">
+      <img src="logo.png" alt="Datic" />
+      <span>Datic</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a class="nav-cta nav-cta--highlight" href="careers.html">Careers</a>
+      <a class="nav-cta nav-cta--green" href="#" onclick="openDemoModal(); return false;">Book a demo</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero-shell">
+    <div class="hero-box">
+      <canvas id="terminal-canvas"></canvas>
+      <div class="hero-veil"></div>
+      <div class="hero-inner">
+        <span class="hero-eyebrow">Now in public beta</span>
+        <h1>Your business is losing money <span class="accent">you can't see.</span></h1>
+        <p class="hero-sub">Datic connects every system your business runs on, detects where money leaks between them, and prevents it from happening again.</p>
+        <a class="hero-cta" href="#" onclick="openDemoModal(); return false;">Book a demo</a>
+        <p class="hero-note">No new software to learn. No cleanup needed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LOGO LOOP ================= -->
+  <section class="logoloop logoloop--fade logoloop--scale-hover wrap" id="logoloop" role="region" aria-label="Partner logos">
+    <div class="logoloop__label">Connects to what you already use</div>
+    <div class="logoloop__track" id="logoloopTrack"></div>
+  </section>
+
+  <!-- ================= CONNECT DETECT PREVENT ================= -->
+  <section class="sec wrap reveal from-left" id="how">
+    <div class="sec-head">
+      <span class="eyebrow">How Datic works</span>
+      <h2>Connect. Detect. Prevent.</h2>
+      <p>Three steps. Every system your business runs on, reconciled continuously, so nothing falls through the gaps.</p>
+    </div>
+    <div class="cdp-grid">
+      <div class="cdp-card">
+        <div class="cdp-step">01</div>
+        <h3>Connect</h3>
+        <p>We plug into every data source your business runs on. Your ERP, your WhatsApp, your Excel sheets, your supplier invoices. Even the informal, scattered, manually entered ones.</p>
+      </div>
+      <div class="cdp-card">
+        <div class="cdp-step">02</div>
+        <h3>Detect</h3>
+        <p>We cross-check every data point against every related data point across all your sources, continuously. When the purchase order says one thing and the inventory says another, we show you exactly what broke.</p>
+      </div>
+      <div class="cdp-card">
+        <div class="cdp-step">03</div>
+        <h3>Prevent</h3>
+        <p>Once we find a leakage, you activate a control with one click. That leakage is now closed. Permanently. A duplicate order gets rejected. An unbilled delivery gets flagged.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRODUCT DEMO : SCROLL-DRIVEN MAC ================= -->
+  <section class="demo-sec" id="demo">
+    <div class="wrap demo-intro reveal">
+      <div class="sec-head">
+        <span class="eyebrow">See it work</span>
+        <h2>This is what Datic actually feels like.</h2>
+        <p>One material, ordered under three different names, across three systems. Keep scrolling — the product walks the whole investigation, from the unissued balance to the control that stops it happening again.</p>
+      </div>
+    </div>
+
+    <div class="demo-track" id="demoTrack">
+      <div class="demo-stage">
+        <div class="mac-scaler" id="macScaler">
+          <div class="mac-screen">
+            <div class="mac-window">
+
+              <div class="phone-notch"><span>9:41</span><span class="phone-pill"></span><span class="phone-sig">●●●●</span></div>
+
+              <div class="mac-titlebar">
+                <div class="mac-dots"><span class="mac-dot"></span><span class="mac-dot"></span><span class="mac-dot"></span></div>
+                <span class="mac-title">Datic</span>
+                <span class="mac-tb-end">Illustrative data</span>
+              </div>
+
+              <div class="mac-body">
+
+                <!-- ---------- sidebar ---------- -->
+                <aside class="dt-side">
+                  <div class="dt-brand">
+                    <span class="dt-brand-mark">D</span>
+                    <span class="dt-brand-name">Datic</span>
+                  </div>
+
+                  <div class="dt-ws">
+                    <div>
+                      <div class="dt-ws-name">Northfield Mills</div>
+                      <div class="dt-ws-sub">FY 2026 · Unit 2</div>
+                    </div>
+                    <span class="dt-ws-car">▾</span>
+                  </div>
+
+                  <div class="dt-lab">Scenarios</div>
+                  <div class="dt-tabs">
+                    <button class="dt-tab on" data-stage="0">
+                      <span class="dt-tab-n">01</span>
+                      <span>
+                        <span class="dt-tab-t">Inventory</span>
+                        <span class="dt-tab-s">Unissued balance against BOM</span>
+                      </span>
+                    </button>
+                    <button class="dt-tab" data-stage="2">
+                      <span class="dt-tab-n">02</span>
+                      <span>
+                        <span class="dt-tab-t">SKU</span>
+                        <span class="dt-tab-s">Nomenclature and naming sequence</span>
+                      </span>
+                    </button>
+                    <button class="dt-tab" data-stage="3">
+                      <span class="dt-tab-n">03</span>
+                      <span>
+                        <span class="dt-tab-t">Prevention</span>
+                        <span class="dt-tab-s">Data point control and outcome</span>
+                      </span>
+                    </button>
+                  </div>
+
+                  <div class="dt-lab">Workspace</div>
+                  <ul class="dt-nav">
+                    <li>Overview</li>
+                    <li class="on">Exceptions <span class="dt-badge">1</span></li>
+                    <li>Data points</li>
+                    <li>Reconciliation</li>
+                    <li>Audit log</li>
+                  </ul>
+
+                  <div class="dt-src">
+                    <div class="dt-lab" style="padding:0 0 3px;">Connected</div>
+                    <div class="dt-src-row"><span class="dt-src-dot"></span>Tally ERP<span class="dt-src-n">50</span></div>
+                    <div class="dt-src-row"><span class="dt-src-dot"></span>Zoho Inventory<span class="dt-src-n">27</span></div>
+                    <div class="dt-src-row"><span class="dt-src-dot"></span>Supplier Excel<span class="dt-src-n">18</span></div>
+                    <div class="dt-src-row"><span class="dt-src-dot"></span>WhatsApp orders<span class="dt-src-n">4</span></div>
+                    <div class="dt-src-row"><span class="dt-src-dot idle"></span>Bank feed<span class="dt-src-n">—</span></div>
+                  </div>
+                </aside>
+
+                <!-- ---------- main ---------- -->
+                <div class="dt-main">
+                  <div class="dt-top">
+                    <span class="dt-top-step" id="dtStep">01 / 05</span>
+                    <span class="dt-top-title" id="dtTitle">Unissued Inventory</span>
+                    <div class="dt-top-end" id="dtPills">
+                      <span class="dt-pill">3 customer POs</span>
+                      <span class="dt-pill">14 supplier POs</span>
+                      <span class="dt-pill bad">1 exception</span>
+                    </div>
+                  </div>
+
+                  <div class="dt-screens">
+
+                    <!-- ===== 01 Unissued Inventory ===== -->
+                    <div class="dt-screen on" data-screen="0">
+                      <div class="dt-h">Unissued inventory against bill of materials</div>
+                      <p class="dt-p">Datic read every customer order, every supplier order and every goods receipt, then rebuilt what each material <b>should</b> have consumed. One line does not close.</p>
+
+                      <div class="dt-stats">
+                        <div class="dt-stat"><div class="dt-stat-k">Materials checked</div><div class="dt-stat-v">8</div></div>
+                        <div class="dt-stat"><div class="dt-stat-k">Documents read</div><div class="dt-stat-v">99</div></div>
+                        <div class="dt-stat"><div class="dt-stat-k">Lines reconciled</div><div class="dt-stat-v">7</div></div>
+                        <div class="dt-stat bad"><div class="dt-stat-k">Unissued units</div><div class="dt-stat-v">10,630</div></div>
+                      </div>
+
+                      <div class="dt-tblwrap">
+                        <table class="dt-tbl">
+                          <thead>
+                            <tr>
+                              <th>SKU</th><th>Material</th><th>Cust PO</th>
+                              <th class="n">BOM / unit</th><th class="n">Required</th><th class="n">Ordered</th>
+                              <th class="n">Received</th><th class="n">Issued</th><th class="n">Unissued</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class="flag">
+                              <td class="k"><span class="rdot"></span>RM-4821</td><td>White Button Thread</td><td>CPO-1847</td>
+                              <td class="n">3.75</td><td class="n">46,800</td><td class="n">61,200</td>
+                              <td class="n">57,430</td><td class="n">46,800</td><td class="n">10,630</td>
+                            </tr>
+                            <tr>
+                              <td class="k">RM-1938</td><td>Steel Rivet 8mm</td><td>CPO-1852</td>
+                              <td class="n">6.00</td><td class="n">74,400</td><td class="n">74,400</td>
+                              <td class="n">74,400</td><td class="n">74,400</td><td class="n dim">0</td>
+                            </tr>
+                            <tr>
+                              <td class="k">RM-5510</td><td>Nylon Zip 14in</td><td>CPO-1847</td>
+                              <td class="n">2.00</td><td class="n">24,960</td><td class="n">25,000</td>
+                              <td class="n">25,000</td><td class="n">24,960</td><td class="n dim">40</td>
+                            </tr>
+                            <tr>
+                              <td class="k">RM-3294</td><td>Elastic Band 20mm</td><td>CPO-1861</td>
+                              <td class="n">4.50</td><td class="n">33,750</td><td class="n">33,800</td>
+                              <td class="n">33,800</td><td class="n">33,750</td><td class="n dim">50</td>
+                            </tr>
+                            <tr>
+                              <td class="k">RM-7762</td><td>Cotton Lining</td><td>CPO-1847</td>
+                              <td class="n">1.25</td><td class="n">15,600</td><td class="n">15,600</td>
+                              <td class="n">15,600</td><td class="n">15,600</td><td class="n dim">0</td>
+                            </tr>
+                            <tr>
+                              <td class="k">RM-2105</td><td>Brass Buckle 18mm</td><td>CPO-1852</td>
+                              <td class="n">1.00</td><td class="n">12,400</td><td class="n">12,400</td>
+                              <td class="n">12,400</td><td class="n">12,400</td><td class="n dim">0</td>
+                            </tr>
+                            <tr>
+                              <td class="k">RM-6448</td><td>Polyester Fill 200g</td><td>CPO-1861</td>
+                              <td class="n">0.80</td><td class="n">6,000</td><td class="n">6,000</td>
+                              <td class="n">6,000</td><td class="n">6,000</td><td class="n dim">0</td>
+                            </tr>
+                            <tr>
+                              <td class="k">RM-8891</td><td>Label Tag Printed</td><td>CPO-1847</td>
+                              <td class="n">1.00</td><td class="n">12,480</td><td class="n">12,500</td>
+                              <td class="n">12,500</td><td class="n">12,480</td><td class="n dim">20</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div class="dt-note">
+                        <span class="dt-note-t">RM-4821</span>
+                        <span class="dt-note-d">Ordered 14,400 units beyond what the bill of materials required, and 10,630 units are sitting received but never issued.</span>
+                        <span class="dt-note-calc">61,200 ordered − 46,800 required = <b>14,400</b></span>
+                      </div>
+                    </div>
+
+                    <!-- ===== 02 Nomenclature Detected ===== -->
+                    <div class="dt-screen" data-screen="1">
+                      <div class="dt-h">Nomenclature detected</div>
+                      <p class="dt-p">RM-4821 was not ordered once. It was ordered three times, under three different names, in three different systems — so no system ever saw the total.</p>
+
+                      <div class="dt-nom">
+                        <div class="dt-nom-card">
+                          <div class="dt-nom-src">Tally ERP · purchase order</div>
+                          <div class="dt-nom-name">White Button Thread</div>
+                          <div class="dt-nom-code">Item code WB-102 · SPO-6621</div>
+                          <div class="dt-nom-rows">
+                            <div class="dt-nom-row">Ordered<b>28,000</b></div>
+                            <div class="dt-nom-row">Received<b>26,400</b></div>
+                            <div class="dt-nom-row">Supplier<b>Apex Textiles</b></div>
+                          </div>
+                        </div>
+                        <div class="dt-nom-card">
+                          <div class="dt-nom-src">Zoho Inventory · goods receipt</div>
+                          <div class="dt-nom-name">Thread White Button</div>
+                          <div class="dt-nom-code">Item code TWB-77 · SPO-4419</div>
+                          <div class="dt-nom-rows">
+                            <div class="dt-nom-row">Ordered<b>18,200</b></div>
+                            <div class="dt-nom-row">Received<b>17,030</b></div>
+                            <div class="dt-nom-row">Supplier<b>Bharat Fibres</b></div>
+                          </div>
+                        </div>
+                        <div class="dt-nom-card">
+                          <div class="dt-nom-src">Supplier Excel · invoice</div>
+                          <div class="dt-nom-name">WHT BTN THD</div>
+                          <div class="dt-nom-code">Item code 8A-991 · SPO-7705</div>
+                          <div class="dt-nom-rows">
+                            <div class="dt-nom-row">Ordered<b>15,000</b></div>
+                            <div class="dt-nom-row">Received<b>14,000</b></div>
+                            <div class="dt-nom-row">Supplier<b>Central Yarn</b></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="dt-link">
+                        <span class="dt-link-line"></span>
+                        <span class="dt-link-tag">Same material · three records · never netted off</span>
+                        <span class="dt-link-line"></span>
+                      </div>
+
+                      <div class="dt-merge">
+                        <div class="dt-merge-i"><span class="dt-merge-k">Combined ordered</span><span class="dt-merge-v">61,200</span></div>
+                        <span class="dt-merge-sep"></span>
+                        <div class="dt-merge-i"><span class="dt-merge-k">Combined received</span><span class="dt-merge-v">57,430</span></div>
+                        <span class="dt-merge-sep"></span>
+                        <div class="dt-merge-i"><span class="dt-merge-k">Required by BOM</span><span class="dt-merge-v">46,800</span></div>
+                        <span class="dt-merge-sep"></span>
+                        <div class="dt-merge-i"><span class="dt-merge-k">Issued to production</span><span class="dt-merge-v">46,800</span></div>
+                        <span class="dt-merge-sep"></span>
+                        <div class="dt-merge-i"><span class="dt-merge-k">Unissued balance</span><span class="dt-merge-v bad">10,630</span></div>
+                      </div>
+
+                      <div class="dt-sub">Source documents</div>
+                      <div class="dt-tblwrap">
+                        <table class="dt-tbl">
+                          <thead>
+                            <tr><th>Document</th><th>Type</th><th>Source</th><th>Date</th><th>Name used</th><th class="n">Quantity</th></tr>
+                          </thead>
+                          <tbody>
+                            <tr><td class="k">PO/6621</td><td>Purchase order</td><td>Tally ERP</td><td>12 Mar 2026</td><td>White Button Thread</td><td class="n">28,000</td></tr>
+                            <tr><td class="k">GRN/4419-A</td><td>Goods receipt</td><td>Zoho Inventory</td><td>04 Apr 2026</td><td>Thread White Button</td><td class="n">17,030</td></tr>
+                            <tr><td class="k">INV/CY-7705</td><td>Supplier invoice</td><td>Supplier Excel</td><td>21 Apr 2026</td><td>WHT BTN THD</td><td class="n">14,000</td></tr>
+                            <tr><td class="k">ISS/2261</td><td>Issue note</td><td>Tally ERP</td><td>09 May 2026</td><td>Button Thread (White)</td><td class="n">46,800</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <!-- ===== 03 Sequence Detected ===== -->
+                    <div class="dt-screen" data-screen="2">
+                      <div class="dt-h">Sequence detected</div>
+                      <p class="dt-p">Three names were the symptom. Datic went back through the document history and found the naming pattern that produced them — the same three words, reordered and abbreviated, across 99 documents.</p>
+
+                      <div class="dt-rule">
+                        <span>Pattern</span>
+                        <code>WHITE</code><code>BUTTON</code><code>THREAD</code>
+                        <span>matched in any order, any abbreviation, any separator</span>
+                      </div>
+
+                      <div class="dt-seq">
+                        <div class="dt-seq-row">
+                          <span class="dt-seq-i">01</span><span class="dt-seq-name">White Button Thread</span>
+                          <span class="dt-seq-src">Tally ERP · purchase</span><span class="dt-seq-date">12 Mar 2026</span>
+                          <span class="dt-seq-n">41 documents</span>
+                        </div>
+                        <div class="dt-seq-row">
+                          <span class="dt-seq-i">02</span><span class="dt-seq-name">Thread White Button</span>
+                          <span class="dt-seq-src">Zoho Inventory · GRN</span><span class="dt-seq-date">04 Apr 2026</span>
+                          <span class="dt-seq-n">27 documents</span>
+                        </div>
+                        <div class="dt-seq-row">
+                          <span class="dt-seq-i">03</span><span class="dt-seq-name">WHT BTN THD</span>
+                          <span class="dt-seq-src">Supplier Excel · invoice</span><span class="dt-seq-date">21 Apr 2026</span>
+                          <span class="dt-seq-n">18 documents</span>
+                        </div>
+                        <div class="dt-seq-row">
+                          <span class="dt-seq-i">04</span><span class="dt-seq-name">Button Thread (White)</span>
+                          <span class="dt-seq-src">Tally ERP · issue note</span><span class="dt-seq-date">09 May 2026</span>
+                          <span class="dt-seq-n">9 documents</span>
+                        </div>
+                        <div class="dt-seq-row">
+                          <span class="dt-seq-i">05</span><span class="dt-seq-name">W.B. THREAD</span>
+                          <span class="dt-seq-src">WhatsApp order</span><span class="dt-seq-date">27 May 2026</span>
+                          <span class="dt-seq-n">4 documents</span>
+                        </div>
+                      </div>
+
+                      <button class="dt-add" id="dtAdd">+ Add another variation to this sequence</button>
+
+                      <div class="dt-sub">What the sequence covers</div>
+                      <div class="dt-stats" style="margin-bottom:0;">
+                        <div class="dt-stat"><div class="dt-stat-k">Documents matched</div><div class="dt-stat-v">99</div></div>
+                        <div class="dt-stat"><div class="dt-stat-k">Supplier POs affected</div><div class="dt-stat-v">3</div></div>
+                        <div class="dt-stat"><div class="dt-stat-k">Suppliers involved</div><div class="dt-stat-v">3</div></div>
+                        <div class="dt-stat bad"><div class="dt-stat-k">Ordered above BOM</div><div class="dt-stat-v">14,400</div></div>
+                      </div>
+                    </div>
+
+                    <!-- ===== 04 Prevention Methods ===== -->
+                    <div class="dt-screen" data-screen="3">
+                      <div class="dt-h">Prevention methods</div>
+                      <p class="dt-p">Finding it once is bookkeeping. Choose how Datic should stop this material from splitting into separate records again.</p>
+
+                      <div class="dt-methods" id="dtMethods">
+                        <button class="dt-method sel" data-m="0">
+                          <span class="dt-method-box">✓</span>
+                          <span>
+                            <span class="dt-method-t">Assign a unique Datic data point</span>
+                            <span class="dt-method-d">Bind every spelling of this material to one canonical code, so quantities net off across systems.</span>
+                          </span>
+                        </button>
+                        <button class="dt-method" data-m="1">
+                          <span class="dt-method-box">✓</span>
+                          <span>
+                            <span class="dt-method-t">Block unmatched nomenclature at entry</span>
+                            <span class="dt-method-d">A name that does not resolve to an existing data point needs approval before a PO can be raised.</span>
+                          </span>
+                        </button>
+                        <button class="dt-method" data-m="2">
+                          <span class="dt-method-box">✓</span>
+                          <span>
+                            <span class="dt-method-t">Check ordered quantity against BOM</span>
+                            <span class="dt-method-d">Hold any purchase order that takes combined ordered quantity above the bill of materials requirement.</span>
+                          </span>
+                        </button>
+                        <button class="dt-method" data-m="3">
+                          <span class="dt-method-box">✓</span>
+                          <span>
+                            <span class="dt-method-t">Alert on unissued balance</span>
+                            <span class="dt-method-d">Raise an exception when received stock is not issued to production within the set window.</span>
+                          </span>
+                        </button>
+                        <button class="dt-method" data-m="4">
+                          <span class="dt-method-box">✓</span>
+                          <span>
+                            <span class="dt-method-t">Lock supplier codes to the master</span>
+                            <span class="dt-method-d">Supplier invoices and GRNs must map to an approved item code before they post.</span>
+                          </span>
+                        </button>
+                      </div>
+
+                      <div class="dt-apply">
+                        <button class="dt-btn" id="dtApply">Apply control</button>
+                        <span class="dt-apply-note" id="dtApplyNote">Applies to RM-4821 and every variation in the detected sequence.</span>
+                      </div>
+
+                      <div class="dt-sub">Rule preview</div>
+                      <div class="dt-rulelist">
+                        <div class="dt-rulerow"><span class="dt-rulekw">WHEN</span><span>a document references any variation in sequence <b>SEQ-4821</b></span></div>
+                        <div class="dt-rulerow"><span class="dt-rulekw">THEN</span><span>resolve the line to a single data point before it posts</span></div>
+                        <div class="dt-rulerow"><span class="dt-rulekw">AND</span><span>compare combined ordered quantity against the BOM requirement of <b>46,800</b></span></div>
+                        <div class="dt-rulerow"><span class="dt-rulekw">IF</span><span>combined ordered exceeds required — <b>hold the order for approval</b></span></div>
+                      </div>
+                    </div>
+
+                    <!-- ===== 05 Prevented ===== -->
+                    <div class="dt-screen" data-screen="4">
+                      <div class="dt-h">Prevented</div>
+                      <p class="dt-p">The material now exists once. Every name that used to create a separate record resolves to the same data point before it reaches the ledger.</p>
+
+                      <div class="dt-code">
+                        <div class="dt-merge-i"><span class="dt-merge-k">Datic data point</span><span class="dt-code-v">DC-WBT-004821</span></div>
+                        <span class="dt-merge-sep"></span>
+                        <div class="dt-merge-i"><span class="dt-merge-k">Variations bound</span><span class="dt-merge-v">5</span></div>
+                        <span class="dt-merge-sep"></span>
+                        <div class="dt-merge-i"><span class="dt-merge-k">Sources</span><span class="dt-merge-v">4</span></div>
+                        <span class="dt-merge-sep"></span>
+                        <div class="dt-merge-i"><span class="dt-merge-k">Documents remapped</span><span class="dt-merge-v">99</span></div>
+                      </div>
+
+                      <div class="dt-ba">
+                        <div class="dt-ba-col">
+                          <div class="dt-ba-h">Before</div>
+                          <ul class="dt-ba-list">
+                            <li>Three names for one material</li>
+                            <li>Three separate item records</li>
+                            <li>Three quantities that never net off</li>
+                            <li>Ordering runs past the BOM requirement</li>
+                            <li>10,630 units received and never issued</li>
+                            <li>Working capital sits in the store, unseen</li>
+                          </ul>
+                        </div>
+                        <div class="dt-ba-col after">
+                          <div class="dt-ba-h">After</div>
+                          <ul class="dt-ba-list">
+                            <li>One data point: DC-WBT-004821</li>
+                            <li>All five variations resolve to it</li>
+                            <li>One combined quantity across systems</li>
+                            <li>Ordering checked against the BOM at entry</li>
+                            <li>Unissued balance surfaced the same day</li>
+                            <li>The control runs before the next PO posts</li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div class="dt-prevented">
+                        <span>Incoming PO <b>“W.B. THREAD (WHITE)”</b> · 9,000 units</span>
+                        <span>→ matched to <b>DC-WBT-004821</b></span>
+                        <span>→ takes combined order above BOM requirement</span>
+                        <span class="dt-prevented-tag">Held for approval</span>
+                      </div>
+
+                      <div class="dt-sub">Audit log</div>
+                      <div class="dt-audit">
+                        <div class="dt-auditrow"><span class="dt-audit-t">14:22</span><span class="dt-audit-d"></span><span>Data point <b>DC-WBT-004821</b> created · 5 variations bound to sequence SEQ-4821</span></div>
+                        <div class="dt-auditrow"><span class="dt-audit-t">14:22</span><span class="dt-audit-d"></span><span><b>99</b> historical documents remapped across Tally ERP, Zoho Inventory, Supplier Excel and WhatsApp orders</span></div>
+                        <div class="dt-auditrow"><span class="dt-audit-t">14:23</span><span class="dt-audit-d"></span><span>Control active on every purchase entry point · <b>10,630</b> unissued units now visible on the exceptions board</span></div>
+                      </div>
+                    </div>
+
+                  </div><!-- /dt-screens -->
+
+                  <div class="dt-statusbar">
+                    <div class="dt-steps" id="dtSteps">
+                      <button class="dt-step on" data-stage="0"><span class="dt-step-dot"></span><span class="dt-step-l">Inventory</span></button>
+                      <span class="dt-step-sep"></span>
+                      <button class="dt-step" data-stage="1"><span class="dt-step-dot"></span><span class="dt-step-l">Nomenclature</span></button>
+                      <span class="dt-step-sep"></span>
+                      <button class="dt-step" data-stage="2"><span class="dt-step-dot"></span><span class="dt-step-l">Sequence</span></button>
+                      <span class="dt-step-sep"></span>
+                      <button class="dt-step" data-stage="3"><span class="dt-step-dot"></span><span class="dt-step-l">Prevention</span></button>
+                      <span class="dt-step-sep"></span>
+                      <button class="dt-step" data-stage="4"><span class="dt-step-dot"></span><span class="dt-step-l">Prevented</span></button>
+                    </div>
+                    <span class="dt-status-end">Illustrative scenario · not customer data</span>
+                  </div>
+
+                </div><!-- /dt-main -->
+              </div><!-- /mac-body -->
+              <div class="phone-home"></div>
+            </div><!-- /mac-window -->
+          </div><!-- /mac-screen -->
+        </div><!-- /mac-scaler -->
+
+        <div class="demo-hint" id="demoHint">Scroll</div>
+      </div><!-- /demo-stage -->
+    </div><!-- /demo-track -->
+  </section>
+
+  <!-- ================= CASE STUDIES ================= -->
+  <section class="sec wrap reveal from-left" id="proof">
+    <div class="sec-head">
+      <span class="eyebrow">Real outcomes</span>
+      <h2>What happens when your data finally talks to itself.</h2>
+      <p>Every result below came from connecting the systems a business was already running, with no new data entry and no cleanup required.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-label">Export Company</div>
+        <h3>SKU nomenclature was hiding $1.2M in dead stock</h3>
+        <p>An export company with $60M ARR had unissued purchase orders sitting against a BOM that nobody could see. Datic assigned a code and image to each product and created a parameter to stop the creation of new data points before unissued ones were resolved.</p>
+        <div class="case-stats">
+          <div class="case-stat">
+            <div class="case-stat-num">$1.2M</div>
+            <div class="case-stat-label">saved of dead stock</div>
+          </div>
+          <div class="case-stat">
+            <div class="case-stat-num">$2.8M</div>
+            <div class="case-stat-label">potential revenue</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-label">Manufacturer</div>
+        <h3>Missing purchase orders were bleeding $3.1M in revenue</h3>
+        <p>A manufacturer with $75M ARR had missing purchase orders against issued jobs. Data points across different systems were not being matched. Datic connected the data points, found the missing POs, and prevented excess inventory and excess allocated workforce.</p>
+        <div class="case-stats">
+          <div class="case-stat">
+            <div class="case-stat-num">10%</div>
+            <div class="case-stat-label">increased efficiency</div>
+          </div>
+          <div class="case-stat">
+            <div class="case-stat-num">$3.1M</div>
+            <div class="case-stat-label">gained revenue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GLOBE ================= -->
+  <section class="globe-sec wrap reveal from-right" id="reach">
+    <div class="globe-frame">
+      <div class="globe-copy">
+        <span class="eyebrow on-dark">Built to travel</span>
+        <h2>The mess is local. The method is not.</h2>
+        <p>Every market runs different software and different subsidy rules. The reconciliation logic underneath stays the same.</p>
+        <ul class="globe-list">
+          <li>Reads your records in whatever format they arrive</li>
+          <li>Scheme rules configured per region, not hard coded</li>
+          <li>Starting in India, built to extend anywhere</li>
+        </ul>
+      </div>
+      <div id="globe-holder"></div>
+    </div>
+  </section>
+
+  <!-- ================= OFFER ================= -->
+  <section class="wrap reveal from-left" id="trial">
+    <div class="offer">
+      <span class="eyebrow">Book a demo</span>
+      <h2>We will show you what your own data has been hiding.</h2>
+      <p>Bring one month of your existing data, from Tally, Zoho, Excel, WhatsApp or any raw format you already keep. We will find the gaps your systems have been hiding.</p>
+      <a class="btn" href="#" onclick="openDemoModal(); return false;">Book a demo</a>
+      <span class="fine">No commitment. No card. Your data stays yours.</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-word-wrap" aria-hidden="true"><span class="foot-word">Datic</span></div>
+  <div class="wrap foot-row">
+    <div class="foot-brand"><img src="logo.png" alt="" /><span>Datic Currency</span></div>
+    <div class="foot-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="https://www.linkedin.com/company/daticurrency/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.instagram.com/daticinc/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <span class="foot-meta">&copy; 2026 Datic Currency</span>
+  </div>
+</footer>
+
+<script>
+/* ================= NAV : hide on scroll down (mobile only) ================= */
+(function(){
+  const nav = document.querySelector('.navbar');
+  if(!nav) return;
+  const mq = window.matchMedia('(max-width:760px)');
+  let lastY = window.scrollY, ticking = false;
+  function update(){
+    ticking = false;
+    if(!mq.matches){ nav.classList.remove('nav-hidden'); lastY = window.scrollY; return; }
+    const y = window.scrollY;
+    if(y <= 24){ nav.classList.remove('nav-hidden'); }
+    else if(y > lastY + 4){ nav.classList.add('nav-hidden'); }
+    else if(y < lastY - 4){ nav.classList.remove('nav-hidden'); }
+    lastY = y;
+  }
+  window.addEventListener('scroll', () => {
+    if(!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, {passive:true});
+  mq.addEventListener('change', update);
+})();
+
+/* ================= PRODUCT DEMO : SCALE TO FIT + SCROLL STAGES ================= */
+(function(){
+  var track   = document.getElementById('demoTrack');
+  var scaler  = document.getElementById('macScaler');
+  if(!track || !scaler) return;
+  if(window.matchMedia('(max-width:760px)').matches) return; // demo removed on mobile
+
+  var stage   = track.querySelector('.demo-stage');
+  var screens = track.querySelectorAll('.dt-screen');
+  var tabs    = track.querySelectorAll('.dt-tab');
+  var steps   = track.querySelectorAll('.dt-step');
+  var elStep  = document.getElementById('dtStep');
+  var elTitle = document.getElementById('dtTitle');
+  var elPills = document.getElementById('dtPills');
+  var hint    = document.getElementById('demoHint');
+
+  var DESKTOP_W = 1200, DESKTOP_H = 694;
+  var PHONE_W = 390, PHONE_H = 760;
+  var MOBILE_BP = 760;
+  var COUNT = screens.length;
+
+  var TITLES = ['Unissued Inventory','Nomenclature Detected','Sequence Detected','Prevention Methods','Prevented'];
+  var PILLS = [
+    [['3 customer POs',''],['14 supplier POs',''],['1 exception','bad']],
+    [['3 systems',''],['3 item codes',''],['Quantities not netted off','bad']],
+    [['99 documents',''],['5 variations',''],['One material','bad']],
+    [['1 method selected',''],['Applies to 5 variations','']],
+    [['Control active','good'],['DC-WBT-004821','']]
+  ];
+
+  /* ---- tab 02 covers the sequence stage, tab 03 the prevention stages ---- */
+  var TAB_RANGE = [[0,1],[2,2],[3,4]];
+
+  var perStage  = 0;
+  var stickyTop = 0;
+  var current   = -1;
+
+  function layout(){
+    var vh = document.documentElement.clientHeight || window.innerHeight;
+    var vw = document.documentElement.clientWidth || window.innerWidth;
+    var mobile = vw <= MOBILE_BP;
+    var DW = mobile ? PHONE_W : DESKTOP_W;
+    var DH = mobile ? PHONE_H : DESKTOP_H;
+
+    var cs = getComputedStyle(stage);
+    var avail = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var fitW = avail / DW;
+
+    var stageH = fitW < 1 ? Math.min(vh, Math.round(DH * fitW) + 80) : vh;
+    stage.style.height = stageH + 'px';
+
+    stickyTop = Math.max(0, Math.round((vh - stageH) / 2));
+    stage.style.top = stickyTop + 'px';
+
+    var s = Math.min(fitW, (stageH - 34) / DH, 1);
+    scaler.style.transform = 'scale(' + s + ')';
+
+    perStage = Math.max(240, Math.round(stageH * 0.85));
+    track.style.height = (stageH + perStage * (COUNT - 1)) + 'px';
+  }
+
+  function render(i){
+    if(i === current) return;
+    current = i;
+
+    for(var s = 0; s < screens.length; s++){
+      screens[s].classList.toggle('on', s === i);
+    }
+    elStep.textContent = '0' + (i + 1) + ' / 0' + COUNT;
+    elTitle.textContent = TITLES[i];
+
+    var html = '';
+    for(var p = 0; p < PILLS[i].length; p++){
+      html += '<span class="dt-pill ' + PILLS[i][p][1] + '">' + PILLS[i][p][0] + '</span>';
+    }
+    elPills.innerHTML = html;
+
+    for(var t = 0; t < tabs.length; t++){
+      tabs[t].classList.toggle('on', i >= TAB_RANGE[t][0] && i <= TAB_RANGE[t][1]);
+    }
+    for(var k = 0; k < steps.length; k++){
+      steps[k].classList.toggle('on', k === i);
+      steps[k].classList.toggle('done', k < i);
+    }
+  }
+
+  function onScroll(){
+    var scrolled = stickyTop - track.getBoundingClientRect().top;
+    var i = Math.floor(scrolled / perStage);
+    if(i < 0) i = 0;
+    if(i > COUNT - 1) i = COUNT - 1;
+    render(i);
+    if(hint) hint.classList.toggle('gone', scrolled > perStage * 0.35);
+  }
+
+  function goTo(i){
+    var absTop = track.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({ top: absTop - stickyTop + perStage * i + 2, behavior: 'smooth' });
+  }
+
+  for(var t = 0; t < tabs.length; t++){
+    (function(el){
+      el.addEventListener('click', function(){ goTo(parseInt(el.dataset.stage, 10)); });
+    })(tabs[t]);
+  }
+  for(var k = 0; k < steps.length; k++){
+    (function(el){
+      el.addEventListener('click', function(){ goTo(parseInt(el.dataset.stage, 10)); });
+    })(steps[k]);
+  }
+
+  /* ---- prevention method selection ---- */
+  var methods = track.querySelectorAll('.dt-method');
+  var applyNote = document.getElementById('dtApplyNote');
+  function selectedCount(){
+    return track.querySelectorAll('.dt-method.sel').length;
+  }
+  function syncMethods(){
+    var n = selectedCount();
+    PILLS[3][0][0] = n + (n === 1 ? ' method selected' : ' methods selected');
+    if(current === 3){
+      var html = '';
+      for(var p = 0; p < PILLS[3].length; p++){
+        html += '<span class="dt-pill ' + PILLS[3][p][1] + '">' + PILLS[3][p][0] + '</span>';
+      }
+      elPills.innerHTML = html;
+    }
+  }
+  for(var m = 0; m < methods.length; m++){
+    (function(el){
+      el.addEventListener('click', function(){
+        el.classList.toggle('sel');
+        if(selectedCount() === 0) el.classList.add('sel');
+        syncMethods();
+      });
+    })(methods[m]);
+  }
+
+  var applyBtn = document.getElementById('dtApply');
+  if(applyBtn){
+    applyBtn.addEventListener('click', function(){
+      applyBtn.textContent = 'Control applied';
+      if(applyNote) applyNote.textContent = 'Active on DC-WBT-004821 · runs before any purchase order posts.';
+      goTo(4);
+    });
+  }
+
+  /* ---- sequence: add a variation ---- */
+  var addBtn = document.getElementById('dtAdd');
+  if(addBtn){
+    addBtn.addEventListener('click', function(){
+      if(addBtn.classList.contains('added')) return;
+      var list = track.querySelector('.dt-seq');
+      var row = document.createElement('div');
+      row.className = 'dt-seq-row';
+      row.innerHTML =
+        '<span class="dt-seq-i">06</span><span class="dt-seq-name">THREAD-WHT-BUTTON</span>' +
+        '<span class="dt-seq-src">Supplier Excel · packing list</span><span class="dt-seq-date">08 Jun 2026</span>' +
+        '<span class="dt-seq-n">2 documents</span>';
+      list.appendChild(row);
+      addBtn.textContent = '6 variations in this sequence · 101 documents';
+      addBtn.classList.add('added');
+    });
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){ onScroll(); ticking = false; });
+  }, { passive:true });
+
+  window.addEventListener('resize', function(){ layout(); onScroll(); });
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){ layout(); onScroll(); });
+  }
+
+  layout();
+  render(0);
+  onScroll();
+})();
+
+/* ================= LOGO LOOP ================= */
+(function(){
+  var LOGOS = [
+    {src:'logos/tally.png',      alt:'Tally'},
+    {src:'logos/zoho.png',       alt:'Zoho'},
+    {src:'logos/postgresql.png', alt:'PostgreSQL'},
+    {src:'logos/power_bi.png',   alt:'Power BI'},
+    {src:'logos/drive.png',      alt:'Google Drive'},
+    {src:'logos/mongodb.png',    alt:'MongoDB'},
+    {src:'logos/dropbox.png',    alt:'Dropbox'},
+    {src:'logos/slack.png',      alt:'Slack'}
+  ];
+
+  var SPEED = 120;
+  var SMOOTH_TAU = 0.25;
+  var MIN_COPIES = 2;
+  var COPY_HEADROOM = 2;
+
+  var container = document.getElementById('logoloop');
+  var track = document.getElementById('logoloopTrack');
+  if(!container || !track) return;
+
+  var seqWidth = 0, copyCount = 0;
+  var offset = 0, velocity = 0, lastTs = null;
+  var isHovered = false;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function buildList(ariaHidden){
+    var ul = document.createElement('ul');
+    ul.className = 'logoloop__list';
+    ul.setAttribute('role','list');
+    if(ariaHidden) ul.setAttribute('aria-hidden','true');
+    LOGOS.forEach(function(logo){
+      var li = document.createElement('li');
+      li.className = 'logoloop__item';
+      li.setAttribute('role','listitem');
+      var img = document.createElement('img');
+      img.src = logo.src;
+      img.alt = logo.alt;
+      img.decoding = 'async';
+      img.draggable = false;
+      li.appendChild(img);
+      ul.appendChild(li);
+    });
+    return ul;
+  }
+
+  function measure(){
+    var first = track.querySelector('.logoloop__list');
+    if(!first) return;
+    var w = first.getBoundingClientRect().width;
+    if(w <= 0) return;
+    seqWidth = Math.ceil(w);
+    var containerW = container.clientWidth;
+    var needed = Math.max(MIN_COPIES, Math.ceil(containerW / seqWidth) + COPY_HEADROOM);
+    while(copyCount < needed){
+      track.appendChild(buildList(copyCount > 0));
+      copyCount++;
+    }
+  }
+
+  track.appendChild(buildList(false));
+  copyCount = 1;
+  track.appendChild(buildList(true));
+  copyCount = 2;
+
+  track.addEventListener('pointerenter', function(){ isHovered = true; });
+  track.addEventListener('pointerleave', function(){ isHovered = false; });
+
+  function tick(ts){
+    requestAnimationFrame(tick);
+    if(reduced) return;
+    if(lastTs === null){ lastTs = ts; return; }
+    var dt = Math.max(0, ts - lastTs) / 1000;
+    lastTs = ts;
+
+    var target = isHovered ? 0 : SPEED;
+    var easing = 1 - Math.exp(-dt / SMOOTH_TAU);
+    velocity += (target - velocity) * easing;
+
+    if(seqWidth > 0){
+      offset = ((offset + velocity * dt) % seqWidth + seqWidth) % seqWidth;
+      track.style.transform = 'translate3d(' + (-offset) + 'px,0,0)';
+    }
+  }
+
+  function init(){
+    measure();
+    requestAnimationFrame(tick);
+  }
+
+  var imgs = track.querySelectorAll('img');
+  var remaining = imgs.length;
+  function onImg(){ if(--remaining <= 0) measure(); }
+  imgs.forEach(function(img){
+    if(img.complete) onImg();
+    else{
+      img.addEventListener('load', onImg, {once:true});
+      img.addEventListener('error', onImg, {once:true});
+    }
+  });
+
+  new ResizeObserver(measure).observe(container);
+  window.addEventListener('load', init);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  init();
+})();
+
+/* ================= PAGE DOT GRID ================= */
+(function(){
+  const cv = document.getElementById('dotgrid-canvas');
+  const ctx = cv.getContext('2d');
+  let dots=[], dpr=1;
+  const GAP=30, R=1.6, BASE=[13,58,31], ACT=[143,226,60], PROX=120;
+  let px=-9999, py=-9999;
+  function build(){
+    dpr = Math.min(window.devicePixelRatio||1,2);
+    const W=window.innerWidth, H=window.innerHeight;
+    cv.width=W*dpr; cv.height=H*dpr;
+    cv.style.width=W+'px'; cv.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    dots=[];
+    const cols=Math.ceil(W/GAP)+1, rows=Math.ceil(H/GAP)+1;
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) dots.push({x:c*GAP,y:r*GAP});
+  }
+  window.addEventListener('pointermove', e => { px=e.clientX; py=e.clientY; }, {passive:true});
+  const prox2 = PROX*PROX;
+  function draw(){
+    requestAnimationFrame(draw);
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    for(const d of dots){
+      const dx=d.x-px, dy=d.y-py, d2=dx*dx+dy*dy;
+      let a=0.10, col=BASE;
+      if(d2<=prox2){
+        const t=1-Math.sqrt(d2)/PROX;
+        col=[Math.round(BASE[0]+(ACT[0]-BASE[0])*t),Math.round(BASE[1]+(ACT[1]-BASE[1])*t),Math.round(BASE[2]+(ACT[2]-BASE[2])*t)];
+        a=0.10+t*0.45;
+      }
+      ctx.beginPath(); ctx.arc(d.x,d.y,R,0,Math.PI*2);
+      ctx.fillStyle='rgba('+col[0]+','+col[1]+','+col[2]+','+a+')'; ctx.fill();
+    }
+  }
+  window.addEventListener('resize', build);
+  build(); draw();
+})();
+
+/* ================= SHARED : fullscreen shader helper ================= */
+function makeShaderPanel(canvas, fragment, uniforms, onFrame){
+  if(!canvas || typeof THREE === 'undefined') return null;
+  const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:false, alpha:false, powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 1.75));
+  const scene = new THREE.Scene();
+  const cam = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+  const mat = new THREE.ShaderMaterial({
+    vertexShader:'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position,1.0); }',
+    fragmentShader:fragment,
+    uniforms:uniforms
+  });
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2), mat));
+  function size(){
+    const w = canvas.clientWidth || 1, h = canvas.clientHeight || 1;
+    renderer.setSize(w,h,false);
+    if(uniforms.uCanvas) uniforms.uCanvas.value.set(w,h);
+    if(uniforms.iResolution) uniforms.iResolution.value.set(canvas.width, canvas.height, canvas.width/Math.max(1,canvas.height));
+  }
+  new ResizeObserver(size).observe(canvas);
+  size();
+  let vis = true;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(es => vis = es[0].isIntersecting, {threshold:0}).observe(canvas);
+  }
+  const clock = new THREE.Clock();
+  (function loop(){
+    requestAnimationFrame(loop);
+    if(!vis) return;
+    const dt = clock.getDelta();
+    if(onFrame) onFrame(clock.elapsedTime, dt);
+    renderer.render(scene, cam);
+  })();
+  return {uniforms:uniforms, size:size};
+}
+
+/* ================= HERO : ColorBends ================= */
+(function(){
+  const cv = document.getElementById('terminal-canvas');
+  if(!cv || typeof THREE === 'undefined') return;
+
+  var MAX_COLORS = 8;
+  const frag = [
+    '#define MAX_COLORS 8',
+    'uniform vec2 uCanvas;',
+    'uniform float uTime;',
+    'uniform float uSpeed;',
+    'uniform vec2 uRot;',
+    'uniform int uColorCount;',
+    'uniform vec3 uColors[MAX_COLORS];',
+    'uniform int uTransparent;',
+    'uniform float uScale;',
+    'uniform float uFrequency;',
+    'uniform float uWarpStrength;',
+    'uniform vec2 uPointer;',
+    'uniform float uMouseInfluence;',
+    'uniform float uParallax;',
+    'uniform float uNoise;',
+    'uniform int uIterations;',
+    'uniform float uIntensity;',
+    'uniform float uBandWidth;',
+    'varying vec2 vUv;',
+    '',
+    'void main() {',
+    '  float t = uTime * uSpeed;',
+    '  vec2 p = vUv * 2.0 - 1.0;',
+    '  p += uPointer * uParallax * 0.1;',
+    '  vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);',
+    '  vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);',
+    '  q /= max(uScale, 0.0001);',
+    '  q /= 0.5 + 0.2 * dot(q, q);',
+    '  q += 0.2 * cos(t) - 7.56;',
+    '  vec2 toward = (uPointer - rp);',
+    '  q += toward * uMouseInfluence * 0.2;',
+    '',
+    '  for (int j = 0; j < 5; j++) {',
+    '    if (j >= uIterations - 1) break;',
+    '    vec2 rr = sin(1.5 * (q.yx * uFrequency) + 2.0 * cos(q * uFrequency));',
+    '    q += (rr - q) * 0.15;',
+    '  }',
+    '',
+    '  vec3 col = vec3(0.0);',
+    '  float a = 1.0;',
+    '',
+    '  if (uColorCount > 0) {',
+    '    vec2 s = q;',
+    '    vec3 sumCol = vec3(0.0);',
+    '    float cover = 0.0;',
+    '    for (int i = 0; i < MAX_COLORS; ++i) {',
+    '      if (i >= uColorCount) break;',
+    '      s -= 0.01;',
+    '      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));',
+    '      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);',
+    '      float kBelow = clamp(uWarpStrength, 0.0, 1.0);',
+    '      float kMix = pow(kBelow, 0.3);',
+    '      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);',
+    '      vec2 disp = (r - s) * kBelow;',
+    '      vec2 warped = s + disp * gain;',
+    '      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);',
+    '      float m = mix(m0, m1, kMix);',
+    '      float w = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));',
+    '      sumCol += uColors[i] * w;',
+    '      cover = max(cover, w);',
+    '    }',
+    '    col = clamp(sumCol, 0.0, 1.0);',
+    '    a = uTransparent > 0 ? cover : 1.0;',
+    '  } else {',
+    '    vec2 s = q;',
+    '    for (int k = 0; k < 3; ++k) {',
+    '      s -= 0.01;',
+    '      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));',
+    '      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(k)) / 4.0);',
+    '      float kBelow = clamp(uWarpStrength, 0.0, 1.0);',
+    '      float kMix = pow(kBelow, 0.3);',
+    '      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);',
+    '      vec2 disp = (r - s) * kBelow;',
+    '      vec2 warped = s + disp * gain;',
+    '      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(k)) / 4.0);',
+    '      float m = mix(m0, m1, kMix);',
+    '      col[k] = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));',
+    '    }',
+    '    a = uTransparent > 0 ? max(max(col.r, col.g), col.b) : 1.0;',
+    '  }',
+    '',
+    '  col *= uIntensity;',
+    '',
+    '  if (uNoise > 0.0001) {',
+    '    float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);',
+    '    col += (n - 0.5) * uNoise;',
+    '    col = clamp(col, 0.0, 1.0);',
+    '  }',
+    '',
+    '  vec3 rgb = (uTransparent > 0) ? col * a : col;',
+    '  gl_FragColor = vec4(rgb, a);',
+    '}'
+  ].join('\n');
+
+  function hexToVec3(hex) {
+    var h = hex.replace('#','');
+    return new THREE.Vector3(
+      parseInt(h.slice(0,2),16)/255,
+      parseInt(h.slice(2,4),16)/255,
+      parseInt(h.slice(4,6),16)/255
+    );
+  }
+  var colorHexes = ['#0d3a1f','#127a34','#8fe23c'];
+  var uColorsArr = [];
+  for(var c = 0; c < MAX_COLORS; c++){
+    uColorsArr.push(c < colorHexes.length ? hexToVec3(colorHexes[c]) : new THREE.Vector3(0,0,0));
+  }
+
+  var rotation = 90;
+  var u = {
+    uCanvas:{value:new THREE.Vector2(1,1)},
+    uTime:{value:0},
+    uSpeed:{value:0.2},
+    uRot:{value:new THREE.Vector2(1,0)},
+    uColorCount:{value:colorHexes.length},
+    uColors:{value:uColorsArr},
+    uTransparent:{value:0},
+    uScale:{value:1.0},
+    uFrequency:{value:1.0},
+    uWarpStrength:{value:1.0},
+    uPointer:{value:new THREE.Vector2(0,0)},
+    uMouseInfluence:{value:1.0},
+    uParallax:{value:0.5},
+    uNoise:{value:0.15},
+    uIterations:{value:3},
+    uIntensity:{value:1.5},
+    uBandWidth:{value:6.0}
+  };
+
+  var ptrTarget = new THREE.Vector2(0,0);
+  var ptrSmooth = new THREE.Vector2(0,0);
+
+  cv.addEventListener('pointermove', function(e){
+    var r = cv.getBoundingClientRect();
+    ptrTarget.set(
+      ((e.clientX - r.left) / (r.width||1)) * 2 - 1,
+      -(((e.clientY - r.top) / (r.height||1)) * 2 - 1)
+    );
+  });
+  cv.addEventListener('pointerleave', function(){ ptrTarget.set(0,0); });
+
+  makeShaderPanel(cv, frag, u, function(elapsed, dt){
+    u.uTime.value = elapsed;
+    var rad = (rotation % 360) * Math.PI / 180;
+    u.uRot.value.set(Math.cos(rad), Math.sin(rad));
+    var amt = Math.min(1, dt * 8);
+    ptrSmooth.x += (ptrTarget.x - ptrSmooth.x) * amt;
+    ptrSmooth.y += (ptrTarget.y - ptrSmooth.y) * amt;
+    u.uPointer.value.set(ptrSmooth.x, ptrSmooth.y);
+  });
+})();
+
+/* ================= GLOBE ================= */
+(function(){
+  const holder = document.getElementById('globe-holder');
+  if(!holder || typeof THREE === 'undefined') return;
+
+  const DOT=0x8fe23c, GRID=0x1e5233, OCEAN=0x0c1a12, MARK=0xffffff;
+  const R=1, STEP=1.9, SPIN=0.0015, SENS=0.005;
+  const MARKERS=[[26.45,80.33],[19.07,72.87],[28.61,77.21],[1.35,103.82],[25.20,55.27],
+                 [51.51,-0.13],[40.71,-74.01],[-1.29,36.82],[-23.55,-46.63],[-33.87,151.21]];
+
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(50,1,0.1,100);
+  cam.position.set(0,0,2.6);
+  const rend = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  rend.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  holder.appendChild(rend.domElement);
+
+  const globe = new THREE.Group();
+  globe.rotation.x = 0.3; globe.rotation.y = -1.15;
+  scene.add(globe);
+  globe.add(new THREE.Mesh(new THREE.SphereGeometry(R*0.985,64,64), new THREE.MeshBasicMaterial({color:OCEAN})));
+
+  function vec(lat,lng,r){
+    const a=lat*Math.PI/180, o=lng*Math.PI/180;
+    return new THREE.Vector3(Math.cos(a)*Math.sin(o)*r, Math.sin(a)*r, Math.cos(a)*Math.cos(o)*r);
+  }
+  (function grid(){
+    const mat = new THREE.LineBasicMaterial({color:GRID, transparent:true, opacity:0.5});
+    const add = pts => globe.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat));
+    for(let lat=-60;lat<=60;lat+=30){ const p=[]; for(let i=0;i<=90;i++) p.push(vec(lat,(i/90)*360-180,R*1.001)); add(p); }
+    for(let lng=-180;lng<180;lng+=30){ const p=[]; for(let i=0;i<=90;i++) p.push(vec((i/90)*180-90,lng,R*1.001)); add(p); }
+  })();
+
+  const FALLBACK = [
+    [[-17,15],[-17,21],[-13,28],[-6,36],[3,37],[11,37],[20,32],[25,32],[32,31],[36,28],[38,18],[43,12],[51,12],[48,4],[41,-2],[40,-11],[35,-18],[33,-26],[28,-32],[20,-34],[16,-28],[12,-18],[13,-9],[9,-1],[9,5],[3,6],[-4,5],[-8,4],[-13,9]],
+    [[-10,36],[-9,43],[-2,43],[0,49],[4,52],[8,54],[11,58],[18,60],[24,60],[28,60],[30,66],[24,70],[16,68],[12,64],[8,58],[5,53],[-2,49],[-5,43]],
+    [[26,40],[35,37],[45,40],[50,45],[60,50],[70,55],[80,60],[95,62],[110,65],[125,68],[140,70],[150,65],[142,55],[135,48],[130,42],[126,38],[122,31],[119,25],[110,21],[105,15],[100,8],[95,16],[90,22],[82,18],[77,8],[72,20],[68,25],[62,25],[58,30],[52,29],[45,25],[43,13],[38,18],[35,30],[30,31],[28,37]],
+    [[-168,66],[-160,70],[-145,70],[-130,70],[-115,72],[-100,70],[-85,68],[-70,63],[-60,55],[-66,45],[-70,42],[-75,36],[-81,31],[-81,25],[-90,29],[-97,26],[-105,22],[-110,24],[-117,32],[-124,40],[-130,52],[-140,60],[-155,58],[-165,60]],
+    [[-81,8],[-75,10],[-62,10],[-52,5],[-44,-2],[-38,-6],[-35,-8],[-38,-13],[-42,-23],[-48,-25],[-53,-34],[-58,-38],[-62,-40],[-65,-45],[-69,-52],[-74,-50],[-73,-42],[-71,-33],[-70,-23],[-75,-14],[-80,-5],[-79,2]],
+    [[113,-22],[122,-18],[130,-12],[137,-12],[142,-11],[146,-19],[151,-24],[153,-28],[150,-37],[143,-39],[135,-35],[129,-32],[121,-34],[115,-34],[113,-26]],
+    [[-55,83],[-30,83],[-20,76],[-22,70],[-40,60],[-50,62],[-55,68],[-60,76]]
+  ];
+
+  function rasterise(features){
+    const W=1024, H=512;
+    const c=document.createElement('canvas'); c.width=W; c.height=H;
+    const x=c.getContext('2d',{willReadFrequently:true});
+    x.fillStyle='#000'; x.fillRect(0,0,W,H);
+    x.fillStyle='#fff';
+    const X = lng => ((lng+180)/360)*W;
+    const Y = lat => ((90-lat)/180)*H;
+    function ring(pts){
+      if(pts.length < 3) return;
+      x.beginPath();
+      let prev = null;
+      pts.forEach(pt => {
+        const lng = pt[0], lat = pt[1];
+        if(prev !== null && Math.abs(lng - prev) > 180){
+          x.closePath(); x.fill(); x.beginPath();
+          x.moveTo(X(lng), Y(lat));
+        } else if(prev === null){
+          x.moveTo(X(lng), Y(lat));
+        } else {
+          x.lineTo(X(lng), Y(lat));
+        }
+        prev = lng;
+      });
+      x.closePath(); x.fill();
+    }
+    features.forEach(f => {
+      const g = f.geometry || f;
+      if(!g) return;
+      if(g.type === 'Polygon') g.coordinates.forEach(r => ring(r));
+      else if(g.type === 'MultiPolygon') g.coordinates.forEach(poly => poly.forEach(r => ring(r)));
+      else if(Array.isArray(g)) ring(g);
+    });
+    return {px:x.getImageData(0,0,W,H).data, W:W, H:H};
+  }
+
+  function plot(mask){
+    const onLand = (lat,lng) => {
+      const i = Math.round(((lng+180)/360)*mask.W) % mask.W;
+      const j = Math.max(0, Math.min(mask.H-1, Math.round(((90-lat)/180)*mask.H)));
+      return mask.px[(j*mask.W+i)*4] > 128;
+    };
+    const pts=[];
+    for(let lat=-84; lat<=84; lat+=STEP){
+      const cos = Math.cos(Math.abs(lat)*Math.PI/180);
+      const s = cos > 0.02 ? STEP/Math.max(0.25,cos) : 360;
+      for(let lng=-180; lng<180; lng+=s) if(onLand(lat,lng)) pts.push([lat,lng]);
+    }
+    if(!pts.length) return false;
+    const inst = new THREE.InstancedMesh(
+      new THREE.SphereGeometry(0.0082,6,6),
+      new THREE.MeshBasicMaterial({color:DOT}),
+      pts.length
+    );
+    const m = new THREE.Matrix4();
+    pts.forEach(([lat,lng],i) => inst.setMatrixAt(i, m.identity().setPosition(vec(lat,lng,R*1.004))));
+    inst.instanceMatrix.needsUpdate = true;
+    globe.add(inst);
+    return true;
+  }
+
+  (function markers(){
+    const g = new THREE.SphereGeometry(0.018,12,12);
+    const m = new THREE.MeshBasicMaterial({color:MARK});
+    MARKERS.forEach(([lat,lng]) => {
+      const d = new THREE.Mesh(g,m);
+      d.position.copy(vec(lat,lng,R*1.018));
+      globe.add(d);
+    });
+  })();
+
+  let placeholder = plot(rasterise(FALLBACK.map(r => ({type:'Polygon', coordinates:[r]}))));
+  let placeholderMesh = placeholder ? globe.children[globe.children.length-1] : null;
+
+  (async function upgrade(){
+    const urls = [
+      'https://raw.githubusercontent.com/martynafford/natural-earth-geojson/master/110m/physical/ne_110m_land.json',
+      'https://cdn.jsdelivr.net/gh/martynafford/natural-earth-geojson@master/110m/physical/ne_110m_land.json'
+    ];
+    for(const url of urls){
+      try{
+        const res = await fetch(url, {mode:'cors'});
+        if(!res.ok) continue;
+        const data = await res.json();
+        if(!data || !data.features) continue;
+        if(placeholderMesh){ globe.remove(placeholderMesh); placeholderMesh.geometry.dispose(); }
+        plot(rasterise(data.features));
+        return;
+      }catch(e){ /* try next */ }
+    }
+  })();
+
+  let drag=false, lx=0, ly=0, vx=0, vy=0, hov=false;
+  const el = rend.domElement;
+  el.addEventListener('pointerdown', e => { drag=true; vx=vy=0; lx=e.clientX; ly=e.clientY; el.setPointerCapture(e.pointerId); });
+  el.addEventListener('pointermove', e => {
+    if(!drag) return;
+    const dx=e.clientX-lx, dy=e.clientY-ly;
+    globe.rotation.y += dx*SENS;
+    globe.rotation.x = Math.max(-1.1, Math.min(1.1, globe.rotation.x + dy*SENS));
+    vx = dx*SENS*0.4; vy = dy*SENS*0.4;
+    lx=e.clientX; ly=e.clientY;
+  });
+  const up = () => drag=false;
+  el.addEventListener('pointerup', up);
+  el.addEventListener('pointercancel', up);
+  holder.addEventListener('pointerenter', () => hov=true);
+  holder.addEventListener('pointerleave', () => hov=false);
+
+  function size(){
+    const w = holder.clientWidth||380, h = holder.clientHeight||380;
+    rend.setSize(w,h,false);
+    el.style.width='100%'; el.style.height='100%';
+    cam.aspect=w/h; cam.updateProjectionMatrix();
+  }
+  new ResizeObserver(size).observe(holder); size();
+
+  let vis=true;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(es => vis = es[0].isIntersecting, {threshold:0}).observe(holder);
+  }
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  (function loop(){
+    requestAnimationFrame(loop);
+    if(!vis) return;
+    if(!drag){
+      if(Math.abs(vx)>1e-5 || Math.abs(vy)>1e-5){
+        globe.rotation.y += vx;
+        globe.rotation.x = Math.max(-1.1, Math.min(1.1, globe.rotation.x + vy));
+        vx*=0.94; vy*=0.94;
+      } else if(!hov && !reduced){
+        globe.rotation.y += SPIN;
+      }
+    }
+    rend.render(scene,cam);
+  })();
+})();
+
+/* ================= SCROLL REVEAL ================= */
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  if(!els.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const isSmall = window.matchMedia('(max-width:760px)').matches;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: isSmall ? 0.01 : 0.12, rootMargin: isSmall ? '0px 0px 0px 0px' : '0px 0px -40px 0px' });
+  els.forEach(el => observer.observe(el));
+  setTimeout(() => {
+    els.forEach(el => el.classList.add('visible'));
+  }, 2500);
+})();
+</script>
+
+<!-- ================= DEMO BOOKING MODAL ================= -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <div id="demoForm">
+      <h2 class="modal-title">Book a demo</h2>
+      <p class="modal-sub">We will walk you through exactly how Datic works with your data.</p>
+      <div class="modal-form">
+        <div class="modal-field">
+          <label for="demoName">Full name</label>
+          <input type="text" id="demoName" placeholder="Your name" required />
+        </div>
+        <div class="modal-field">
+          <label for="demoOrg">Organisation name</label>
+          <input type="text" id="demoOrg" placeholder="Company or institution" required />
+        </div>
+        <div class="modal-field">
+          <label for="demoCat">Category</label>
+          <select id="demoCat" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="school">School</option>
+            <option value="retailer">Retailer</option>
+            <option value="distributor">Distributor</option>
+            <option value="manufacturer">Manufacturer</option>
+          </select>
+        </div>
+        <div class="modal-row">
+          <div class="modal-field">
+            <label for="demoPhone">Contact number</label>
+            <input type="tel" id="demoPhone" placeholder="+91 98765 43210" required />
+          </div>
+          <div class="modal-field">
+            <label for="demoEmail">Email</label>
+            <input type="email" id="demoEmail" placeholder="you@company.com" required />
+          </div>
+        </div>
+        <div class="modal-row">
+          <div class="modal-field">
+            <label for="demoDate">Preferred date</label>
+            <input type="date" id="demoDate" required />
+          </div>
+          <div class="modal-field">
+            <label for="demoTime">Preferred time</label>
+            <input type="time" id="demoTime" required />
+          </div>
+        </div>
+        <p class="modal-error" id="demoError"></p>
+        <button class="modal-submit" id="demoSubmit" type="button">Submit request</button>
+      </div>
+    </div>
+    <div class="modal-success" id="demoSuccess">
+      <div class="check">&#10003;</div>
+      <h3>Request received</h3>
+      <p>We will get back to you within 24 hours to confirm your demo slot.</p>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabase = createClient(
+    'https://odiabdmzrfyznlfdlgtx.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kaWFiZG16cmZ5em5sZmRsZ3R4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NzE2MzAsImV4cCI6MjA5OTI0NzYzMH0.rF18H2DelUQjtu7mYwBmUni9rzaeLb7ij6w5NLXGBTk'
+  );
+
+  const modal    = document.getElementById('demoModal');
+  const form     = document.getElementById('demoForm');
+  const success  = document.getElementById('demoSuccess');
+  const errEl    = document.getElementById('demoError');
+  const submitBtn= document.getElementById('demoSubmit');
+
+  window.openDemoModal = function(){
+    form.style.display = 'block';
+    success.style.display = 'none';
+    errEl.style.display = 'none';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit request';
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('demoDate').setAttribute('min', today);
+  };
+
+  function closeModal(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+  submitBtn.addEventListener('click', async () => {
+    const name  = document.getElementById('demoName').value.trim();
+    const org   = document.getElementById('demoOrg').value.trim();
+    const cat   = document.getElementById('demoCat').value;
+    const phone = document.getElementById('demoPhone').value.trim();
+    const email = document.getElementById('demoEmail').value.trim();
+    const date  = document.getElementById('demoDate').value;
+    const time  = document.getElementById('demoTime').value;
+
+    if(!name || !org || !cat || !phone || !email || !date || !time){
+      errEl.textContent = 'Please fill in all fields.';
+      errEl.style.display = 'block';
+      return;
+    }
+    if(!/\S+@\S+\.\S+/.test(email)){
+      errEl.textContent = 'Please enter a valid email address.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    errEl.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    try{
+      const { error } = await supabase
+        .from('demo_requests')
+        .insert([{
+          name: name,
+          organisation: org,
+          category: cat,
+          phone: phone,
+          email: email,
+          preferred_date: date,
+          preferred_time: time,
+          created_at: new Date().toISOString()
+        }]);
+
+      if(error) throw error;
+
+      form.style.display = 'none';
+      success.style.display = 'block';
+
+      document.getElementById('demoName').value = '';
+      document.getElementById('demoOrg').value = '';
+      document.getElementById('demoCat').selectedIndex = 0;
+      document.getElementById('demoPhone').value = '';
+      document.getElementById('demoEmail').value = '';
+      document.getElementById('demoDate').value = '';
+      document.getElementById('demoTime').value = '';
+
+    } catch(err){
+      errEl.textContent = 'Something went wrong. Please try again or email hello@daticurrency.com.';
+      errEl.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit request';
+      console.error('[demo]', err);
+    }
+  });
+</script>
+
+</body>
+</html>
