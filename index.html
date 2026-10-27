@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Datic | Financial Data Integrity Platform</title>
+<meta name="description" content="Datic turns enterprise data into actionable intelligence, helping businesses connect, validate, and unlock value from their data. Book a demo" />
+<link rel="canonical" href="https://datic.in/" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="logo2.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://datic.in/" />
+<meta property="og:title" content="Datic | Turning Data Into Value" />
+<meta property="og:description" content="Datic turns enterprise data into actionable intelligence, helping businesses connect, validate, and unlock value from their data." />
+<meta property="og:image" content="https://datic.in/logo2.png" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:url" content="https://datic.in/" />
+<meta name="twitter:title" content="Datic | Turning Data Into Value" />
+<meta name="twitter:description" content="Datic turns enterprise data into actionable intelligence, helping businesses connect, validate, and unlock value from their data." />
+<meta name="twitter:image" content="https://datic.in/logo2.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css" />
+</head>
+<body>
+<div class="ambient" aria-hidden="true"><div class="grid"></div></div>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+<symbol id="i-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></symbol>
+<symbol id="i-dashboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></symbol>
+<symbol id="i-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></symbol>
+<symbol id="i-workflow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-user-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></symbol>
+<symbol id="i-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><path d="M12 15V3"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></symbol>
+<symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></symbol>
+<symbol id="i-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/><path d="m16 16-1.9-1.9"/></symbol>
+<symbol id="i-ban" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></symbol>
+<symbol id="i-landmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M12 2 20 7H4z"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+<symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></symbol>
+<symbol id="i-factory" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></symbol>
+<symbol id="i-sync" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+<symbol id="i-linkedin" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></symbol>
+<symbol id="i-cursor" viewBox="0 0 24 24"><path d="M4.5 3.2 19 10.1l-6.3 1.9-2.4 6.6z" fill="#000" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="nav__bar">
+    <a class="nav__brand" href="index.html" aria-label="Datic home">
+      <img class="wm-light" src="assets/img/datic-wordmark-light.png" alt="Datic" />
+      <img class="wm-dark" src="assets/img/datic-wordmark.png" alt="Datic" />
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#process">Process</a>
+      <a href="#software">Software</a>
+      <a href="#features">Features</a>
+      <a href="#geographies">Geographies</a>
+      <a href="pricing.html">Pricing</a>
+    </nav>
+    <a class="btn btn-primary btn-sm nav__cta" href="#book-a-demo" data-open-demo>Book a demo</a>
+    <button class="nav__toggle" aria-label="Menu" aria-expanded="false"><span></span></button>
+  </div>
+  <div class="nav__sheet">
+    <a href="#process">Process</a>
+    <a href="#software">Across software</a>
+    <a href="#features">Features</a>
+    <a href="#geographies">Geographies</a>
+    <a href="pricing.html">Pricing</a>
+    <a class="btn btn-primary btn-block" href="#book-a-demo" data-open-demo>Book a demo</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= HERO ================= -->
+<section class="hero on-night" data-theme="dark">
+  <div class="hero__ascii" id="heroAscii"></div>
+  <div class="hero__veil"></div>
+  <div class="hero__inner">
+    <span class="chip" data-reveal><i class="dot"></i>Datic Sukyaan · Financial data integrity platform</span>
+    <h1 class="h-display" data-reveal data-delay="1">Find the money your<br/>systems <span class="grad-text">are hiding.</span></h1>
+    <p class="lede" data-reveal data-delay="2">Sukyaan connects Tally, your ERP, Excel and vendor portals, reconciles every record, and stops leaks before they post.</p>
+    <div class="hero__actions" data-reveal data-delay="3">
+      <a class="btn btn-primary" href="#book-a-demo" data-open-demo>Book a demo <svg><use href="#i-arrow"/></svg></a>
+      <a class="btn btn-glass" href="#process">See how it works</a>
+    </div>
+    <div class="hero__trust" data-reveal data-delay="4">
+      <span class="chip badge-chip"><img src="assets/img/badges/dpdp.svg" alt="" />DPDP Act 2023 compliant</span>
+      <span class="chip badge-chip"><img src="assets/img/badges/gdpr.svg" alt="" />GDPR compliant</span>
+      <span class="chip badge-chip"><img src="assets/img/badges/aes-256.svg" alt="" />AES-256 encrypted</span>
+      <span class="chip badge-chip"><svg style="width:20px;height:20px;padding:2px;color:#7fe35c"><use href="#i-pin"/></svg>Data stored in India</span>
+    </div>
+  </div>
+  <div class="hero__scroll" aria-hidden="true">Scroll<i></i></div>
+</section>
+
+<!-- ================= PRODUCT SHOT ================= -->
+<section class="showcase">
+  <div class="container">
+    <div class="frame" data-reveal="scale">
+      <div class="frame__bar"><i></i><i></i><i></i><span class="frame__url"><svg><use href="#i-lock"/></svg>app.datic.in</span></div>
+      <div class="app" data-play data-steps="7" data-interval="1150" data-hold="5" aria-label="Datic Sukyaan business graph">
+        <aside class="app-rail">
+          <div class="brand"><img src="assets/img/datic-mark.png" alt="" /><b>DATIC</b><small>SUKYAAN</small></div>
+          <div class="org">AC</div><hr />
+          <nav>
+            <span class="on"><svg><use href="#i-network"/></svg><em>Graph</em></span>
+            <span><svg><use href="#i-dashboard"/></svg><em>Dashboards</em></span>
+            <span><svg><use href="#i-building"/></svg><em>Departments</em></span>
+            <span><svg><use href="#i-database"/></svg><em>Sources</em></span>
+            <span><svg><use href="#i-workflow"/></svg><em>Pipelines</em></span>
+          </nav>
+          <div class="grow"></div>
+          <span class="me">JL</span>
+        </aside>
+        <div class="app-main">
+          <div class="app-top">
+            <div class="crumbs">Workspace <span>/</span> <b>Graph</b></div>
+            <span class="live"><i></i>Live · synced 2 min ago</span>
+            <span class="ask"><svg><use href="#i-sparkles"/></svg>Ask Datic AI</span>
+          </div>
+          <div class="app-body" style="grid-template-columns:minmax(0,1fr) 17em;grid-template-rows:minmax(0,1fr);align-content:stretch">
+            <div class="panel" style="display:flex;flex-direction:column">
+              <div class="ph">
+                <div class="l"><svg><use href="#i-network"/></svg><p>Procure to pay · Northstar Textiles</p></div>
+                <span class="chipx" data-until="4">5 documents linked</span>
+                <span class="chipx err" data-from="4" hidden><i></i>1 mismatch</span>
+              </div>
+              <div class="graph" style="flex:1">
+                <svg class="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <path vector-effect="non-scaling-stroke" d="M12 50 C23 50 23 22 34 22" data-at="1"/>
+                  <path vector-effect="non-scaling-stroke" d="M34 22 L58 22" data-at="1"/>
+                  <path vector-effect="non-scaling-stroke" d="M12 50 C23 50 23 78 34 78" data-at="2"/>
+                  <path vector-effect="non-scaling-stroke" d="M34 78 L58 78" data-at="2"/>
+                  <path vector-effect="non-scaling-stroke" d="M58 78 C70 78 70 50 81 50" data-at="3"/>
+                  <path vector-effect="non-scaling-stroke" class="hot" d="M58 22 L58 78" data-at="4"/>
+                </svg>
+                <div class="node" style="left:12%;top:50%" data-at="0"><span class="ic"><svg><use href="#i-building"/></svg></span><div><b>Northstar Textiles</b><span>Vendor · 42 documents</span></div></div>
+                <div class="node" style="left:34%;top:22%" data-at="1"><span class="ic"><svg><use href="#i-file"/></svg></span><div><b>PO-4821</b><span>500 m · ₹4.10 L</span></div></div>
+                <div class="node" style="left:58%;top:22%" data-at="1" data-cls="4:err"><span class="ic"><svg><use href="#i-truck"/></svg></span><div><b>GRN-1180</b><span>480 m received</span></div></div>
+                <div class="node" style="left:34%;top:78%" data-at="2"><span class="ic"><svg><use href="#i-package"/></svg></span><div><b>Tally stock ledger</b><span>Fabric · Grade A</span></div></div>
+                <div class="node" style="left:58%;top:78%" data-at="2" data-cls="4:err"><span class="ic"><svg><use href="#i-receipt"/></svg></span><div><b>INV-2291</b><span>500 m billed</span></div></div>
+                <div class="node" style="left:81%;top:50%" data-at="3"><span class="ic"><svg><use href="#i-landmark"/></svg></span><div><b>Payment</b><span>Due 30 Oct</span></div></div>
+              </div>
+            </div>
+            <div class="panel" style="display:flex;flex-direction:column">
+              <div class="ph"><div class="l"><svg><use href="#i-sparkles"/></svg><p>Datic AI</p></div></div>
+              <div class="ai" style="flex:1">
+                <div class="q" data-at="3">Why is PO-4821 still open?</div>
+                <div class="a typing" data-at="4" data-until="5"><i></i><i></i><i></i></div>
+                <div class="a" data-at="5" data-from="5" hidden>GRN-1180 received <b>480 m</b> against <b>500 m</b> ordered, but INV-2291 bills the full 500 m.</div>
+                <div class="card" data-at="6">
+                  <b class="tiny">Proposed change</b>
+                  <p class="tiny muted" style="margin-top:.2em">Hold INV-2291 in Tally until the 20 m shortfall is resolved.</p>
+                  <div class="acts"><span class="btn-a pri">Review &amp; approve</span><span class="btn-a">Keep unchanged</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CURVED BAND ================= -->
+<div class="band" aria-hidden="true"><div class="band__loop" id="curvedBand"></div></div>
+
+<!-- ================= PROCESS ================= -->
+<section class="section" id="process">
+  <div class="container">
+    <div class="sec-head sec-head--split">
+      <div style="display:grid;gap:18px">
+        <span class="eyebrow" data-reveal>Process</span>
+        <h2 class="h-section" data-reveal data-delay="1">Connect. Detect.<br/><span class="grad-text">Prevent.</span></h2>
+      </div>
+      <p class="lede" data-reveal data-delay="2">Three steps, running continuously across every system your business already uses.</p>
+    </div>
+
+    <div class="process">
+      <div class="process__visual" aria-hidden="true">
+        <div class="process__screens">
+
+          <!-- 01 CONNECT : Sources -->
+          <div class="process__screen is-active" data-screen="0">
+            <div class="frame">
+              <div class="frame__bar"><i></i><i></i><i></i><span class="frame__url"><svg><use href="#i-lock"/></svg>app.datic.in/sources</span></div>
+              <div class="app" data-play data-steps="7" data-interval="1000" data-hold="4">
+                <aside class="app-rail">
+                  <div class="brand"><img src="assets/img/datic-mark.png" alt="" /><b>DATIC</b><small>SUKYAAN</small></div>
+                  <div class="org">AC</div><hr />
+                  <nav>
+                    <span><svg><use href="#i-network"/></svg><em>Graph</em></span>
+                    <span><svg><use href="#i-dashboard"/></svg><em>Dashboards</em></span>
+                    <span><svg><use href="#i-building"/></svg><em>Departments</em></span>
+                    <span class="on"><svg><use href="#i-database"/></svg><em>Sources</em></span>
+                    <span><svg><use href="#i-workflow"/></svg><em>Pipelines</em></span>
+                  </nav>
+                  <div class="grow"></div><span class="me">JL</span>
+                </aside>
+                <div class="app-main">
+                  <div class="app-top">
+                    <div class="crumbs">Workspace <span>/</span> <b>Sources</b></div>
+                    <span class="live"><i></i>5 connected</span>
+                    <span class="btn-a pri"><svg><use href="#i-plus"/></svg>Add source</span>
+                  </div>
+                  <div class="app-body" style="grid-template-columns:minmax(0,1fr) 15em">
+                    <div class="panel">
+                      <div class="ph"><p>Connected sources</p><span class="chipx">Read only · write-back needs approval</span></div>
+                      <div class="src" data-at="0"><span class="ic"><img src="logos/tally-color.png" alt="" /></span><div class="meta"><b>Tally Prime</b><span>Vouchers · synced 2 min ago</span></div><b data-count="1:18420">0</b><span class="chipx ok"><i></i>Live</span></div>
+                      <div class="src" data-at="1"><span class="ic"><img src="logos/zoho.svg" alt="" /></span><div class="meta"><b>Zoho Books</b><span>Invoices &amp; bills · synced 6 min ago</span></div><b data-count="2:2316">0</b><span class="chipx ok"><i></i>Live</span></div>
+                      <div class="src" data-at="2"><span class="ic"><svg><use href="#i-inbox"/></svg></span><div class="meta"><b>Northstar vendor portal</b><span>Invoices uploaded by vendors</span></div><b>12</b><span class="chipx ok"><i></i>Today</span></div>
+                      <div class="src" data-at="3"><span class="ic"><svg><use href="#i-file"/></svg></span><div class="meta"><b>Excel price lists</b><span>3 files · read 14 min ago</span></div><b>3</b><span class="chipx">Files</span></div>
+                      <div class="src" data-at="4"><span class="ic"><svg><use href="#i-mail"/></svg></span><div class="meta"><b>invoices@acme.in</b><span>Reading PDF invoices</span></div><span class="typing"><i></i><i></i><i></i></span><span class="chipx">Reading</span></div>
+                    </div>
+                    <div style="display:grid;gap:1.2em;align-content:start">
+                      <div class="panel" data-at="2">
+                        <div class="ph"><p>Pair a Tally PC</p></div>
+                        <div style="padding:1em 1.15em;display:grid;gap:.8em">
+                          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.35em">
+                            <b style="border:1px solid #d4d4d8;border-radius:.5em;padding:.35em 0;text-align:center;font-size:1.3em">4</b>
+                            <b style="border:1px solid #d4d4d8;border-radius:.5em;padding:.35em 0;text-align:center;font-size:1.3em">8</b>
+                            <b style="border:1px solid #d4d4d8;border-radius:.5em;padding:.35em 0;text-align:center;font-size:1.3em">2</b>
+                            <b style="border:1px solid #d4d4d8;border-radius:.5em;padding:.35em 0;text-align:center;font-size:1.3em">1</b>
+                            <b style="border:1px solid #d4d4d8;border-radius:.5em;padding:.35em 0;text-align:center;font-size:1.3em">7</b>
+                            <b style="border:1px solid #d4d4d8;border-radius:.5em;padding:.35em 0;text-align:center;font-size:1.3em">9</b>
+                          </div>
+                          <span class="tiny muted">Enter on the Tally PC · expires in 10 min</span>
+                          <div class="bar"><i data-bar="3:72"></i></div>
+                        </div>
+                      </div>
+                      <div class="box-ok" data-at="5"><b>Connector paired</b><span>Acme Mfg · PC-02 · encrypted, certificate-based</span></div>
+                    </div>
+                  </div>
+                </div>
+                <svg class="app-cursor" data-path="[[1,90,4,1],[3,72,40,0]]"><use href="#i-cursor"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- 02 DETECT : Anomalies -->
+          <div class="process__screen" data-screen="1">
+            <div class="frame">
+              <div class="frame__bar"><i></i><i></i><i></i><span class="frame__url"><svg><use href="#i-lock"/></svg>app.datic.in/anomalies</span></div>
+              <div class="app" data-play data-steps="8" data-interval="950" data-hold="4">
+                <aside class="app-rail">
+                  <div class="brand"><img src="assets/img/datic-mark.png" alt="" /><b>DATIC</b><small>SUKYAAN</small></div>
+                  <div class="org">AC</div><hr />
+                  <nav>
+                    <span><svg><use href="#i-network"/></svg><em>Graph</em></span>
+                    <span class="on"><svg><use href="#i-dashboard"/></svg><em>Dashboards</em></span>
+                    <span><svg><use href="#i-building"/></svg><em>Departments</em></span>
+                    <span><svg><use href="#i-database"/></svg><em>Sources</em></span>
+                    <span><svg><use href="#i-workflow"/></svg><em>Pipelines</em></span>
+                  </nav>
+                  <div class="grow"></div><span class="me">JL</span>
+                </aside>
+                <div class="app-main">
+                  <div class="app-top">
+                    <div class="crumbs">Dashboards <span>/</span> <b>Anomalies</b></div>
+                    <span class="live"><i></i>Scanning after every sync</span>
+                  </div>
+                  <div class="app-body">
+                    <div class="split">
+                      <div style="display:grid;gap:1.2em;min-width:0">
+                        <div class="panel" data-at="0">
+                          <div class="ph"><div class="l" style="color:#b91c1c"><svg><use href="#i-copy"/></svg><p style="color:#000">3 possible duplicate stock items</p></div><span class="btn-a pri">Review and remove</span></div>
+                          <div class="row"><span>THREAD-WHT-BUTTON <span class="muted">· Thread White Btn</span></span><span class="muted tiny">2 min ago</span></div>
+                          <div class="row"><span>FABRIC-GRADE-A <span class="muted">· Fabric Grd A</span></span><span class="muted tiny">9 min ago</span></div>
+                        </div>
+                        <div class="panel">
+                          <div class="ph"><p>Other anomalies</p><span class="tiny">Open anomalies ↗</span></div>
+                          <table>
+                            <thead><tr><th>What</th><th>Severity</th><th>Found</th></tr></thead>
+                            <tbody>
+                              <tr data-at="2" data-flash="2"><td><b style="font-weight:500">GRN quantity differs from PO</b><div class="tiny muted">PO-4821 · 500 m ordered, 480 m received</div></td><td><span class="chipx err">critical</span></td><td class="muted">now</td></tr>
+                              <tr data-at="3" data-flash="3"><td><b style="font-weight:500">Invoice raised twice</b><div class="tiny muted">INV-2291 and INV-2297 · same vendor, same amount</div></td><td><span class="chipx err">error</span></td><td class="muted">1 h ago</td></tr>
+                              <tr data-at="4" data-flash="4"><td><b style="font-weight:500">Delivered, never invoiced</b><div class="tiny muted">DC-118 · dispatched 12 Oct</div></td><td><span class="chipx err">warn</span></td><td class="muted">3 h ago</td></tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <aside class="panel" style="padding:1.1em;display:grid;gap:.8em">
+                        <div class="l" style="display:flex;gap:.6em;align-items:center;color:#15803d"><svg style="width:1.2em;height:1.2em"><use href="#i-shield"/></svg><b style="color:#000">Prevention in place</b></div>
+                        <div class="box-ok" data-at="5"><b>Duplicate check before creating</b><span>A look-alike name is stopped and the existing one suggested.</span></div>
+                        <div class="box-ok" data-at="6"><b>Scan after every Tally sync</b><span>New look-alike masters are flagged within minutes.</span></div>
+                        <div class="box-ok" data-at="7"><b>Confirmation before every change</b><span>Nothing is written to Tally until you confirm.</span></div>
+                        <span class="tiny" style="color:#b91c1c;display:flex;gap:.4em;align-items:center"><svg style="width:1em;height:1em"><use href="#i-alert"/></svg>12 open in total</span>
+                      </aside>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 03 PREVENT : Pipeline + approval -->
+          <div class="process__screen" data-screen="2">
+            <div class="frame">
+              <div class="frame__bar"><i></i><i></i><i></i><span class="frame__url"><svg><use href="#i-lock"/></svg>app.datic.in/pipelines</span></div>
+              <div class="app" data-play data-steps="8" data-interval="1050" data-hold="4">
+                <aside class="app-rail">
+                  <div class="brand"><img src="assets/img/datic-mark.png" alt="" /><b>DATIC</b><small>SUKYAAN</small></div>
+                  <div class="org">AC</div><hr />
+                  <nav>
+                    <span><svg><use href="#i-network"/></svg><em>Graph</em></span>
+                    <span><svg><use href="#i-dashboard"/></svg><em>Dashboards</em></span>
+                    <span><svg><use href="#i-building"/></svg><em>Departments</em></span>
+                    <span><svg><use href="#i-database"/></svg><em>Sources</em></span>
+                    <span class="on"><svg><use href="#i-workflow"/></svg><em>Pipelines</em></span>
+                  </nav>
+                  <div class="grow"></div><span class="me">JL</span>
+                </aside>
+                <div class="app-main">
+                  <div class="app-top">
+                    <div class="crumbs">Pipelines <span>/</span> <b>GRN quantity check</b></div>
+                    <span class="chipx ok" style="margin-left:auto"><i></i>Published</span>
+                  </div>
+                  <div class="app-body" style="grid-template-columns:minmax(0,1fr) 15.5em">
+                    <div style="display:grid;gap:1.2em;align-content:start;min-width:0">
+                    <div class="flow">
+                      <div class="step" data-at="0"><span class="n"><svg><use href="#i-zap"/></svg></span><div class="t"><b>When a GRN arrives from Tally</b><span>Trigger · on every sync</span></div></div>
+                      <div class="step" data-at="0"><span class="n"><svg><use href="#i-scan"/></svg></span><div class="t"><b>Quantity differs from its PO</b><span>Check · tolerance 0%</span></div><span class="chipx err" data-from="1" hidden>Matched GRN-1180</span></div>
+                      <div class="step wait" data-at="0" data-cls="5:done"><span class="n"><svg><use href="#i-user-check"/></svg></span><div class="t"><b>Procurement head approves</b><span>Approval · waits for a decision</span></div><span class="chipx" data-until="5">Waiting</span><span class="chipx ok" data-from="5" hidden><i></i>Approved</span></div>
+                      <div class="step" data-at="0" data-cls="6:done"><span class="n"><svg><use href="#i-pen"/></svg></span><div class="t"><b>Hold the invoice in Tally</b><span>Write-back · only after approval</span></div><span class="chipx" data-until="6">Queued</span><span class="chipx ok" data-from="6" hidden><i></i>Written</span></div>
+                    </div>
+                    <div class="panel">
+                      <div class="ph"><p>Recent runs</p><span class="tiny muted">Last 24 hours</span></div>
+                      <table>
+                        <tbody>
+                          <tr><td>#128 · GRN-1180</td><td class="muted">PO-4821</td><td><span class="chipx" data-until="6">Awaiting approval</span><span class="chipx ok" data-from="6" hidden><i></i>Invoice held</span></td></tr>
+                          <tr><td>#127 · GRN-1176</td><td class="muted">PO-4815</td><td><span class="chipx ok"><i></i>Matched</span></td></tr>
+                          <tr><td>#126 · GRN-1171</td><td class="muted">PO-4809</td><td><span class="chipx ok"><i></i>Matched</span></td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>
+                    <div class="panel" style="display:flex;flex-direction:column">
+                      <div class="ph"><div class="l"><svg><use href="#i-sparkles"/></svg><p>Datic AI</p></div></div>
+                      <div class="ai">
+                        <div class="a" data-at="1">GRN-1180 is <b>20 m short</b> of PO-4821. INV-2291 bills the full 500 m.</div>
+                        <div class="card" data-at="2">
+                          <b class="tiny">Proposed change</b>
+                          <p class="tiny muted" style="margin-top:.2em">Hold INV-2291 until the GRN is corrected.</p>
+                          <div class="acts"><span class="btn-a pri">Review &amp; approve</span><span class="btn-a">Keep</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="app-toast" data-from="6" hidden><svg><use href="#i-check"/></svg>Control active · runs before any PO posts</div>
+                </div>
+                <svg class="app-cursor" data-path="[[3,70,72,0],[4,86,50,1]]"><use href="#i-cursor"/></svg>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="progress-rail"><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="process__steps">
+        <article class="pstep is-active">
+          <div class="pstep__mobile-shot" data-slot="0"></div>
+          <span class="pstep__num">01 · Connect</span>
+          <h3>Plug into every system. Move nothing.</h3>
+          <p>Tally, ERP, Excel, inboxes and vendor portals stay where they are. Sukyaan reads them live.</p>
+          <div class="pstep__tags"><span class="chip">No migration</span><span class="chip">Paired in 10 minutes</span><span class="chip">Encrypted connector</span></div>
+        </article>
+        <article class="pstep">
+          <div class="pstep__mobile-shot" data-slot="1"></div>
+          <span class="pstep__num">02 · Detect</span>
+          <h3>Every record checked against every other.</h3>
+          <p>Mismatched quantities, double invoices, unbilled deliveries and duplicate masters surface in minutes.</p>
+          <div class="pstep__tags"><span class="chip">PO ↔ GRN ↔ Invoice</span><span class="chip">Duplicate masters</span><span class="chip">After every sync</span></div>
+        </article>
+        <article class="pstep">
+          <div class="pstep__mobile-shot" data-slot="2"></div>
+          <span class="pstep__num">03 · Prevent</span>
+          <h3>Close the leak. Permanently.</h3>
+          <p>One approval turns a fix into a control that runs before the next entry posts.</p>
+          <div class="pstep__tags"><span class="chip">Human approval first</span><span class="chip">Tally write-back</span><span class="chip">Full audit log</span></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ACROSS SOFTWARE ================= -->
+<section class="section software" id="software">
+  <div class="container">
+    <div class="sec-head sec-head--center">
+      <span class="eyebrow" data-reveal>Across software</span>
+      <h2 class="h-section" data-reveal data-delay="1">Works with what<br/>you already run.</h2>
+    </div>
+    <div class="glass software__panel" data-reveal="scale">
+      <div class="software__count">
+        <b class="grad-text" id="softwareTotal">500+</b>
+        <span>software your team already uses, connected without migration.</span>
+      </div>
+      <div id="loopA"></div>
+      <div id="loopB"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="section" id="features" style="padding-top:40px">
+  <div class="container">
+    <div class="sec-head sec-head--split">
+      <div style="display:grid;gap:18px">
+        <span class="eyebrow" data-reveal>Features</span>
+        <h2 class="h-section" data-reveal data-delay="1">One workspace for<br/>every number.</h2>
+      </div>
+      <p class="lede" data-reveal data-delay="2">Graph, anomalies, controls, pipelines, dashboards and portals, all inside Datic Sukyaan.</p>
+    </div>
+
+    <div class="bento">
+      <!-- Business graph -->
+      <article class="glass feat feat--wide" data-reveal="left">
+        <div class="feat__visual">
+          <div data-fit="640"><div class="app app--bare" data-play data-steps="5" data-interval="1000" data-hold="4">
+            <div class="app-body" style="min-height:17em">
+              <div class="graph" style="min-height:15em">
+                <svg class="edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <path vector-effect="non-scaling-stroke" d="M14 50 C26 50 26 25 40 25" data-at="1"/>
+                  <path vector-effect="non-scaling-stroke" d="M40 25 L64 25" data-at="2"/>
+                  <path vector-effect="non-scaling-stroke" d="M64 25 C76 25 76 50 86 50" data-at="3"/>
+                  <path vector-effect="non-scaling-stroke" d="M14 50 C26 50 26 75 40 75" data-at="1"/>
+                  <path vector-effect="non-scaling-stroke" d="M40 75 L64 75" data-at="2"/>
+                  <path vector-effect="non-scaling-stroke" d="M64 75 C76 75 76 50 86 50" data-at="3"/>
+                </svg>
+                <div class="node" style="left:14%;top:50%" data-at="0"><span class="ic"><svg><use href="#i-building"/></svg></span><div><b>Vendor</b><span>Northstar</span></div></div>
+                <div class="node" style="left:40%;top:25%" data-at="1"><span class="ic"><svg><use href="#i-file"/></svg></span><div><b>Purchase order</b><span>PO-4821</span></div></div>
+                <div class="node" style="left:40%;top:75%" data-at="1"><span class="ic"><svg><use href="#i-truck"/></svg></span><div><b>Goods receipt</b><span>GRN-1180</span></div></div>
+                <div class="node" style="left:64%;top:25%" data-at="2"><span class="ic"><svg><use href="#i-receipt"/></svg></span><div><b>Invoice</b><span>INV-2291</span></div></div>
+                <div class="node" style="left:64%;top:75%" data-at="2"><span class="ic"><svg><use href="#i-package"/></svg></span><div><b>Stock</b><span>Tally ledger</span></div></div>
+                <div class="node" style="left:86%;top:50%" data-at="3" data-cls="4:ok"><span class="ic"><svg><use href="#i-landmark"/></svg></span><div><b>Payment</b><span>Reconciled</span></div></div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Graph</span><h3 class="h-card">Your business, as one connected graph.</h3><p>Every vendor, PO, receipt, invoice and payment linked end to end.</p></div>
+      </article>
+
+      <!-- Datic AI -->
+      <article class="glass feat" data-reveal="right">
+        <div class="feat__visual">
+          <div class="app app--bare" data-play data-steps="4" data-interval="1200" data-hold="4">
+            <div class="app-body"><div class="ai" style="padding:0">
+              <div class="q" data-at="0">Unpaid invoices over 60 days?</div>
+              <div class="a" data-at="1"><b>7 invoices</b> · ₹18.4 L outstanding</div>
+              <div class="card" data-at="2"><b class="tiny">Add as a dashboard tile?</b><div class="acts"><span class="btn-a pri">Review &amp; approve</span><span class="btn-a">Keep</span></div></div>
+            </div></div>
+          </div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Datic AI</span><h3 class="h-card">Ask. It proposes. You approve.</h3><p>Nothing changes until you say so.</p></div>
+      </article>
+
+      <!-- Anomalies -->
+      <article class="glass feat" data-reveal="left">
+        <div class="feat__visual">
+          <div class="app app--bare" data-play data-steps="4" data-interval="900" data-hold="4">
+            <div class="app-body"><div class="panel">
+              <div class="row" data-at="0" data-flash="0"><span>Qty differs from PO</span><span class="chipx err">critical</span></div>
+              <div class="row" data-at="1" data-flash="1"><span>Invoice raised twice</span><span class="chipx err">error</span></div>
+              <div class="row" data-at="2" data-flash="2"><span>Never invoiced</span><span class="chipx err">warn</span></div>
+              <div class="row" data-at="3"><span>Duplicate vendor</span><span class="chipx err">warn</span></div>
+            </div></div>
+          </div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Anomalies</span><h3 class="h-card">Leaks, flagged in minutes.</h3><p>Ranked by severity, with evidence.</p></div>
+      </article>
+
+      <!-- Prevention -->
+      <article class="glass feat" data-reveal>
+        <div class="feat__visual">
+          <div class="app app--bare" data-play data-steps="3" data-interval="1000" data-hold="4">
+            <div class="app-body" style="gap:.7em">
+              <div class="box-ok" data-at="0"><b>Duplicate check before creating</b></div>
+              <div class="box-ok" data-at="1"><b>Confirmation before every change</b></div>
+              <div class="box-ok" data-at="2"><b>Old names kept as aliases</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Controls</span><h3 class="h-card">Fixes that stay fixed.</h3><p>Every resolved issue becomes a rule.</p></div>
+      </article>
+
+      <!-- Pipelines -->
+      <article class="glass feat" data-reveal="right">
+        <div class="feat__visual">
+          <div class="app app--bare" data-play data-steps="4" data-interval="1000" data-hold="4">
+            <div class="app-body"><div class="flow">
+              <div class="step" data-at="0"><span class="n"><svg><use href="#i-zap"/></svg></span><div class="t"><b>New data</b></div></div>
+              <div class="step" data-at="1" data-cls="3:done"><span class="n"><svg><use href="#i-user-check"/></svg></span><div class="t"><b>Approval</b></div></div>
+              <div class="step" data-at="2"><span class="n"><svg><use href="#i-pen"/></svg></span><div class="t"><b>Write back</b></div></div>
+            </div></div>
+          </div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Pipelines</span><h3 class="h-card">Automation with a human in the loop.</h3><p>Write-backs always pass approval first.</p></div>
+      </article>
+
+      <!-- Dashboards -->
+      <article class="glass feat feat--half" data-reveal="left">
+        <div class="feat__visual">
+          <div class="app app--bare" data-play data-steps="3" data-interval="1000" data-hold="5">
+            <div class="app-body">
+              <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+                <div class="kpi" data-at="0"><span>Recovered</span><b>₹<span data-count="0:1240000" data-zero="0">0</span></b><small class="up">▲ this quarter</small></div>
+                <div class="kpi" data-at="0"><span>Open anomalies</span><b data-count="0:12">0</b><small class="dn">3 critical</small></div>
+                <div class="kpi" data-at="0"><span>Docs read</span><b data-count="0:4980">0</b><small class="muted">this month</small></div>
+              </div>
+              <div class="panel">
+                <div class="chart" data-chart="1"><i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:66%"></i><i style="--h:58%"></i><i style="--h:74%"></i><i class="hi" style="--h:92%"></i></div>
+                <div class="axis"><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Dashboards</span><h3 class="h-card">Live tiles, built in plain language.</h3><p>Add, move and resize. Every figure traces to its document.</p></div>
+      </article>
+
+      <!-- Reports -->
+      <article class="glass feat feat--half" data-reveal="right">
+        <div class="feat__visual">
+          <div class="app app--bare" data-play data-steps="3" data-interval="1000" data-hold="4">
+            <div class="app-body"><div class="panel">
+              <div class="ph"><p>Reports</p><span class="chipx ok" data-at="2"><i></i>Every Monday 9:00</span></div>
+              <div class="row" data-at="0"><span style="display:flex;gap:.5em;align-items:center"><svg style="width:1.1em;height:1.1em;color:#6b6b6b"><use href="#i-file"/></svg>Payables ageing</span><span style="display:flex;gap:.4em"><span class="btn-a"><svg><use href="#i-download"/></svg>PDF</span><span class="btn-a"><svg><use href="#i-download"/></svg>Excel</span></span></div>
+              <div class="row" data-at="1"><span style="display:flex;gap:.5em;align-items:center"><svg style="width:1.1em;height:1.1em;color:#6b6b6b"><use href="#i-file"/></svg>Stock variance</span><span style="display:flex;gap:.4em"><span class="btn-a"><svg><use href="#i-download"/></svg>PDF</span><span class="btn-a"><svg><use href="#i-download"/></svg>Excel</span></span></div>
+              <div class="row" data-at="2"><span style="display:flex;gap:.5em;align-items:center"><svg style="width:1.1em;height:1.1em;color:#6b6b6b"><use href="#i-file"/></svg>GST reconciliation</span><span style="display:flex;gap:.4em"><span class="btn-a"><svg><use href="#i-download"/></svg>PDF</span><span class="btn-a"><svg><use href="#i-download"/></svg>Excel</span></span></div>
+            </div></div>
+          </div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Reports</span><h3 class="h-card">PDF or Excel, on your schedule.</h3><p>Daily, weekly or monthly, to the people you choose.</p></div>
+      </article>
+
+      <!-- Vendor portal -->
+      <article class="glass feat feat--half" data-reveal="left">
+        <div class="feat__visual">
+          <div class="app app--bare" data-play data-steps="4" data-interval="900" data-hold="4">
+            <div class="app-body"><div class="panel" style="padding:1em;display:grid;gap:.7em">
+              <b>Northstar · Invoice submission</b>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6em">
+                <div class="field-a" data-at="0"><span>Invoice number</span><div>INV-2304</div></div>
+                <div class="field-a" data-at="1"><span>Amount</span><div>₹ 1,84,200</div></div>
+              </div>
+              <div class="drop" data-at="2"><svg><use href="#i-file"/></svg>invoice-2304.pdf · <span class="chipx ok"><i></i>Read</span></div>
+              <span class="btn-a pri" data-at="3" style="justify-self:start">Submit</span>
+            </div></div>
+          </div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Vendor portal</span><h3 class="h-card">Vendors submit. Sukyaan reads.</h3><p>Sensitive fields encrypted with your company's own key.</p></div>
+      </article>
+
+      <!-- Departments & access -->
+      <article class="glass feat feat--half" data-reveal="right">
+        <div class="feat__visual">
+          <div class="app app--bare" data-play data-steps="4" data-interval="900" data-hold="4">
+            <div class="app-body"><div class="panel">
+              <div class="lane muted tiny"><span>Finance</span><span>Sales</span><span>Procurement</span><span>Operations</span><span></span></div>
+              <div class="lane" data-at="0"><i class="acc"></i><i class="acc no"></i><i class="acc no"></i><i class="acc no"></i><span class="tiny">Priya</span></div>
+              <div class="lane" data-at="1"><i class="acc no"></i><i class="acc"></i><i class="acc no"></i><i class="acc no"></i><span class="tiny">Rahul</span></div>
+              <div class="lane" data-at="2"><i class="acc no"></i><i class="acc no"></i><i class="acc"></i><i class="acc"></i><span class="tiny">Anil</span></div>
+              <div class="lane" data-at="3"><i class="acc"></i><i class="acc"></i><i class="acc"></i><i class="acc"></i><span class="tiny">Owner</span></div>
+            </div></div>
+          </div>
+        </div>
+        <div class="feat__body"><span class="feat__tag">Departments</span><h3 class="h-card">Everyone sees only their part.</h3><p>Role and department access, two-step sign-in, full activity log.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GEOGRAPHIES ================= -->
+<section class="section" id="geographies" style="padding-top:40px">
+  <div class="container">
+    <div class="geo on-night" data-theme="dark" data-reveal="scale">
+      <div>
+        <span class="eyebrow">Geographies</span>
+        <h2 class="h-section" style="margin-top:18px">Built in India.<br/><span class="grad-text">Ready for anywhere.</span></h2>
+        <div class="geo__list">
+          <span class="geo__city is-hq"><i></i>Kanpur<small>HQ</small></span>
+          <span class="geo__city"><i></i>Delhi</span>
+          <span class="geo__city"><i></i>Lucknow</span>
+          <span class="geo__city"><i></i>Ludhiana</span>
+          <span class="geo__city"><i></i>Mumbai</span>
+          <span class="geo__city"><i></i>Gujarat</span>
+          <span class="geo__city"><i></i>Bangalore</span>
+          <span class="geo__city"><i></i>Chennai</span>
+          <span class="geo__city"><i></i>Coimbatore</span>
+          <span class="geo__city"><i></i>Kolkata</span>
+        </div>
+        <div class="geo__note"><svg><use href="#i-shield"/></svg><span>Client data is stored only in India, on Datic's servers or on your own, with backups kept in India.</span></div>
+      </div>
+      <div id="globe-holder"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRUST ================= -->
+<section class="section section--tight">
+  <div class="container">
+    <div class="sec-head sec-head--split" style="margin-bottom:40px">
+      <div style="display:grid;gap:18px">
+        <span class="eyebrow" data-reveal>Data protection</span>
+        <h2 class="h-section" data-reveal data-delay="1">Your data stays yours.</h2>
+      </div>
+      <p class="lede" data-reveal data-delay="2">Compliant with India's DPDP Act and the EU's GDPR, and written into every client agreement. <a href="data-protection.html" style="color:var(--g-3);font-weight:500">Read how →</a></p>
+    </div>
+    <div class="compliance">
+      <div class="glass comp" data-reveal data-delay="1"><img src="assets/img/badges/dpdp.svg" alt="DPDP Act 2023" /><div><b>DPDP Act 2023</b><span>Digital Personal Data Protection Act and DPDP Rules, 2025</span><em>Compliant</em></div></div>
+      <div class="glass comp" data-reveal data-delay="2"><img src="assets/img/badges/gdpr.svg" alt="GDPR" /><div><b>GDPR</b><span>EU General Data Protection Regulation</span><em>Compliant</em></div></div>
+      <div class="glass comp" data-reveal data-delay="3"><img src="assets/img/badges/aes-256.svg" alt="AES-256" /><div><b>AES-256-GCM</b><span>Files and sensitive fields, per-company keys</span><em>Encrypted</em></div></div>
+    </div>
+    <div class="trust">
+      <div class="glass trust__item" data-reveal data-delay="1"><span class="trust__icon"><svg><use href="#i-key"/></svg></span><b>AES-256</b><p>Every company's files and sensitive fields sealed with its own key.</p></div>
+      <div class="glass trust__item" data-reveal data-delay="2"><span class="trust__icon"><svg><use href="#i-bell"/></svg></span><b>24 hrs</b><p>Breach notice to you, full details within 72 hours.</p></div>
+      <div class="glass trust__item" data-reveal data-delay="3"><span class="trust__icon"><svg><use href="#i-trash"/></svg></span><b>15 days</b><p>Everything permanently deleted after you stop.</p></div>
+      <div class="glass trust__item" data-reveal data-delay="4"><span class="trust__icon"><svg><use href="#i-eye-off"/></svg></span><b>Zero</b><p>Records ever used to train an AI model.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BOOK A DEMO ================= -->
+<section class="section" id="book-a-demo" style="padding-bottom:0">
+  <div class="container">
+    <div class="cta on-night" data-theme="dark" data-reveal="scale">
+      <div class="cta__ascii" id="ctaAscii"></div>
+      <div class="cta__inner">
+        <span class="eyebrow">Book a demo</span>
+        <h2 class="h-section">See Sukyaan on<br/><span class="grad-text">your own data.</span></h2>
+        <p class="lede">Bring one month of records. We'll show you exactly where your systems disagree.</p>
+        <div class="cta__actions">
+          <a class="btn btn-primary" href="#book" data-open-demo>Book a demo <svg><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-glass" href="pricing.html">View pricing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer on-night" data-theme="dark">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img src="assets/img/datic-wordmark-light.png" alt="Datic" />
+        <p>Financial data integrity for businesses that run on more than one system.</p>
+        <a class="btn btn-primary btn-sm" href="#book-a-demo" data-open-demo>Book a demo</a>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="index.html#book-a-demo">Book a demo</a></li>
+          <li><a href="index.html#process">Process</a></li>
+          <li><a href="index.html#software">Across software</a></li>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="index.html#geographies">Geographies</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="founders-note.html">Founder's note</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="careers.html">Careers</a></li>
+          <li><a href="https://www.linkedin.com/company/daticcurrency/" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="data-protection.html">Data protection</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Immortia Technologies Pvt Ltd. Datic and Sukyaan are products of Immortia Technologies.</span>
+      <div class="badges"><span class="chip badge-chip"><img src="assets/img/badges/dpdp.svg" alt="" />DPDP Act 2023</span><span class="chip badge-chip"><img src="assets/img/badges/gdpr.svg" alt="" />GDPR</span><span class="chip badge-chip"><img src="assets/img/badges/aes-256.svg" alt="" />AES-256</span></div>
+    </div>
+  </div>
+  <div class="footer__mark" aria-hidden="true">datic</div>
+</footer>
+
+<!-- ================= BOOK A DEMO MODAL ================= -->
+<div class="modal" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+  <div class="modal__box">
+    <button class="modal__close" aria-label="Close">&times;</button>
+    <div id="demoForm">
+      <h2 class="modal__title" id="demoTitle">Book a demo</h2>
+      <p class="modal__sub">We'll walk you through Sukyaan on your own data.</p>
+      <div class="form">
+        <div class="field"><label for="demoName">Full name</label><input type="text" id="demoName" placeholder="Your name" autocomplete="name" /></div>
+        <div class="field"><label for="demoOrg">Organisation</label><input type="text" id="demoOrg" placeholder="Company name" autocomplete="organization" /></div>
+        <div class="field"><label for="demoCat">Category</label>
+          <select id="demoCat">
+            <option value="" disabled selected>Select one</option>
+            <option value="manufacturer">Manufacturer</option>
+            <option value="distributor">Distributor</option>
+            <option value="retailer">Retailer</option>
+            <option value="school">School</option>
+          </select>
+        </div>
+        <div class="form__row">
+          <div class="field"><label for="demoPhone">Phone</label><input type="tel" id="demoPhone" placeholder="+91 98765 43210" autocomplete="tel" /></div>
+          <div class="field"><label for="demoEmail">Work email</label><input type="email" id="demoEmail" placeholder="you@company.com" autocomplete="email" /></div>
+        </div>
+        <div class="form__row">
+          <div class="field"><label for="demoDate">Preferred date</label><input type="date" id="demoDate" /></div>
+          <div class="field"><label for="demoTime">Preferred time</label><input type="time" id="demoTime" /></div>
+        </div>
+        <p class="form__error" id="demoError"></p>
+        <button class="btn btn-primary btn-block" id="demoSubmit" type="button">Request my demo</button>
+      </div>
+    </div>
+    <div class="form__success" id="demoSuccess">
+      <div class="check"><svg><use href="#i-check"/></svg></div>
+      <h3>Request received</h3>
+      <p>We'll confirm your slot within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/js/gradient-ascii.js"></script>
+<script src="assets/js/curved-loop.js"></script>
+<script src="assets/js/logo-loop.js"></script>
+<script src="assets/js/software-list.js"></script>
+<script src="assets/js/globe.js"></script>
+<script src="assets/js/site.js"></script>
+<script type="module" src="assets/js/booking.js"></script>
+<script>
+(function () {
+  const green = ['#1a6b12', '#f2fff0', '#a8ef8c', '#41c724'];
+  GradientASCII.mount(document.getElementById('heroAscii'), {
+    colors: green, shape: 'horizon', cellSize: 15, density: 0.62, glyphOpacity: 0.62, glow: 0.28, flow: 0.5,
+    speed: 0.7, gradientOpacity: 0.55, grain: 0.05, softness: 0.6, clickEffect: 'wave'
+  });
+  GradientASCII.mount(document.getElementById('ctaAscii'), {
+    colors: green, shape: 'rise', cellSize: 14, density: 0.8, glow: 0.3, flow: 0.5,
+    speed: 0.7, gradientOpacity: 0.75, grain: 0.06, clickEffect: 'burst'
+  });
+
+  CurvedLoop.mount(document.getElementById('curvedBand'), {
+    marqueeText: 'Connect · Detect · Prevent', separator: '✦', separatorColor: '#41c724',
+    color: '#0a110c', fontSize: 88, fontWeight: 500, curveAmount: 120, speed: 1.4,
+    edgeFade: 0.22, scrollBoost: 0.6, letterSpacing: -2
+  });
+
+  const sw = window.DATIC_SOFTWARE || { rowA: [], rowB: [] };
+  if (sw.total) document.getElementById('softwareTotal').textContent = sw.total;
+  LogoLoop.mount(document.getElementById('loopA'), { logos: sw.rowA, speed: 40, logoHeight: 34, gap: 18, ariaLabel: 'Connected software' });
+  LogoLoop.mount(document.getElementById('loopB'), { logos: sw.rowB, speed: 34, direction: 'right', logoHeight: 34, gap: 18, ariaLabel: 'Connected software' });
+
+  /* phones and tablets: show each process snapshot inside its own step */
+  const mq = window.matchMedia('(max-width:1080px)');
+  const screens = Array.from(document.querySelectorAll('.process__screen'));
+  const home = document.querySelector('.process__screens');
+  const place = () => screens.forEach((s, i) => {
+    const slot = document.querySelector(`.pstep__mobile-shot[data-slot="${i}"]`);
+    (mq.matches ? slot : home).appendChild(s);
+  });
+  place();
+  mq.addEventListener('change', place);
+})();
+</script>
+</body>
+</html>
