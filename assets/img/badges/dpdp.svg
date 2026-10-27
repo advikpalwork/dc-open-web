@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="DPDP Act 2023">
-<defs><clipPath id="s"><path d="M32 4 54 12v18c0 14-10 24-22 30C20 54 10 44 10 30V12z"/></clipPath></defs>
-<g clip-path="url(#s)"><rect width="64" height="23" fill="#FF9933"/><rect y="23" width="64" height="16" fill="#ffffff"/><rect y="39" width="64" height="25" fill="#138808"/></g>
-<path d="M32 4 54 12v18c0 14-10 24-22 30C20 54 10 44 10 30V12z" fill="none" stroke="#0b2a6f" stroke-width="2.5" stroke-linejoin="round"/>
-<path d="M23 31.5l6 6 12-12" fill="none" stroke="#0b2a6f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
